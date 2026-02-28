@@ -1,4 +1,4 @@
-Great, everything works and I guess uh everything looks good to me so we can carry on and you know what now let's pick some action that I can accomplish from my to-do list uh with the updated version of the platform. Yeah so maybe we can think about something like uh maybe we can think about uh 7.1 I mean the branching plus uh pull request workflow or maybe we can think about the I don't know maybe something related to 2.1 GitHub actions or maybe 1.1 unit tests. So think about like what to do and how what is the sequence might be here# Tulip Logistic — TODO / Learning Roadmap
+# Tulip Logistic — TODO / Learning Roadmap
 
 > Каждая задача — это не просто фича, а **урок из мира разработки**.
 > После каждой задачи ты будешь понимать новый кусок SDLC.
@@ -11,10 +11,12 @@ Great, everything works and I guess uh everything looks good to me so we can car
 
 > _"Как разработчики убеждаются, что ничего не сломалось?"_
 
-### 1.1 🟢 Unit-тесты (Vitest)
-Написать первые тесты для функции `getOrderStatus()` — она чистая, без зависимостей, идеальна для старта.
+### ~~1.1 🟢 Unit-тесты (Vitest)~~ ✅
+~~Написать первые тесты для функции `getOrderStatus()` — она чистая, без зависимостей, идеальна для старта.~~
 
 **Чему научишься:** что такое unit-тест, test runner, assertions, TDD-подход (сначала тест → потом код).
+
+> **Выполнено:** 10 тестов для `getOrderStatus()` (Vitest). PR [#2](https://github.com/krnvch/tulip-logistic/pull/2). См. `docs/learning-log.md`.
 
 ### 1.2 🟡 Component-тесты (Testing Library)
 Проверить, что `OrderCard` показывает правильные кнопки для оператора и работника.
@@ -32,10 +34,12 @@ Great, everything works and I guess uh everything looks good to me so we can car
 
 > _"Как автоматизировать проверки при каждом пуше?"_
 
-### 2.1 🟢 GitHub Actions — линтинг и тайпчек
-Добавить `.github/workflows/ci.yml` — при каждом PR автоматически запускать `pnpm lint` и `pnpm build`.
+### ~~2.1 🟢 GitHub Actions — линтинг и тайпчек~~ ✅
+~~Добавить `.github/workflows/ci.yml` — при каждом PR автоматически запускать `pnpm lint` и `pnpm build`.~~
 
 **Чему научишься:** что такое CI pipeline, YAML-конфиги, GitHub Actions, статусы проверок на PR.
+
+> **Выполнено:** CI пайплайн (lint → test → build). PR [#1](https://github.com/krnvch/tulip-logistic/pull/1). См. `docs/learning-log.md`.
 
 ### 2.2 🟡 Preview Deployments
 Настроить, чтобы каждый PR получал свой временный URL для тестирования.
@@ -127,10 +131,12 @@ Great, everything works and I guess uh everything looks good to me so we can car
 
 > _"Как команды работают над одним кодом?"_
 
-### 7.1 🟢 Branching + Pull Request workflow
-Вместо push в main — создавать ветки и PR. Code review, approve, merge.
+### ~~7.1 🟢 Branching + Pull Request workflow~~ ✅
+~~Вместо push в main — создавать ветки и PR. Code review, approve, merge.~~
 
 **Чему научишься:** Git branching (feature branches), pull requests, code review культура, merge conflicts.
+
+> **Выполнено:** Workflow настроен, первые два PR сделаны через feature branches. См. `docs/learning-log.md`.
 
 ### 7.2 🟡 Conventional Commits + Changelog
 Структурированные сообщения коммитов (`feat:`, `fix:`, `docs:`) и автогенерация CHANGELOG.
@@ -157,17 +163,17 @@ Great, everything works and I guess uh everything looks good to me so we can car
 
 ## Мои идеи
 
-### 9.1 🔴 Мульти-рейсы (параллельные сессии загрузки)
+### ~~9.1 🔴 Мульти-рейсы (параллельные сессии загрузки)~~ ✅
 
-Сейчас приложение поддерживает только один активный рейс. Нужно:
-- Несколько рейсов могут быть активны одновременно
-- Оператор может переключаться между рейсами (админ-панель / селектор)
-- Разные работники могут работать с разными рейсами параллельно
-- Загрузка нескольких трейлеров идёт одновременно
+~~Сейчас приложение поддерживает только один активный рейс. Нужно:~~
+- ~~Несколько рейсов могут быть активны одновременно~~
+- ~~Оператор может переключаться между рейсами (админ-панель / селектор)~~
+- ~~Разные работники могут работать с разными рейсами параллельно~~
+- ~~Загрузка нескольких трейлеров идёт одновременно~~
 
 **Чему научишься:** управление состоянием с множественными сущностями, роутинг с параметрами, контекст переключения, архитектура multi-session, рефакторинг существующих хуков и компонентов.
 
-**Статус:** 🔍 Discovery
+> **Выполнено:** Полная реализация — список рейсов, детальная страница, создание/удаление/переименование/возобновление, read-only режим, быстрый вход через localStorage, realtime. См. `docs/learning-log.md`.
 
 ---
 
@@ -175,9 +181,9 @@ Great, everything works and I guess uh everything looks good to me so we can car
 
 Если хочешь идти последовательно, вот оптимальный путь:
 
-1. **7.1** — Branching + PR (сразу начнёшь работать "по-взрослому")
-2. **1.1** — Unit-тесты (основа качества)
-3. **2.1** — CI pipeline (автоматические проверки)
+1. ~~**7.1** — Branching + PR~~ ✅
+2. ~~**1.1** — Unit-тесты~~ ✅
+3. ~~**2.1** — CI pipeline~~ ✅
 4. **4.1** — Тёмная тема (быстрая UI-победа)
 5. **3.1** — Миграция БД (работа с данными)
 6. **6.1** — Lighthouse (понимание качества)
