@@ -49,3 +49,17 @@ export interface PlacementWithOrder {
   placement: Placement;
   order: Order;
 }
+
+// --- Multi-shipment types ---
+export interface ShipmentProgress {
+  totalOrders: number;
+  doneOrders: number;
+  totalBoxes: number;
+}
+
+export type ShipmentFilter = "all" | "active" | "completed";
+
+export interface ShipmentsSort {
+  column: "name" | "status" | "created_at" | "created_by";
+  direction: "asc" | "desc";
+}

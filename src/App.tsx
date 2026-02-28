@@ -1,7 +1,8 @@
 import { Routes, Route } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { LoginForm } from "@/components/login-form";
-import HomePage from "@/pages/HomePage";
+import ShipmentsPage from "@/pages/ShipmentsPage";
+import ShipmentDetailPage from "@/pages/ShipmentDetailPage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 export default function App() {
@@ -19,11 +20,25 @@ export default function App() {
     return <LoginForm onLogin={login} />;
   }
 
+  const userEmail = session.user.email;
+
   return (
     <Routes>
       <Route
         path="/"
-        element={<HomePage logout={logout} isOperator={isOperator} />}
+        element={
+          <ShipmentsPage
+            logout={logout}
+            isOperator={isOperator}
+            userEmail={userEmail}
+          />
+        }
+      />
+      <Route
+        path="/shipments/:id"
+        element={
+          <ShipmentDetailPage logout={logout} isOperator={isOperator} />
+        }
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

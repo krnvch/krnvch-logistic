@@ -27,6 +27,7 @@ interface WallPopoverProps {
   shipmentId: string;
   boxesPerWall: number;
   isOperator: boolean;
+  isReadOnly?: boolean;
   onCreatePlacement: (data: PlacementInsert) => Promise<unknown>;
   onUpdatePlacement: (
     data: PlacementUpdate & { id: string }
@@ -44,6 +45,7 @@ export function WallPopover({
   shipmentId,
   boxesPerWall,
   isOperator,
+  isReadOnly = false,
   onCreatePlacement,
   onUpdatePlacement,
   onDeletePlacement,
@@ -211,7 +213,7 @@ export function WallPopover({
                       <span className="flex-1 text-sm">
                         {pw.placement.box_count} коробок
                       </span>
-                      {isDone ? (
+                      {isReadOnly ? null : isDone ? (
                         <Button
                           size="sm"
                           variant="ghost"
@@ -268,7 +270,7 @@ export function WallPopover({
         )}
 
         {/* Add new placement (operator only) */}
-        {isOperator && !wall.is_full && availableOrders.length > 0 && (
+        {isOperator && !isReadOnly && !wall.is_full && availableOrders.length > 0 && (
           <>
             {wall.placements.length > 0 && <Separator />}
             <div className="grid gap-3">

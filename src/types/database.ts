@@ -116,26 +116,32 @@ export type Database = {
         Row: {
           boxes_per_wall: number
           created_at: string
+          created_by: string | null
           id: string
-          name: string | null
+          name: string
           status: string
           trailer_walls: number
+          updated_at: string
         }
         Insert: {
           boxes_per_wall?: number
           created_at?: string
+          created_by?: string | null
           id?: string
-          name?: string | null
+          name?: string
           status?: string
           trailer_walls?: number
+          updated_at?: string
         }
         Update: {
           boxes_per_wall?: number
           created_at?: string
+          created_by?: string | null
           id?: string
-          name?: string | null
+          name?: string
           status?: string
           trailer_walls?: number
+          updated_at?: string
         }
         Relationships: []
       }

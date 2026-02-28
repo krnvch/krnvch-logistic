@@ -1,32 +1,51 @@
-import { useCallback } from "react";
-import { Button } from "@/components/ui/button";
+import { useCallback, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { AppLayout } from "@/components/app-layout";
-import { ShipmentSetup } from "@/components/shipment-setup";
 import { useShipment } from "@/hooks/use-shipment";
 import { useOrders } from "@/hooks/use-orders";
 import { usePlacements } from "@/hooks/use-placements";
 import { useWallData } from "@/hooks/use-wall-data";
 import { useRealtimeSync } from "@/hooks/use-realtime";
+import { useLastShipment } from "@/hooks/use-last-shipment";
 import { toast } from "sonner";
 
-interface HomePageProps {
+interface ShipmentDetailPageProps {
   logout: () => Promise<void>;
   isOperator: boolean;
 }
 
-export default function HomePage({ logout, isOperator }: HomePageProps) {
-  const { shipment, isLoading, createShipment, isCreating, completeShipment } =
-    useShipment();
-  const { orders, createOrder, updateOrder, deleteOrder } = useOrders(
-    shipment?.id
-  );
+export default function ShipmentDetailPage({
+  logout,
+  isOperator,
+}: ShipmentDetailPageProps) {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const lastShipment = useLastShipment();
+
+  const { shipment, isLoading, completeShipment, reopenShipment, renameShipment } =
+    useShipment(id);
+  const { orders, createOrder, updateOrder, deleteOrder } = useOrders(id);
   const { placements, createPlacement, updatePlacement, deletePlacement } =
-    usePlacements(shipment?.id);
+    usePlacements(id);
 
-  // Realtime subscription
-  useRealtimeSync(shipment?.id);
+  useRealtimeSync(id);
 
-  // Compute wall data and order statuses
+  // Save last visited shipment
+  useEffect(() => {
+    if (id) lastShipment.set(id);
+  }, [id, lastShipment]);
+
+  // Redirect if shipment not found (deleted or invalid)
+  useEffect(() => {
+    if (!isLoading && !shipment && id) {
+      toast.error("Рейс не найден");
+      lastShipment.clear();
+      navigate("/", { replace: true });
+    }
+  }, [isLoading, shipment, id, navigate, lastShipment]);
+
+  const isReadOnly = shipment?.status === "completed";
+
   const { walls, ordersWithStatus } = useWallData({
     orders,
     placements,
@@ -63,6 +82,19 @@ export default function HomePage({ logout, isOperator }: HomePageProps) {
     await completeShipment(shipment.id);
   }, [shipment, completeShipment]);
 
+  const handleReopenShipment = useCallback(async () => {
+    if (!shipment) return;
+    await reopenShipment(shipment.id);
+  }, [shipment, reopenShipment]);
+
+  const handleRenameShipment = useCallback(
+    async (name: string) => {
+      if (!shipment) return;
+      await renameShipment({ id: shipment.id, name });
+    },
+    [shipment, renameShipment]
+  );
+
   if (isLoading) {
     return (
       <div className="flex min-h-dvh items-center justify-center">
@@ -71,35 +103,14 @@ export default function HomePage({ logout, isOperator }: HomePageProps) {
     );
   }
 
-  if (!shipment) {
-    if (!isOperator) {
-      return (
-        <div className="flex min-h-dvh items-center justify-center p-4">
-          <div className="text-center text-muted-foreground">
-            <p className="text-lg font-medium">Ожидание рейса...</p>
-            <p className="mt-1 text-sm">
-              Оператор ещё не создал рейс. Попробуйте позже.
-            </p>
-            <Button
-              variant="outline"
-              className="mt-4"
-              onClick={logout}
-            >
-              Выйти
-            </Button>
-          </div>
-        </div>
-      );
-    }
-    return (
-      <ShipmentSetup onCreate={createShipment} isCreating={isCreating} />
-    );
-  }
+  if (!shipment) return null;
 
   return (
     <AppLayout
       logout={logout}
       isOperator={isOperator}
+      isReadOnly={isReadOnly}
+      shipmentName={shipment.name}
       orders={ordersWithStatus}
       walls={walls}
       shipmentId={shipment.id}
@@ -113,6 +124,8 @@ export default function HomePage({ logout, isOperator }: HomePageProps) {
       onMarkDone={markDone}
       onUndoDone={undoDone}
       onCompleteShipment={handleCompleteShipment}
+      onReopenShipment={handleReopenShipment}
+      onRenameShipment={handleRenameShipment}
     />
   );
 }

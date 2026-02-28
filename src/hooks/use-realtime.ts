@@ -3,6 +3,33 @@ import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { queryKeys } from "@/lib/query-keys";
 
+export function useRealtimeShipments() {
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("shipments-list")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "shipments",
+        },
+        () => {
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.shipments,
+          });
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [queryClient]);
+}
+
 export function useRealtimeSync(shipmentId: string | undefined) {
   const queryClient = useQueryClient();
 
@@ -36,6 +63,23 @@ export function useRealtimeSync(shipmentId: string | undefined) {
         () => {
           queryClient.invalidateQueries({
             queryKey: queryKeys.placements(shipmentId),
+          });
+        }
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "shipments",
+          filter: `id=eq.${shipmentId}`,
+        },
+        () => {
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.shipment(shipmentId),
+          });
+          queryClient.invalidateQueries({
+            queryKey: queryKeys.shipments,
           });
         }
       )

@@ -20,6 +20,7 @@ interface OrderSidebarProps {
   orders: OrderWithStatus[];
   shipmentId: string;
   isOperator: boolean;
+  isReadOnly?: boolean;
   onCreateOrder: (data: OrderInsert) => Promise<unknown>;
   onUpdateOrder: (data: OrderUpdate & { id: string }) => Promise<unknown>;
   onDeleteOrder: (id: string) => Promise<unknown>;
@@ -33,6 +34,7 @@ export function OrderSidebar({
   orders,
   shipmentId,
   isOperator,
+  isReadOnly = false,
   onCreateOrder,
   onUpdateOrder,
   onDeleteOrder,
@@ -86,7 +88,7 @@ export function OrderSidebar({
         {/* Header */}
         <div className="flex items-center justify-between border-b px-4 py-2.5">
           <h2 className="font-semibold">Заказы</h2>
-          {isOperator && (
+          {isOperator && !isReadOnly && (
             <Button size="sm" onClick={() => setFormOpen(true)}>
               <Plus className="mr-1 h-4 w-4" />
               Добавить
@@ -107,6 +109,7 @@ export function OrderSidebar({
                   key={data.order.id}
                   data={data}
                   isOperator={isOperator}
+                  isReadOnly={isReadOnly}
                   onEdit={() => handleEdit(data)}
                   onDelete={() => setDeleteOrder(data)}
                   onMarkDone={() => setDoneOrder(data)}

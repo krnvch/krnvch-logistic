@@ -1,4 +1,4 @@
-# Tulip Logistic — TODO / Learning Roadmap
+Great, everything works and I guess uh everything looks good to me so we can carry on and you know what now let's pick some action that I can accomplish from my to-do list uh with the updated version of the platform. Yeah so maybe we can think about something like uh maybe we can think about uh 7.1 I mean the branching plus uh pull request workflow or maybe we can think about the I don't know maybe something related to 2.1 GitHub actions or maybe 1.1 unit tests. So think about like what to do and how what is the sequence might be here# Tulip Logistic — TODO / Learning Roadmap
 
 > Каждая задача — это не просто фича, а **урок из мира разработки**.
 > После каждой задачи ты будешь понимать новый кусок SDLC.
@@ -155,13 +155,19 @@
 
 ---
 
-## Мои идеи (заполни сам)
+## Мои идеи
 
-> _Добавляй сюда свои идеи — любые, даже сырые_
+### 9.1 🔴 Мульти-рейсы (параллельные сессии загрузки)
 
-- [ ] ...
-- [ ] ...
-- [ ] ...
+Сейчас приложение поддерживает только один активный рейс. Нужно:
+- Несколько рейсов могут быть активны одновременно
+- Оператор может переключаться между рейсами (админ-панель / селектор)
+- Разные работники могут работать с разными рейсами параллельно
+- Загрузка нескольких трейлеров идёт одновременно
+
+**Чему научишься:** управление состоянием с множественными сущностями, роутинг с параметрами, контекст переключения, архитектура multi-session, рефакторинг существующих хуков и компонентов.
+
+**Статус:** 🔍 Discovery
 
 ---
 

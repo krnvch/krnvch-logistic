@@ -4,19 +4,16 @@ import { queryKeys } from "@/lib/query-keys";
 import type { ShipmentInsert } from "@/types";
 import { toast } from "sonner";
 
-export function useShipment() {
+export function useShipments() {
   const queryClient = useQueryClient();
 
   const query = useQuery({
-    queryKey: queryKeys.shipment,
+    queryKey: queryKeys.shipments,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("shipments")
         .select("*")
-        .eq("status", "active")
-        .order("created_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
+        .order("created_at", { ascending: false });
 
       if (error) throw error;
       return data;
@@ -35,8 +32,97 @@ export function useShipment() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: queryKeys.shipment });
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
     },
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (shipmentId: string) => {
+      const { error } = await supabase
+        .from("shipments")
+        .delete()
+        .eq("id", shipmentId);
+
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
+      toast.success("Рейс удалён");
+    },
+    onError: () => {
+      toast.error("Не удалось удалить рейс");
+    },
+  });
+
+  const reopenMutation = useMutation({
+    mutationFn: async (shipmentId: string) => {
+      const { error } = await supabase
+        .from("shipments")
+        .update({ status: "active" })
+        .eq("id", shipmentId);
+
+      if (error) throw error;
+    },
+    onSuccess: (_data, shipmentId) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.shipment(shipmentId),
+      });
+      toast.success("Рейс возобновлён");
+    },
+    onError: () => {
+      toast.error("Не удалось возобновить рейс");
+    },
+  });
+
+  const renameMutation = useMutation({
+    mutationFn: async ({ id, name }: { id: string; name: string }) => {
+      const { error } = await supabase
+        .from("shipments")
+        .update({ name })
+        .eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: (_data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipment(id) });
+      toast.success("Название обновлено");
+    },
+    onError: () => {
+      toast.error("Не удалось переименовать рейс");
+    },
+  });
+
+  return {
+    shipments: query.data ?? [],
+    isLoading: query.isLoading,
+    error: query.error,
+    createShipment: createMutation.mutateAsync,
+    isCreating: createMutation.isPending,
+    deleteShipment: deleteMutation.mutateAsync,
+    isDeleting: deleteMutation.isPending,
+    reopenShipment: reopenMutation.mutateAsync,
+    renameShipment: renameMutation.mutateAsync,
+  };
+}
+
+export function useShipment(id: string | undefined) {
+  const queryClient = useQueryClient();
+
+  const query = useQuery({
+    queryKey: id ? queryKeys.shipment(id) : ["shipment-disabled"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("shipments")
+        .select("*")
+        .eq("id", id!)
+        .single();
+
+      if (error) throw error;
+      return data;
+    },
+    enabled: !!id,
   });
 
   const completeMutation = useMutation({
@@ -48,9 +134,11 @@ export function useShipment() {
 
       if (error) throw error;
     },
-    onSuccess: () => {
-      queryClient.clear();
-      queryClient.invalidateQueries({ queryKey: queryKeys.shipment });
+    onSuccess: (_data, shipmentId) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.shipment(shipmentId),
+      });
       toast.success("Рейс завершён");
     },
     onError: () => {
@@ -58,12 +146,52 @@ export function useShipment() {
     },
   });
 
+  const reopenMutation = useMutation({
+    mutationFn: async (shipmentId: string) => {
+      const { error } = await supabase
+        .from("shipments")
+        .update({ status: "active" })
+        .eq("id", shipmentId);
+
+      if (error) throw error;
+    },
+    onSuccess: (_data, shipmentId) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.shipment(shipmentId),
+      });
+      toast.success("Рейс возобновлён");
+    },
+    onError: () => {
+      toast.error("Не удалось возобновить рейс");
+    },
+  });
+
+  const renameMutation = useMutation({
+    mutationFn: async ({ id, name }: { id: string; name: string }) => {
+      const { error } = await supabase
+        .from("shipments")
+        .update({ name })
+        .eq("id", id);
+
+      if (error) throw error;
+    },
+    onSuccess: (_data, { id }) => {
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
+      queryClient.invalidateQueries({ queryKey: queryKeys.shipment(id) });
+      toast.success("Название обновлено");
+    },
+    onError: () => {
+      toast.error("Не удалось переименовать рейс");
+    },
+  });
+
   return {
     shipment: query.data,
     isLoading: query.isLoading,
     error: query.error,
-    createShipment: createMutation.mutateAsync,
-    isCreating: createMutation.isPending,
     completeShipment: completeMutation.mutateAsync,
+    reopenShipment: reopenMutation.mutateAsync,
+    renameShipment: renameMutation.mutateAsync,
   };
 }

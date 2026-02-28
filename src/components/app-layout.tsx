@@ -16,13 +16,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
 import { SummaryBar } from "@/components/summary-bar";
 import { SearchInput } from "@/components/search-input";
 import { OrderSidebar } from "@/components/order-sidebar";
 import { TrailerMap } from "@/components/trailer-map";
 import { WallPopover } from "@/components/wall-popover";
 import { useSearch } from "@/hooks/use-search";
-import { Flower2, LogOut, Menu, RotateCcw } from "lucide-react";
+import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
+import { Flower2, LogOut, Menu, RotateCcw, List, Pencil } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import type {
   OrderWithStatus,
   OrderInsert,
@@ -35,6 +38,8 @@ import type {
 interface AppLayoutProps {
   logout: () => Promise<void>;
   isOperator: boolean;
+  isReadOnly?: boolean;
+  shipmentName?: string;
   orders: OrderWithStatus[];
   walls: WallData[];
   shipmentId: string;
@@ -50,11 +55,15 @@ interface AppLayoutProps {
   onMarkDone: (orderId: string) => Promise<unknown>;
   onUndoDone: (orderId: string) => Promise<unknown>;
   onCompleteShipment: () => Promise<unknown>;
+  onReopenShipment?: () => Promise<unknown>;
+  onRenameShipment?: (name: string) => Promise<unknown>;
 }
 
 export function AppLayout({
   logout,
   isOperator,
+  isReadOnly = false,
+  shipmentName,
   orders,
   walls,
   shipmentId,
@@ -68,9 +77,13 @@ export function AppLayout({
   onMarkDone,
   onUndoDone,
   onCompleteShipment,
+  onReopenShipment,
+  onRenameShipment,
 }: AppLayoutProps) {
+  const navigate = useNavigate();
   const [activeWall, setActiveWall] = useState<number | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
+  const [renameOpen, setRenameOpen] = useState(false);
 
   const search = useSearch({ orders, walls });
 
@@ -84,7 +97,14 @@ export function AppLayout({
       <header className="flex shrink-0 items-center gap-3 border-b px-3 py-2 md:px-4">
         <div className="flex items-center gap-2">
           <Flower2 className="h-5 w-5 shrink-0" />
-          <h1 className="text-lg font-semibold max-sm:hidden">Tulip</h1>
+          <h1 className="text-lg font-semibold max-sm:hidden">
+            {shipmentName ?? "Tulip"}
+          </h1>
+          {isReadOnly && (
+            <Badge variant="secondary" className="text-xs">
+              Завершён
+            </Badge>
+          )}
         </div>
 
         <div className="max-md:hidden">
@@ -105,10 +125,26 @@ export function AppLayout({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              {isOperator && (
+              <DropdownMenuItem onClick={() => navigate("/", { state: { skipRedirect: true } })}>
+                <List className="mr-2 h-4 w-4" />
+                Все рейсы
+              </DropdownMenuItem>
+              {isOperator && onRenameShipment && (
+                <DropdownMenuItem onClick={() => setRenameOpen(true)}>
+                  <Pencil className="mr-2 h-4 w-4" />
+                  Переименовать
+                </DropdownMenuItem>
+              )}
+              {isOperator && !isReadOnly && (
                 <DropdownMenuItem onClick={() => setConfirmReset(true)}>
                   <RotateCcw className="mr-2 h-4 w-4" />
                   Завершить рейс
+                </DropdownMenuItem>
+              )}
+              {isOperator && isReadOnly && onReopenShipment && (
+                <DropdownMenuItem onClick={() => onReopenShipment()}>
+                  <RotateCcw className="mr-2 h-4 w-4" />
+                  Возобновить рейс
                 </DropdownMenuItem>
               )}
               <DropdownMenuItem onClick={logout}>
@@ -146,6 +182,7 @@ export function AppLayout({
             orders={orders}
             shipmentId={shipmentId}
             isOperator={isOperator}
+            isReadOnly={isReadOnly}
             onCreateOrder={onCreateOrder}
             onUpdateOrder={onUpdateOrder}
             onDeleteOrder={onDeleteOrder}
@@ -166,12 +203,23 @@ export function AppLayout({
         shipmentId={shipmentId}
         boxesPerWall={boxesPerWall}
         isOperator={isOperator}
+        isReadOnly={isReadOnly}
         onCreatePlacement={onCreatePlacement}
         onUpdatePlacement={onUpdatePlacement}
         onDeletePlacement={onDeletePlacement}
         onMarkDone={onMarkDone}
         onUndoDone={onUndoDone}
       />
+
+      {/* Rename shipment dialog */}
+      {onRenameShipment && (
+        <RenameShipmentDialog
+          open={renameOpen}
+          onClose={() => setRenameOpen(false)}
+          currentName={shipmentName ?? ""}
+          onRename={onRenameShipment}
+        />
+      )}
 
       {/* Complete shipment confirmation */}
       <AlertDialog open={confirmReset} onOpenChange={setConfirmReset}>

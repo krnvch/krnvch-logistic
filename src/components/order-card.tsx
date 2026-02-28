@@ -9,6 +9,7 @@ import type { OrderWithStatus } from "@/types";
 interface OrderCardProps {
   data: OrderWithStatus;
   isOperator: boolean;
+  isReadOnly?: boolean;
   onEdit: () => void;
   onDelete: () => void;
   onMarkDone: () => void;
@@ -32,6 +33,7 @@ const statusConfig = {
 export function OrderCard({
   data,
   isOperator,
+  isReadOnly = false,
   onEdit,
   onDelete,
   onMarkDone,
@@ -92,7 +94,7 @@ export function OrderCard({
             )}
           </div>
           <div className="flex items-center gap-1">
-            {isDone ? (
+            {isReadOnly ? null : isDone ? (
               <Button
                 variant="outline"
                 size="sm"
