@@ -36,6 +36,7 @@ Logistics management web application.
 - **CI**: GitHub Actions (`.github/workflows/ci.yml`) runs on every PR and push to `main`: lint → test → build
 - **Deploy**: Vercel auto-deploys from `main` branch
 - All CI checks must pass (green) before merging a PR
+- **Changelog**: After every merge that adds features, changes behavior, or fixes bugs — update `docs/CHANGELOG.md` (Technical Writer agent owns this). Follow semver and [Keep a Changelog](https://keepachangelog.com/) format.
 
 ## Project Structure
 
@@ -64,7 +65,7 @@ src/
 The `team/` folder contains agent role definitions for multi-agent collaboration:
 
 - `team/TEAM.md` — team roster and orchestration overview
-- `team/agents/` — individual agent personas (13 roles)
+- `team/agents/` — individual agent personas (14 roles)
 
 | # | Role | File |
 |---|------|------|
@@ -81,6 +82,7 @@ The `team/` folder contains agent role definitions for multi-agent collaboration
 | 10 | Staff Backend Engineer — API | `team/agents/backend-engineer-1.md` |
 | 11 | Staff Backend Engineer — Infra | `team/agents/backend-engineer-2.md` |
 | 12 | QA Tester | `team/agents/qa-tester.md` |
+| 13 | Technical Writer | `team/agents/technical-writer.md` |
 
 **Requirements triad**: PM + BA + SME collaborate on all discovery and requirements gathering. **Technical authority**: Full-Stack Architect owns all architectural decisions, schema design, and technical direction. The **Project Manager** orchestrates all collaboration. See `team/TEAM.md` for protocols.
 

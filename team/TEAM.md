@@ -17,6 +17,7 @@
 | 10 | **Staff Backend Engineer — API** | `agents/backend-engineer-1.md` | API design, DB schema, filter query engine, business logic |
 | 11 | **Staff Backend Engineer — Infra** | `agents/backend-engineer-2.md` | Performance, caching, monitoring, CI/CD, infrastructure |
 | 12 | **QA Tester** | `agents/qa-tester.md` | Test plans, E2E tests, edge cases, accessibility audits |
+| 13 | **Technical Writer** | `agents/technical-writer.md` | Changelog, release notes, versioning, migration docs |
 
 ## Domain Focus
 
