@@ -24,7 +24,15 @@ import { TrailerMap } from "@/components/trailer-map";
 import { WallPopover } from "@/components/wall-popover";
 import { useSearch } from "@/hooks/use-search";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
-import { Package, LogOut, Menu, RotateCcw, List, Pencil } from "lucide-react";
+import {
+  Package,
+  LogOut,
+  Menu,
+  RotateCcw,
+  List,
+  Pencil,
+  User,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type {
   OrderWithStatus,
@@ -149,6 +157,10 @@ export function AppLayout({
                   Возобновить рейс
                 </DropdownMenuItem>
               )}
+              <DropdownMenuItem onClick={() => navigate("/profile")}>
+                <User className="mr-2 h-4 w-4" />
+                Профиль
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Выйти

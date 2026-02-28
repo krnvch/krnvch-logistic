@@ -3,6 +3,7 @@ import { useAuth } from "@/hooks/use-auth";
 import { LoginForm } from "@/components/login-form";
 import ShipmentsPage from "@/pages/ShipmentsPage";
 import ShipmentDetailPage from "@/pages/ShipmentDetailPage";
+import ProfilePage from "@/pages/ProfilePage";
 import NotFoundPage from "@/pages/NotFoundPage";
 
 export default function App() {
@@ -37,6 +38,15 @@ export default function App() {
       <Route
         path="/shipments/:id"
         element={<ShipmentDetailPage logout={logout} isOperator={isOperator} />}
+      />
+      <Route
+        path="/profile"
+        element={
+          <ProfilePage
+            key={session.user.updated_at}
+            session={session}
+          />
+        }
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
