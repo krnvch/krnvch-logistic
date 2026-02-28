@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -77,10 +77,10 @@ export default function ShipmentsPage({
   const lastShipment = useLastShipment();
 
   // Quick entrance: redirect to last visited shipment (skip if user explicitly navigated here)
-  const [redirectChecked, setRedirectChecked] = useState(false);
+  const redirectChecked = useRef(false);
   useEffect(() => {
-    if (isLoading || redirectChecked) return;
-    setRedirectChecked(true);
+    if (isLoading || redirectChecked.current) return;
+    redirectChecked.current = true;
 
     if (skipRedirect) return;
 
@@ -93,7 +93,7 @@ export default function ShipmentsPage({
     } else {
       lastShipment.clear();
     }
-  }, [isLoading, redirectChecked, skipRedirect, shipments, lastShipment, navigate]);
+  }, [isLoading, skipRedirect, shipments, lastShipment, navigate]);
 
   const shipmentIds = useMemo(
     () => shipments.map((s) => s.id),
