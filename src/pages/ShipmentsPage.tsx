@@ -39,6 +39,7 @@ import {
   Trash2,
   RotateCcw,
   Pencil,
+  User,
 } from "lucide-react";
 import { useShipments } from "@/hooks/use-shipment";
 import { useShipmentProgress } from "@/hooks/use-shipment-progress";
@@ -201,6 +202,10 @@ export default function ShipmentsPage({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => navigate("/profile")}>
+                <User className="mr-2 h-4 w-4" />
+                Профиль
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 Выйти
