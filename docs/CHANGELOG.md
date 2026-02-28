@@ -5,6 +5,23 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [2.1.0] — 2026-02-28
+
+### Profile Settings Page (#4)
+
+Users can now manage their profile without SQL or admin help.
+
+#### Added
+- Profile page (`/profile`) with first name, last name, and role editing
+- Password change section (collapsed by default, with current password verification)
+- "Профиль" menu item in both ShipmentsPage and ShipmentDetailPage dropdowns
+- Password validation utility with 5 unit tests (15 total in project)
+
+#### Changed
+- Role switching is now self-service via the profile page (previously required SQL)
+
+---
+
 ## [2.0.0] — 2026-02-28
 
 ### Rebrand: Tulip Logistic → krnvchLogistic
