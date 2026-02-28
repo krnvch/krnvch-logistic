@@ -1,4 +1,4 @@
-# Tulip Logistic
+# krnvchLogistic
 
 Logistics management web application.
 
@@ -18,7 +18,24 @@ Logistics management web application.
 - `pnpm dev` — start dev server
 - `pnpm build` — typecheck + build (`tsc -b && vite build`)
 - `pnpm lint` — run ESLint
+- `pnpm test` — run unit tests once (Vitest)
+- `pnpm test:watch` — run tests in watch mode
 - `pnpm format` — run Prettier on src/
+
+## Testing
+
+- **Framework**: Vitest (v4)
+- **Test location**: `src/__tests__/`
+- **Existing tests**: `get-order-status.test.ts` — 10 tests for `getOrderStatus()` (done/loaded/pending logic)
+- **Conventions**: `describe` + `it` blocks, `makeOrder()` helper for test fixtures, import from `@/types`
+- Pure functions first — ideal candidates for unit tests (no mocks needed)
+
+## Development Workflow
+
+- **Branching**: feature branches (`feature/task-name`) → PR → merge to `main`
+- **CI**: GitHub Actions (`.github/workflows/ci.yml`) runs on every PR and push to `main`: lint → test → build
+- **Deploy**: Vercel auto-deploys from `main` branch
+- All CI checks must pass (green) before merging a PR
 
 ## Project Structure
 

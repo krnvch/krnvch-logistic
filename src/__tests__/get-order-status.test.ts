@@ -10,7 +10,7 @@ function makeOrder(overrides: Partial<Order> = {}): Order {
     order_number: "001",
     client_name: "Test Client",
     description: null,
-    tulip_count: null,
+    item_count: null,
     box_count: 10,
     pickup_time: null,
     is_done: false,

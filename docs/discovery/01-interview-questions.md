@@ -1,3 +1,5 @@
+> **Historical document** from the original tulip-farm discovery phase. The platform is now goods-agnostic (krnvchLogistic).
+
 # Stakeholder Interview — Question Guide
 
 **Objective**: Fill critical gaps identified in spec analysis. Understand real operations, validate assumptions, and define MVP scope.

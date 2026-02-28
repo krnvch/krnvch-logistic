@@ -1,3 +1,5 @@
+> **Historical document** from the original tulip-farm discovery phase. The platform is now goods-agnostic (krnvchLogistic).
+
 # Product Vision & MVP Scope
 
 **Product**: Tulip Truck Load Map
@@ -197,7 +199,7 @@ Operator clears/resets the shipment
 - `order_number` (text, unique per shipment — e.g., "23")
 - `client_name` (text)
 - `description` (text, optional — notes)
-- `tulip_count` (integer)
+- `item_count` (integer)
 - `box_count` (integer)
 - `pickup_time` (text — e.g., "08:00-09:00")
 - `status` (pending | loaded | done)

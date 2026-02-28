@@ -1,4 +1,4 @@
-# Product Requirements Document — Tulip Truck Load Map
+# Product Requirements Document — krnvchLogistic (Load Map)
 
 **Version**: 1.1
 **Date**: 2026-02-22
@@ -28,7 +28,7 @@
 
 ### Problem
 
-A small family tulip farm delivers ~30-40 wholesale orders (~720 boxes) in one Euro reefer trailer to a wholesale market once a year (around March 1). Today the team uses a hand-drawn paper matrix to track which orders are in which part of the trailer. During unloading, 3-4 workers fight over one paper sheet. Copies go stale because annotations (cross-outs on pickup) happen in real-time.
+A small logistics operation delivers ~30-40 wholesale orders (~720 boxes) in one Euro reefer trailer to a wholesale market. Today the team uses a hand-drawn paper matrix to track which orders are in which part of the trailer. During unloading, 3-4 workers fight over one paper sheet. Copies go stale because annotations (cross-outs on pickup) happen in real-time.
 
 ### Solution
 
@@ -121,7 +121,7 @@ A shipment is a single loading event — one trailer, one day. Only one shipment
 
 **Given** an active shipment exists
 **When** the operator taps "Add Order" in the sidebar
-**Then** a form appears with fields: order number (required), client name (required), description (optional), tulip count (optional), box count (required, integer > 0), pickup time (optional, text e.g. "08:00-09:00")
+**Then** a form appears with fields: order number (required), client name (required), description (optional), item count (optional), box count (required, integer > 0), pickup time (optional, text e.g. "08:00-09:00")
 
 **Given** the operator fills in the form with valid data
 **When** the order number is unique within this shipment
@@ -418,7 +418,7 @@ Order status is **derived at render time**, not stored in the database. Only `is
 #### Header
 - **Search**: shadcn `Input` with `Search` icon (Lucide). Always visible. Full width on mobile, constrained on desktop.
 - **Summary Stats**: 3 inline badges/pills — "N Orders", "N / M Boxes Placed", "N Done". Use shadcn `Badge` variant.
-- **App Title**: "Tulip Load Map" — text, right-aligned or centered.
+- **App Title**: "krnvchLogistic" — text, right-aligned or centered.
 
 #### Trailer Map (custom component)
 - **Wall Cell**: Custom component. Not a shadcn primitive — a styled `div` with:
@@ -440,7 +440,7 @@ Order status is **derived at render time**, not stored in the database. Only `is
   - Status badge: `pending` (default), `loaded` (green), `done` (muted/dimmed)
   - Actions: "Place" button (when pending), "Mark as Done" button (when loaded), "Edit" / "Delete" icons
 - **Add Order Button**: shadcn `Button` at top of sidebar. Opens shadcn `Sheet` (bottom on mobile) or `Dialog` with the order form.
-- **Order Form**: shadcn `Dialog` or `Sheet` with `Input`, `Textarea`, `Button` components. Fields: order number, client name, description, tulip count, box count, pickup time.
+- **Order Form**: shadcn `Dialog` or `Sheet` with `Input`, `Textarea`, `Button` components. Fields: order number, client name, description, item count, box count, pickup time.
 
 #### Placement Popover
 - shadcn `Popover` anchored to the tapped wall cell.
@@ -508,7 +508,7 @@ Explicitly excluded from this version. However, the architecture must be designe
 | 1 | Should "Mark as Done" require confirmation? | Prevents accidental taps, but adds friction | **RESOLVED: Yes** — confirmation dialog required. "Mark order #N as done?" with Confirm/Cancel. |
 | 2 | Should the map show wall numbers on the physical trailer (1 = deepest) or by unloading order (1 = first out, near doors)? | Mental model alignment | 1 = deepest (top of screen). "Wall 30 (doors)" at bottom. Matches the vision doc. |
 | 3 | What happens if a user changes `trailer_walls` or `boxes_per_wall` after placements exist? | Data integrity | Disallow changes while placements exist — must reset first |
-| 4 | Login screen styling — minimal or branded? | First impression | **RESOLVED: Branded** — designer-quality login screen. Centered card with branding (app name, subtle tulip motif or icon, warm color accent), email + password fields, professional feel matching the Dribbble references. First impression matters. |
+| 4 | Login screen styling — minimal or branded? | First impression | **RESOLVED: Branded** — designer-quality login screen. Centered card with branding (app name, package icon, warm color accent), email + password fields, professional feel matching the Dribbble references. First impression matters. |
 
 ---
 

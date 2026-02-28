@@ -100,9 +100,7 @@ export function WallPopover({
         wall_number: wall.wall_number,
         box_count: count,
       });
-      toast.success(
-        `Размещено ${count} коробок на стене ${wall.wall_number}`
-      );
+      toast.success(`Размещено ${count} коробок на стене ${wall.wall_number}`);
       setSelectedOrderId("");
       setBoxCount("");
     } catch {
@@ -160,7 +158,7 @@ export function WallPopover({
         <DialogHeader>
           <DialogTitle>
             Стена {wall.wall_number}
-            <span className="ml-2 text-sm font-normal text-muted-foreground">
+            <span className="text-muted-foreground ml-2 text-sm font-normal">
               {wall.total_boxes} / {boxesPerWall} коробок
             </span>
           </DialogTitle>
@@ -186,9 +184,9 @@ export function WallPopover({
                         type="number"
                         min={1}
                         value={editBoxCount}
-                        onChange={(
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ) => setEditBoxCount(e.target.value)}
+                        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                          setEditBoxCount(e.target.value)
+                        }
                         className="h-8 w-20"
                       />
                       <Button
@@ -252,7 +250,7 @@ export function WallPopover({
                               <Button
                                 size="icon"
                                 variant="ghost"
-                                className="h-7 w-7 text-destructive"
+                                className="text-destructive h-7 w-7"
                                 onClick={() => handleDelete(pw.placement.id)}
                               >
                                 <Trash2 className="h-3 w-3" />
@@ -270,56 +268,59 @@ export function WallPopover({
         )}
 
         {/* Add new placement (operator only) */}
-        {isOperator && !isReadOnly && !wall.is_full && availableOrders.length > 0 && (
-          <>
-            {wall.placements.length > 0 && <Separator />}
-            <div className="grid gap-3">
-              <Label>Добавить заказ</Label>
-              <select
-                value={selectedOrderId}
-                onChange={(e) => {
-                  setSelectedOrderId(e.target.value);
-                  setBoxCount("");
-                }}
-                className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors"
-              >
-                <option value="">Выберите заказ...</option>
-                {availableOrders.map((o) => (
-                  <option key={o.order.id} value={o.order.id}>
-                    #{o.order.order_number} — {o.order.client_name} (
-                    {o.remaining_boxes} ост.)
-                  </option>
-                ))}
-              </select>
-              {selectedOrderId && (
-                <div className="flex gap-2">
-                  <Input
-                    type="number"
-                    min={1}
-                    max={maxBoxes()}
-                    placeholder={`До ${maxBoxes()}`}
-                    value={boxCount}
-                    onChange={(
-                      e: React.ChangeEvent<HTMLInputElement>
-                    ) => setBoxCount(e.target.value)}
-                    className="h-9"
-                  />
-                  <Button
-                    onClick={handleAdd}
-                    disabled={submitting}
-                    className="shrink-0"
-                  >
-                    {submitting ? "..." : "Добавить"}
-                  </Button>
-                </div>
-              )}
-            </div>
-          </>
-        )}
+        {isOperator &&
+          !isReadOnly &&
+          !wall.is_full &&
+          availableOrders.length > 0 && (
+            <>
+              {wall.placements.length > 0 && <Separator />}
+              <div className="grid gap-3">
+                <Label>Добавить заказ</Label>
+                <select
+                  value={selectedOrderId}
+                  onChange={(e) => {
+                    setSelectedOrderId(e.target.value);
+                    setBoxCount("");
+                  }}
+                  className="border-input flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors"
+                >
+                  <option value="">Выберите заказ...</option>
+                  {availableOrders.map((o) => (
+                    <option key={o.order.id} value={o.order.id}>
+                      #{o.order.order_number} — {o.order.client_name} (
+                      {o.remaining_boxes} ост.)
+                    </option>
+                  ))}
+                </select>
+                {selectedOrderId && (
+                  <div className="flex gap-2">
+                    <Input
+                      type="number"
+                      min={1}
+                      max={maxBoxes()}
+                      placeholder={`До ${maxBoxes()}`}
+                      value={boxCount}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        setBoxCount(e.target.value)
+                      }
+                      className="h-9"
+                    />
+                    <Button
+                      onClick={handleAdd}
+                      disabled={submitting}
+                      className="shrink-0"
+                    >
+                      {submitting ? "..." : "Добавить"}
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
 
         {/* Full wall message */}
         {wall.is_full && (
-          <p className="text-center text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-center text-sm">
             Стена заполнена
           </p>
         )}
@@ -328,7 +329,7 @@ export function WallPopover({
         {!wall.is_full &&
           availableOrders.length === 0 &&
           wall.placements.length === 0 && (
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-center text-sm">
               Нет заказов для размещения
             </p>
           )}

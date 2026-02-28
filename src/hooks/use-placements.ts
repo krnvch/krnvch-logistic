@@ -91,10 +91,7 @@ export function usePlacements(shipmentId: string | undefined) {
 
   const deleteMutation = useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
-        .from("placements")
-        .delete()
-        .eq("id", id);
+      const { error } = await supabase.from("placements").delete().eq("id", id);
       if (error) throw error;
     },
     onMutate: async (id) => {

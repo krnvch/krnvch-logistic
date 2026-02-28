@@ -1,4 +1,4 @@
-# System Architecture — Tulip Truck Load Map
+# System Architecture — krnvchLogistic (Load Map)
 
 **Version**: 1.0
 **Date**: 2026-02-22
@@ -83,7 +83,7 @@ CREATE TABLE orders (
   order_number TEXT NOT NULL,
   client_name TEXT NOT NULL,
   description TEXT,
-  tulip_count INTEGER,
+  item_count INTEGER,
   box_count INTEGER NOT NULL CHECK (box_count > 0),
   pickup_time TEXT,
   is_done BOOLEAN NOT NULL DEFAULT false,

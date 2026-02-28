@@ -22,8 +22,13 @@ export default function ShipmentDetailPage({
   const navigate = useNavigate();
   const lastShipment = useLastShipment();
 
-  const { shipment, isLoading, completeShipment, reopenShipment, renameShipment } =
-    useShipment(id);
+  const {
+    shipment,
+    isLoading,
+    completeShipment,
+    reopenShipment,
+    renameShipment,
+  } = useShipment(id);
   const { orders, createOrder, updateOrder, deleteOrder } = useOrders(id);
   const { placements, createPlacement, updatePlacement, deletePlacement } =
     usePlacements(id);
@@ -98,7 +103,7 @@ export default function ShipmentDetailPage({
   if (isLoading) {
     return (
       <div className="flex min-h-dvh items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
       </div>
     );
   }

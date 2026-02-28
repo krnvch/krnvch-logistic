@@ -14,9 +14,7 @@ export function useSearch({ orders, walls }: UseSearchParams) {
   const [highlightedWalls, setHighlightedWalls] = useState<Set<number>>(
     new Set()
   );
-  const [animatingWalls, setAnimatingWalls] = useState<Set<number>>(
-    new Set()
-  );
+  const [animatingWalls, setAnimatingWalls] = useState<Set<number>>(new Set());
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const executeSearch = useCallback(

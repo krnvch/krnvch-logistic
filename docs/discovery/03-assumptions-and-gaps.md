@@ -1,3 +1,5 @@
+> **Historical document** from the original tulip-farm discovery phase. The platform is now goods-agnostic (krnvchLogistic).
+
 # Assumptions & Gaps Register
 
 Each item is either an **assumption** (something we believe is true but haven't confirmed) or a **gap** (something we don't know at all). All must be resolved before finalizing requirements.

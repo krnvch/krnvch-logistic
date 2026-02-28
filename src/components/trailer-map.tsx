@@ -25,7 +25,7 @@ export function TrailerMap({
     <ScrollArea className="h-full">
       <div className="mx-auto flex w-full max-w-lg flex-col gap-1.5 p-4">
         {/* Cab label */}
-        <div className="mb-1 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="text-muted-foreground mb-1 text-center text-xs font-medium tracking-wider uppercase">
           Кабина (дальняя стенка)
         </div>
 
@@ -44,7 +44,7 @@ export function TrailerMap({
         ))}
 
         {/* Doors label */}
-        <div className="mt-1 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
+        <div className="text-muted-foreground mt-1 text-center text-xs font-medium tracking-wider uppercase">
           Двери
         </div>
       </div>

@@ -100,7 +100,7 @@ export function OrderSidebar({
         <ScrollArea className="flex-1">
           <div className="grid gap-2 p-3">
             {orders.length === 0 ? (
-              <div className="py-12 text-center text-sm text-muted-foreground">
+              <div className="text-muted-foreground py-12 text-center text-sm">
                 Нет заказов. Добавьте первый заказ.
               </div>
             ) : (
@@ -171,8 +171,8 @@ export function OrderSidebar({
           <AlertDialogHeader>
             <AlertDialogTitle>Отметить как готово?</AlertDialogTitle>
             <AlertDialogDescription>
-              Заказ #{doneOrder?.order.order_number} ({doneOrder?.order.client_name}) будет
-              отмечен как выданный.
+              Заказ #{doneOrder?.order.order_number} (
+              {doneOrder?.order.client_name}) будет отмечен как выданный.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

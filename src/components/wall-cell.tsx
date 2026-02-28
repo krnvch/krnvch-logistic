@@ -39,14 +39,14 @@ export function WallCell({
       onAnimationEnd={animating ? onAnimationEnd : undefined}
       className={`flex min-h-16 w-full items-center gap-2 rounded-lg border px-3 py-2 text-left transition-colors ${
         isEmpty
-          ? "border-dashed border-muted-foreground/30 bg-muted/40 hover:bg-muted/60"
+          ? "border-muted-foreground/30 bg-muted/40 hover:bg-muted/60 border-dashed"
           : isFull
             ? "border-success/30 bg-card shadow-sm"
-            : "border-border bg-card shadow-sm hover:bg-accent/50"
-      } ${animating ? "wall-highlight" : ""} ${highlighted && !animating ? "ring-2 ring-primary" : ""}`}
+            : "border-border bg-card hover:bg-accent/50 shadow-sm"
+      } ${animating ? "wall-highlight" : ""} ${highlighted && !animating ? "ring-primary ring-2" : ""}`}
     >
       {/* Wall number */}
-      <span className="w-6 shrink-0 text-center text-xs font-medium text-muted-foreground">
+      <span className="text-muted-foreground w-6 shrink-0 text-center text-xs font-medium">
         {wall.wall_number}
       </span>
 
@@ -58,7 +58,7 @@ export function WallCell({
             <Badge
               key={pw.placement.id}
               variant="secondary"
-              className={`text-xs ${isDone ? "opacity-50 line-through" : ""}`}
+              className={`text-xs ${isDone ? "line-through opacity-50" : ""}`}
             >
               #{pw.order.order_number} ({pw.placement.box_count})
             </Badge>
@@ -67,7 +67,7 @@ export function WallCell({
       </div>
 
       {/* Box count */}
-      <span className="shrink-0 text-xs text-muted-foreground">
+      <span className="text-muted-foreground shrink-0 text-xs">
         {wall.total_boxes} / {boxesPerWall}
       </span>
     </button>

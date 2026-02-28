@@ -9,13 +9,16 @@ export type Order = Database["public"]["Tables"]["orders"]["Row"];
 export type Placement = Database["public"]["Tables"]["placements"]["Row"];
 
 // --- Insert types ---
-export type ShipmentInsert = Database["public"]["Tables"]["shipments"]["Insert"];
+export type ShipmentInsert =
+  Database["public"]["Tables"]["shipments"]["Insert"];
 export type OrderInsert = Database["public"]["Tables"]["orders"]["Insert"];
-export type PlacementInsert = Database["public"]["Tables"]["placements"]["Insert"];
+export type PlacementInsert =
+  Database["public"]["Tables"]["placements"]["Insert"];
 
 // --- Update types ---
 export type OrderUpdate = Database["public"]["Tables"]["orders"]["Update"];
-export type PlacementUpdate = Database["public"]["Tables"]["placements"]["Update"];
+export type PlacementUpdate =
+  Database["public"]["Tables"]["placements"]["Update"];
 
 // --- Computed status (not stored in DB) ---
 export type OrderDisplayStatus = "pending" | "loaded" | "done";

@@ -57,7 +57,7 @@ export function OrderCard({
   return (
     <Card
       ref={ref}
-      className={`cursor-pointer transition-shadow ${isDone ? "opacity-50" : ""} ${highlighted ? "ring-2 ring-primary" : ""}`}
+      className={`cursor-pointer transition-shadow ${isDone ? "opacity-50" : ""} ${highlighted ? "ring-primary ring-2" : ""}`}
       onClick={onTap}
     >
       <CardContent className="grid gap-2.5 p-4">
@@ -74,7 +74,7 @@ export function OrderCard({
 
         {/* Progress bar */}
         <div className="grid gap-1">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex items-center justify-between text-xs">
             <span>
               {placed_boxes} / {order.box_count} коробок
             </span>
@@ -85,7 +85,7 @@ export function OrderCard({
 
         {/* Actions row */}
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex items-center gap-1 text-xs">
             {order.pickup_time && (
               <>
                 <Clock className="h-3 w-3" />
@@ -137,7 +137,7 @@ export function OrderCard({
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-destructive"
+                      className="text-destructive h-8 w-8"
                       onClick={(e) => {
                         e.stopPropagation();
                         onDelete();

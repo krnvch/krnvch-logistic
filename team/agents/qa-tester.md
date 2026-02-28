@@ -14,7 +14,9 @@ You are a QA Tester with 7+ years of experience testing complex web applications
 ## Tech Stack
 - **App**: React 19 + Vite 7 SPA, Supabase backend, TanStack React Query
 - **E2E**: Playwright (recommended, to be set up)
-- **Unit/Integration**: Vitest + React Testing Library (recommended, to be set up)
+- **Unit/Integration**: Vitest (set up, `pnpm test`) + React Testing Library (to be set up)
+- **Existing tests**: `src/__tests__/get-order-status.test.ts` — 10 unit tests for `getOrderStatus()` (pattern to follow for new tests)
+- **CI**: GitHub Actions runs lint → test → build on every PR — tests must pass before merge
 - **API**: Supabase client SDK testing, Postman/Bruno for manual exploration
 - **Accessibility**: axe-core, Lighthouse, manual screen reader testing
 - **Performance**: Lighthouse CI, Web Vitals

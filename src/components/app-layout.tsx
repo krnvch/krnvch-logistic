@@ -24,7 +24,7 @@ import { TrailerMap } from "@/components/trailer-map";
 import { WallPopover } from "@/components/wall-popover";
 import { useSearch } from "@/hooks/use-search";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
-import { Flower2, LogOut, Menu, RotateCcw, List, Pencil } from "lucide-react";
+import { Package, LogOut, Menu, RotateCcw, List, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type {
   OrderWithStatus,
@@ -96,9 +96,9 @@ export function AppLayout({
       {/* Header */}
       <header className="flex shrink-0 items-center gap-3 border-b px-3 py-2 md:px-4">
         <div className="flex items-center gap-2">
-          <Flower2 className="h-5 w-5 shrink-0" />
+          <Package className="h-5 w-5 shrink-0" />
           <h1 className="text-lg font-semibold max-sm:hidden">
-            {shipmentName ?? "Tulip"}
+            {shipmentName ?? "krnvch"}
           </h1>
           {isReadOnly && (
             <Badge variant="secondary" className="text-xs">
@@ -125,7 +125,9 @@ export function AppLayout({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => navigate("/", { state: { skipRedirect: true } })}>
+              <DropdownMenuItem
+                onClick={() => navigate("/", { state: { skipRedirect: true } })}
+              >
                 <List className="mr-2 h-4 w-4" />
                 Все рейсы
               </DropdownMenuItem>
@@ -164,7 +166,7 @@ export function AppLayout({
       {/* Main content: map + sidebar */}
       <div className="flex flex-1 overflow-hidden max-md:flex-col">
         {/* Map area */}
-        <main className="flex-1 overflow-hidden bg-muted/30 max-md:min-h-0">
+        <main className="bg-muted/30 flex-1 overflow-hidden max-md:min-h-0">
           <TrailerMap
             walls={walls}
             boxesPerWall={boxesPerWall}
@@ -177,7 +179,7 @@ export function AppLayout({
         </main>
 
         {/* Sidebar */}
-        <aside className="w-full border-l bg-background max-md:h-[45%] max-md:shrink-0 max-md:border-l-0 max-md:border-t md:w-80 lg:w-96">
+        <aside className="bg-background w-full border-l max-md:h-[45%] max-md:shrink-0 max-md:border-t max-md:border-l-0 md:w-80 lg:w-96">
           <OrderSidebar
             orders={orders}
             shipmentId={shipmentId}
