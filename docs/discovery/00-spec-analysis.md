@@ -1,6 +1,8 @@
+> **Historical document** from the original tulip-farm discovery phase. The platform is now goods-agnostic (krnvchLogistic).
+
 # Spec Analysis — Multi-Agent Review
 
-**Source**: `tulip-truck-load-map-spec.md` (ChatGPT initial discovery)
+**Source**: `load-map-spec.md` (ChatGPT initial discovery)
 **Date**: 2026-02-21
 **Status**: Initial analysis, pending stakeholder interview
 

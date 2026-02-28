@@ -1,3 +1,5 @@
+> **Historical document** from the original tulip-farm discovery phase. The platform is now goods-agnostic (krnvchLogistic).
+
 # Tulip Truck Load Map — Discovery + Research + Solution Ideation (Agent Brief)
 
 ## 0) Context (keep this intact)

@@ -17,11 +17,11 @@ export function SearchInput({
 }: SearchInputProps) {
   return (
     <div className="relative">
-      <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+      <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
       <Input
         type="search"
         placeholder="Поиск заказа..."
-        className="h-9 w-40 pl-9 pr-8 lg:w-56"
+        className="h-9 w-40 pr-8 pl-9 lg:w-56"
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           onChange(e.target.value)
@@ -31,14 +31,14 @@ export function SearchInput({
         <Button
           variant="ghost"
           size="icon"
-          className="absolute right-0.5 top-0.5 h-8 w-8"
+          className="absolute top-0.5 right-0.5 h-8 w-8"
           onClick={onClear}
         >
           <X className="h-3.5 w-3.5" />
         </Button>
       )}
       {noResults && (
-        <p className="absolute left-0 top-full z-10 mt-1 rounded-md border bg-popover px-3 py-1.5 text-xs text-muted-foreground shadow-md">
+        <p className="bg-popover text-muted-foreground absolute top-full left-0 z-10 mt-1 rounded-md border px-3 py-1.5 text-xs shadow-md">
           Ничего не найдено
         </p>
       )}

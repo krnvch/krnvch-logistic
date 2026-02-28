@@ -11,7 +11,7 @@ export default function App() {
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
       </div>
     );
   }
@@ -36,9 +36,7 @@ export default function App() {
       />
       <Route
         path="/shipments/:id"
-        element={
-          <ShipmentDetailPage logout={logout} isOperator={isOperator} />
-        }
+        element={<ShipmentDetailPage logout={logout} isOperator={isOperator} />}
       />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

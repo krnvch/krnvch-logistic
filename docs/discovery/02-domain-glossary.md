@@ -1,3 +1,5 @@
+> **Historical document** from the original tulip-farm discovery phase. The platform is now goods-agnostic (krnvchLogistic).
+
 # Domain Glossary
 
 All team members must use these terms consistently. Updated as discovery progresses.

@@ -14,7 +14,9 @@ import type { Order, OrderInsert, OrderUpdate } from "@/types";
 interface OrderFormProps {
   open: boolean;
   onClose: () => void;
-  onSubmit: (data: OrderInsert | (OrderUpdate & { id: string })) => Promise<unknown>;
+  onSubmit: (
+    data: OrderInsert | (OrderUpdate & { id: string })
+  ) => Promise<unknown>;
   shipmentId: string;
   editOrder?: Order | null;
   existingNumbers?: string[];
@@ -33,7 +35,7 @@ export function OrderForm({
   const [orderNumber, setOrderNumber] = useState("");
   const [clientName, setClientName] = useState("");
   const [description, setDescription] = useState("");
-  const [tulipCount, setTulipCount] = useState("");
+  const [itemCount, setItemCount] = useState("");
   const [boxCount, setBoxCount] = useState("");
   const [pickupTime, setPickupTime] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -45,14 +47,14 @@ export function OrderForm({
       setOrderNumber(editOrder.order_number);
       setClientName(editOrder.client_name);
       setDescription(editOrder.description ?? "");
-      setTulipCount(editOrder.tulip_count?.toString() ?? "");
+      setItemCount(editOrder.item_count?.toString() ?? "");
       setBoxCount(editOrder.box_count.toString());
       setPickupTime(editOrder.pickup_time ?? "");
     } else if (open) {
       setOrderNumber("");
       setClientName("");
       setDescription("");
-      setTulipCount("");
+      setItemCount("");
       setBoxCount("");
       setPickupTime("");
     }
@@ -90,7 +92,7 @@ export function OrderForm({
           order_number: orderNumber.trim(),
           client_name: clientName.trim(),
           description: description.trim() || null,
-          tulip_count: tulipCount ? parseInt(tulipCount, 10) : null,
+          item_count: itemCount ? parseInt(itemCount, 10) : null,
           box_count: boxes,
           pickup_time: pickupTime.trim() || null,
         });
@@ -101,7 +103,7 @@ export function OrderForm({
           order_number: orderNumber.trim(),
           client_name: clientName.trim(),
           description: description.trim() || null,
-          tulip_count: tulipCount ? parseInt(tulipCount, 10) : null,
+          item_count: itemCount ? parseInt(itemCount, 10) : null,
           box_count: boxes,
           pickup_time: pickupTime.trim() || null,
         });
@@ -168,7 +170,7 @@ export function OrderForm({
             <Label htmlFor="description">Описание</Label>
             <Input
               id="description"
-              placeholder="Тюльпаны красные, микс"
+              placeholder="Описание товара"
               value={description}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setDescription(e.target.value)
@@ -177,15 +179,15 @@ export function OrderForm({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-2">
-              <Label htmlFor="tulip-count">Тюльпанов</Label>
+              <Label htmlFor="item-count">Количество</Label>
               <Input
-                id="tulip-count"
+                id="item-count"
                 type="number"
                 min={0}
                 placeholder="1000"
-                value={tulipCount}
+                value={itemCount}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setTulipCount(e.target.value)
+                  setItemCount(e.target.value)
                 }
               />
             </div>

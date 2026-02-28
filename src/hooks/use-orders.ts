@@ -46,7 +46,7 @@ export function useOrders(shipmentId: string | undefined) {
           is_done: false,
           done_at: null,
           description: null,
-          tulip_count: null,
+          item_count: null,
           pickup_time: null,
           ...newOrder,
         } as Order,

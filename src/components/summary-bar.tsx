@@ -12,7 +12,7 @@ export function SummaryBar({ orders }: SummaryBarProps) {
   const doneCount = orders.filter((o) => o.status === "done").length;
 
   return (
-    <div className="flex items-center gap-3 text-xs text-muted-foreground sm:gap-4 sm:text-sm">
+    <div className="text-muted-foreground flex items-center gap-3 text-xs sm:gap-4 sm:text-sm">
       <div className="flex items-center gap-1.5">
         <Package className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         <span>{totalOrders}</span>

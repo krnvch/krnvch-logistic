@@ -9,10 +9,13 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Flower2 } from "lucide-react";
+import { Package } from "lucide-react";
 
 interface LoginFormProps {
-  onLogin: (email: string, password: string) => Promise<{ error: Error | null }>;
+  onLogin: (
+    email: string,
+    password: string
+  ) => Promise<{ error: Error | null }>;
 }
 
 export function LoginForm({ onLogin }: LoginFormProps) {
@@ -35,13 +38,13 @@ export function LoginForm({ onLogin }: LoginFormProps) {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background p-4">
+    <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full bg-primary">
-            <Flower2 className="h-6 w-6 text-primary-foreground" />
+          <div className="bg-primary mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full">
+            <Package className="text-primary-foreground h-6 w-6" />
           </div>
-          <CardTitle className="text-2xl">Tulip Logistic</CardTitle>
+          <CardTitle className="text-2xl">krnvchLogistic</CardTitle>
           <CardDescription>Войдите для управления загрузкой</CardDescription>
         </CardHeader>
         <CardContent>
@@ -51,9 +54,11 @@ export function LoginForm({ onLogin }: LoginFormProps) {
               <Input
                 id="email"
                 type="email"
-                placeholder="operator@tulip.app"
+                placeholder="operator@krnvch.app"
                 value={email}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setEmail(e.target.value)
+                }
                 required
               />
             </div>
@@ -63,13 +68,13 @@ export function LoginForm({ onLogin }: LoginFormProps) {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setPassword(e.target.value)
+                }
                 required
               />
             </div>
-            {error && (
-              <p className="text-sm text-destructive">{error}</p>
-            )}
+            {error && <p className="text-destructive text-sm">{error}</p>}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading ? "Вход..." : "Войти"}
             </Button>

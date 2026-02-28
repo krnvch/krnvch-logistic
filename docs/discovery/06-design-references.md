@@ -1,3 +1,5 @@
+> **Historical document** from the original tulip-farm discovery phase. The platform is now goods-agnostic (krnvchLogistic).
+
 # Design References & UX Insights
 
 **Source**: Stakeholder-provided references + team analysis

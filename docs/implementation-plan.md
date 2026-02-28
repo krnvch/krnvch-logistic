@@ -1,4 +1,4 @@
-# Implementation Plan — Tulip Truck Load Map
+# Implementation Plan — krnvchLogistic (Load Map)
 
 **Version**: 1.0
 **Date**: 2026-02-22
@@ -96,7 +96,7 @@ User can log in, see the branded login screen, create a shipment, and see the em
 
 - [ ] **2.2** Order form component
   - `order-form.tsx`: shadcn `Dialog` (desktop) / `Sheet` (mobile)
-  - Fields: order number (required), client name (required), description, tulip count, box count (required), pickup time
+  - Fields: order number (required), client name (required), description, item count, box count (required), pickup time
   - Validation: order number unique, box count > 0, box count ≥ already-placed (on edit)
   - Used for both create and edit (pre-filled on edit)
 

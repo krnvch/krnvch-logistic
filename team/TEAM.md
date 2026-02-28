@@ -1,4 +1,4 @@
-# tulip-logistic — Team
+# krnvch-logistic — Team
 
 ## Team Structure
 
@@ -144,13 +144,19 @@ Product Designer creates specs
 ### Phase 4: Implementation
 ```
 Architect defines module boundaries, hook contracts, and data flow before coding starts
+  → Engineers create feature branch (feature/task-name) from main
   → Frontend Engineers build (UI + Data in parallel)
   → Backend Engineers build API + infra
+  → Engineers write unit tests for new logic (Vitest, src/__tests__/)
   → Architect reviews schema migrations, critical paths, and architectural compliance
   → Designers review implementation vs spec
   → QA writes and executes tests alongside development
-  → Project Manager tracks progress and unblocks
+  → Push branch → open Pull Request
+  → CI automatically runs: lint → test → build (GitHub Actions)
   → Code review: cross-review between engineers + Architect review for critical paths
+  → All CI checks green + review approved → merge to main
+  → Vercel auto-deploys from main
+  → Project Manager tracks progress and unblocks
 ```
 
 ### Phase 5: Quality

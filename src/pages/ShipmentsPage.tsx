@@ -29,7 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import {
-  Flower2,
+  Package,
   Plus,
   Search,
   ArrowUpDown,
@@ -73,7 +73,8 @@ export default function ShipmentsPage({
   useRealtimeShipments();
 
   const location = useLocation();
-  const skipRedirect = (location.state as { skipRedirect?: boolean })?.skipRedirect === true;
+  const skipRedirect =
+    (location.state as { skipRedirect?: boolean })?.skipRedirect === true;
   const lastShipment = useLastShipment();
 
   // Quick entrance: redirect to last visited shipment (skip if user explicitly navigated here)
@@ -95,10 +96,7 @@ export default function ShipmentsPage({
     }
   }, [isLoading, skipRedirect, shipments, lastShipment, navigate]);
 
-  const shipmentIds = useMemo(
-    () => shipments.map((s) => s.id),
-    [shipments]
-  );
+  const shipmentIds = useMemo(() => shipments.map((s) => s.id), [shipments]);
   const { data: progressMap } = useShipmentProgress(shipmentIds);
 
   const [filter, setFilter] = useState<ShipmentFilter>("all");
@@ -119,7 +117,8 @@ export default function ShipmentsPage({
   const filtered = useMemo(() => {
     let result = shipments;
 
-    if (filter === "active") result = result.filter((s) => s.status === "active");
+    if (filter === "active")
+      result = result.filter((s) => s.status === "active");
     if (filter === "completed")
       result = result.filter((s) => s.status === "completed");
 
@@ -175,7 +174,7 @@ export default function ShipmentsPage({
   if (isLoading) {
     return (
       <div className="flex min-h-dvh items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <div className="border-primary h-8 w-8 animate-spin rounded-full border-4 border-t-transparent" />
       </div>
     );
   }
@@ -185,8 +184,8 @@ export default function ShipmentsPage({
       {/* Header */}
       <header className="flex shrink-0 items-center gap-3 border-b px-4 py-3">
         <div className="flex items-center gap-2">
-          <Flower2 className="h-5 w-5 shrink-0" />
-          <h1 className="text-lg font-semibold">Tulip</h1>
+          <Package className="h-5 w-5 shrink-0" />
+          <h1 className="text-lg font-semibold">krnvch</h1>
         </div>
         <div className="ml-auto flex items-center gap-2">
           {isOperator && (
@@ -236,7 +235,7 @@ export default function ShipmentsPage({
             />
           </div>
           <div className="relative ml-auto w-full sm:w-64">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
             <Input
               placeholder="Поиск по названию..."
               value={search}
@@ -250,7 +249,7 @@ export default function ShipmentsPage({
 
         {/* Table */}
         {filtered.length === 0 ? (
-          <div className="py-12 text-center text-sm text-muted-foreground">
+          <div className="text-muted-foreground py-12 text-center text-sm">
             {shipments.length === 0
               ? "Нет рейсов. Создайте первый рейс."
               : "Ничего не найдено."}
@@ -293,9 +292,7 @@ export default function ShipmentsPage({
                       onClick={() => toggleSort("created_by")}
                     />
                   </TableHead>
-                  {isOperator && (
-                    <TableHead className="w-[50px]" />
-                  )}
+                  {isOperator && <TableHead className="w-[50px]" />}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -328,20 +325,20 @@ export default function ShipmentsPage({
                         {progress && progress.totalOrders > 0 ? (
                           <div className="flex items-center gap-2">
                             <Progress value={pct} className="h-2 flex-1" />
-                            <span className="w-8 text-right text-xs text-muted-foreground">
+                            <span className="text-muted-foreground w-8 text-right text-xs">
                               {pct}%
                             </span>
                           </div>
                         ) : (
-                          <span className="text-xs text-muted-foreground">
+                          <span className="text-muted-foreground text-xs">
                             —
                           </span>
                         )}
                       </TableCell>
-                      <TableCell className="text-sm text-muted-foreground">
+                      <TableCell className="text-muted-foreground text-sm">
                         {new Date(s.created_at).toLocaleDateString("ru")}
                       </TableCell>
-                      <TableCell className="text-sm text-muted-foreground max-sm:hidden">
+                      <TableCell className="text-muted-foreground text-sm max-sm:hidden">
                         {s.created_by ?? "—"}
                       </TableCell>
                       {isOperator && (
@@ -351,7 +348,11 @@ export default function ShipmentsPage({
                               asChild
                               onClick={(e) => e.stopPropagation()}
                             >
-                              <Button variant="ghost" size="icon" className="h-8 w-8">
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                className="h-8 w-8"
+                              >
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>
                             </DropdownMenuTrigger>
@@ -494,7 +495,7 @@ function SortButton({
         className={`h-3 w-3 ${active ? "text-foreground" : "text-muted-foreground/50"}`}
       />
       {active && (
-        <span className="text-[10px] text-muted-foreground">
+        <span className="text-muted-foreground text-[10px]">
           {direction === "asc" ? "↑" : "↓"}
         </span>
       )}
