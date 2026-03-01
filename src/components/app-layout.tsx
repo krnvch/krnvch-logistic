@@ -4,8 +4,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeSubmenu } from "@/components/theme-submenu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -157,6 +159,9 @@ export function AppLayout({
                   Возобновить рейс
                 </DropdownMenuItem>
               )}
+              <DropdownMenuSeparator />
+              <ThemeSubmenu />
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate("/profile")}>
                 <User className="mr-2 h-4 w-4" />
                 Профиль

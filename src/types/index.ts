@@ -3,6 +3,9 @@ import type { Database } from "./database";
 // --- User roles (UI-level only) ---
 export type UserRole = "operator" | "worker";
 
+// --- Theme preference ---
+export type Theme = "light" | "dark" | "system";
+
 // --- Row types (shorthand aliases) ---
 export type Shipment = Database["public"]["Tables"]["shipments"]["Row"];
 export type Order = Database["public"]["Tables"]["orders"]["Row"];

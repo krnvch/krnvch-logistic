@@ -2,7 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
-import { X, ChevronDown, ChevronUp } from "lucide-react";
+import { useTheme } from "next-themes";
+import { X, ChevronDown, ChevronUp, Sun, Moon, Monitor } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +22,7 @@ import {
 } from "@/components/ui/select";
 import { useProfile } from "@/hooks/use-profile";
 import { validatePasswordChange } from "@/lib/validate-password";
-import type { UserRole } from "@/types";
+import type { UserRole, Theme } from "@/types";
 
 interface ProfilePageProps {
   session: Session;
@@ -29,6 +30,7 @@ interface ProfilePageProps {
 
 export default function ProfilePage({ session }: ProfilePageProps) {
   const navigate = useNavigate();
+  const { theme, setTheme } = useTheme();
   const { updateProfile, changePassword, saving, changingPassword } =
     useProfile();
 
@@ -165,6 +167,34 @@ export default function ProfilePage({ session }: ProfilePageProps) {
               <Button onClick={handleSaveProfile} disabled={saving}>
                 {saving ? "Сохранение..." : "Сохранить"}
               </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Appearance card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>Оформление</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-2">
+              {(
+                [
+                  { value: "light", label: "Светлая", icon: Sun },
+                  { value: "dark", label: "Тёмная", icon: Moon },
+                  { value: "system", label: "Системная", icon: Monitor },
+                ] as const
+              ).map(({ value, label, icon: Icon }) => (
+                <Button
+                  key={value}
+                  variant={theme === value ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setTheme(value as Theme)}
+                >
+                  <Icon className="mr-1.5 h-4 w-4" />
+                  {label}
+                </Button>
+              ))}
             </div>
           </CardContent>
         </Card>
