@@ -26,8 +26,10 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ThemeSubmenu } from "@/components/theme-submenu";
 import {
   Package,
   Plus,
@@ -202,6 +204,8 @@ export default function ShipmentsPage({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              <ThemeSubmenu />
+              <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate("/profile")}>
                 <User className="mr-2 h-4 w-4" />
                 Профиль

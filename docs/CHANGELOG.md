@@ -5,6 +5,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [2.2.0] — 2026-03-01
+
+### Dark Theme
+
+Users can now switch between Light, Dark, and System themes.
+
+#### Added
+- Theme toggle in burger dropdown menus (both ShipmentsPage and ShipmentDetailPage) via nested submenu with radio selection
+- "Оформление" card on Profile page with 3 theme buttons (Светлая / Тёмная / Системная)
+- `useThemeSync` hook — syncs theme preference to Supabase `raw_user_meta_data.theme` for cross-device persistence
+- `ThemeSubmenu` reusable component for dropdown menus
+- `Theme` type (`"light" | "dark" | "system"`) in shared types
+- PRD document (`docs/prd-dark-theme.md`)
+
+#### Technical Details
+- Powered by `next-themes` (already in dependencies) — handles `.dark` class toggle, localStorage, system preference detection, and flash prevention
+- CSS was already ready: `index.css` has full `:root` (light) and `.dark` (dark) token sets
+- localStorage is primary storage (instant, no flash); Supabase sync is background (cross-device only)
+- Login page respects theme from localStorage / system preference
+- Toast notifications automatically follow theme via CSS variables
+
+---
+
 ## [2.1.0] — 2026-02-28
 
 ### Profile Settings Page (#4)
