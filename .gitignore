@@ -28,5 +28,6 @@ dist-ssr
 *.sln
 *.sw?
 .vercel
-.claude/
+.claude/*
+!.claude/skills/
 .obsidian/
