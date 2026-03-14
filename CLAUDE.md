@@ -65,7 +65,7 @@ src/
 The `team/` folder contains agent role definitions for multi-agent collaboration:
 
 - `team/TEAM.md` — team roster and orchestration overview
-- `team/agents/` — individual agent personas (14 roles)
+- `team/agents/` — individual agent personas (15 roles)
 
 | # | Role | File |
 |---|------|------|
@@ -83,8 +83,10 @@ The `team/` folder contains agent role definitions for multi-agent collaboration
 | 11 | Staff Backend Engineer — Infra | `team/agents/backend-engineer-2.md` |
 | 12 | QA Tester | `team/agents/qa-tester.md` |
 | 13 | Technical Writer | `team/agents/technical-writer.md` |
+| 14 | Staff Security Engineer | `team/agents/security-engineer.md` |
+| 15 | Principal Brand Designer — Alfredo | `team/agents/brand-designer.md` |
 
-**Requirements triad**: PM + BA + SME collaborate on all discovery and requirements gathering. **Technical authority**: Full-Stack Architect owns all architectural decisions, schema design, and technical direction. The **Project Manager** orchestrates all collaboration. See `team/TEAM.md` for protocols.
+**Requirements triad**: PM + BA + SME collaborate on all discovery and requirements gathering. **Technical authority**: Full-Stack Architect owns all architectural decisions, schema design, and technical direction. **Security gate**: Security Engineer reviews code for vulnerabilities, secrets exposure, and auth/RLS correctness — invoked after major features, new dependencies, or before releases. The **Project Manager** orchestrates all collaboration. See `team/TEAM.md` for protocols.
 
 ### How to Invoke Agents
 

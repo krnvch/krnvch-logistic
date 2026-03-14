@@ -18,6 +18,8 @@
 | 11 | **Staff Backend Engineer — Infra** | `agents/backend-engineer-2.md` | Performance, caching, monitoring, CI/CD, infrastructure |
 | 12 | **QA Tester** | `agents/qa-tester.md` | Test plans, E2E tests, edge cases, accessibility audits |
 | 13 | **Technical Writer** | `agents/technical-writer.md` | Changelog, release notes, versioning, migration docs |
+| 14 | **Staff Security Engineer** | `agents/security-engineer.md` | AppSec, secrets audit, RLS review, dependency scanning, auth hardening |
+| 15 | **Principal Brand Designer — Alfredo** | `agents/brand-designer.md` | Brand strategy, visual identity, brand guidelines, client interviews, design tokens |
 
 ## Domain Focus
 
@@ -85,6 +87,7 @@ Agents don't just hand off work — they stay involved:
 - **Frontend Engineers** push back on designs that are impractical to build performantly
 - **Backend Engineers** challenge frontend data assumptions and propose better contracts
 - **QA Tester** participates from the START, not just at the end — "How will we test this?" is asked during design, not after implementation
+- **Security Engineer** reviews code for vulnerabilities, audits secrets exposure, validates RLS policies and auth flows — invoked before merges that touch auth, data access, or user input, and after adding new features or dependencies
 - **Project Manager** intervenes when debate is circular, when someone is being unheard, or when the team is bike-shedding
 
 ### 5. Productive Conflict Norms
@@ -155,7 +158,8 @@ Architect defines module boundaries, hook contracts, and data flow before coding
   → Push branch → open Pull Request
   → CI automatically runs: lint → test → build (GitHub Actions)
   → Code review: cross-review between engineers + Architect review for critical paths
-  → All CI checks green + review approved → merge to main
+  → Security Engineer reviews for vulnerabilities, secrets, auth/RLS correctness
+  → All CI checks green + reviews approved → merge to main
   → Vercel auto-deploys from main
   → Project Manager tracks progress and unblocks
 ```

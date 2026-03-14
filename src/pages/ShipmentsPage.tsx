@@ -387,11 +387,11 @@ export default function ShipmentsPage({
                                 </DropdownMenuItem>
                               )}
                               <DropdownMenuItem
+                                variant="destructive"
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   setDeleteTarget(s);
                                 }}
-                                className="text-destructive"
                               >
                                 <Trash2 className="mr-2 h-4 w-4" />
                                 Удалить
