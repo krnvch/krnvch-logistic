@@ -31,18 +31,20 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { ThemeSubmenu } from "@/components/theme-submenu";
 import {
-  Package,
   Plus,
   Search,
+  X,
   ArrowUpDown,
+  ArrowUp,
+  ArrowDown,
   LogOut,
-  Menu,
   MoreHorizontal,
   Trash2,
   RotateCcw,
   Pencil,
   User,
 } from "lucide-react";
+import { GridaLogo } from "@/components/grida-logo";
 import { useShipments } from "@/hooks/use-shipment";
 import { useShipmentProgress } from "@/hooks/use-shipment-progress";
 import { useRealtimeShipments } from "@/hooks/use-realtime";
@@ -55,12 +57,14 @@ interface ShipmentsPageProps {
   logout: () => Promise<void>;
   isOperator: boolean;
   userEmail?: string;
+  userInitials: string;
 }
 
 export default function ShipmentsPage({
   logout,
   isOperator,
   userEmail,
+  userInitials,
 }: ShipmentsPageProps) {
   const navigate = useNavigate();
   const {
@@ -185,22 +189,16 @@ export default function ShipmentsPage({
   return (
     <div className="flex min-h-dvh flex-col">
       {/* Header */}
-      <header className="flex shrink-0 items-center gap-3 border-b px-4 py-3">
+      <header className="flex shrink-0 items-center gap-3 border-b px-6 py-3">
         <div className="flex items-center gap-2">
-          <Package className="h-5 w-5 shrink-0" />
-          <h1 className="text-lg font-semibold">krnvch</h1>
+          <GridaLogo size={28} showWordmark={false} className="text-primary shrink-0" />
         </div>
         <div className="ml-auto flex items-center gap-2">
-          {isOperator && (
-            <Button size="sm" onClick={() => setFormOpen(true)}>
-              <Plus className="mr-1 h-4 w-4" />
-              Новый рейс
-            </Button>
-          )}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-4 w-4" />
+              <Button variant="outline">
+                <User className="h-4 w-4" />
+                <span className="text-xs font-medium">{userInitials}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -251,9 +249,25 @@ export default function ShipmentsPage({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearch(e.target.value)
               }
-              className="pl-9"
+              className="pl-9 pr-8"
             />
+            {search && (
+              <Button
+                variant="ghost"
+                size="icon"
+                className="absolute top-0.5 right-0.5 h-8 w-8"
+                onClick={() => setSearch("")}
+              >
+                <X className="h-3.5 w-3.5" />
+              </Button>
+            )}
           </div>
+          {isOperator && (
+            <Button onClick={() => setFormOpen(true)}>
+              <Plus className="mr-1 h-4 w-4" />
+              Новый рейс
+            </Button>
+          )}
         </div>
 
         {/* Table */}
@@ -264,7 +278,7 @@ export default function ShipmentsPage({
               : "Ничего не найдено."}
           </div>
         ) : (
-          <div className="rounded-md border">
+          <div className="border-2">
             <Table>
               <TableHeader>
                 <TableRow>
@@ -284,7 +298,7 @@ export default function ShipmentsPage({
                       onClick={() => toggleSort("status")}
                     />
                   </TableHead>
-                  <TableHead className="w-[160px]">Прогресс</TableHead>
+                  <TableHead className="w-[160px] text-xs">Прогресс</TableHead>
                   <TableHead className="w-[120px]">
                     <SortButton
                       label="Создан"
@@ -323,8 +337,11 @@ export default function ShipmentsPage({
                       <TableCell className="font-medium">{s.name}</TableCell>
                       <TableCell>
                         <Badge
-                          variant={
-                            s.status === "active" ? "default" : "secondary"
+                          variant="secondary"
+                          className={
+                            s.status === "active"
+                              ? "bg-info text-info-foreground"
+                              : ""
                           }
                         >
                           {s.status === "active" ? "Активный" : "Завершён"}
@@ -332,14 +349,14 @@ export default function ShipmentsPage({
                       </TableCell>
                       <TableCell>
                         {progress && progress.totalOrders > 0 ? (
-                          <div className="flex items-center gap-2">
-                            <Progress value={pct} className="h-2 flex-1" />
-                            <span className="text-muted-foreground w-8 text-right text-xs">
+                          <div className="grid gap-0.5">
+                            <Progress value={pct} />
+                            <span className="text-muted-foreground text-xs">
                               {pct}%
                             </span>
                           </div>
                         ) : (
-                          <span className="text-muted-foreground text-xs">
+                          <span className="text-muted-foreground/40 text-xs">
                             —
                           </span>
                         )}
@@ -347,8 +364,14 @@ export default function ShipmentsPage({
                       <TableCell className="text-muted-foreground text-sm">
                         {new Date(s.created_at).toLocaleDateString("ru")}
                       </TableCell>
-                      <TableCell className="text-muted-foreground text-sm max-sm:hidden">
-                        {s.created_by ?? "—"}
+                      <TableCell className="text-sm max-sm:hidden">
+                        {s.created_by ? (
+                          <span className="text-muted-foreground">
+                            {s.created_by}
+                          </span>
+                        ) : (
+                          <span className="text-muted-foreground/40">—</span>
+                        )}
                       </TableCell>
                       {isOperator && (
                         <TableCell>
@@ -465,16 +488,16 @@ function FilterTab({
   return (
     <button
       onClick={onClick}
-      className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+      className={`font-heading inline-flex items-center gap-1.5 border-b-4 px-3 py-1.5 text-sm font-medium transition-colors ${
         active
-          ? "bg-primary text-primary-foreground"
-          : "bg-muted text-muted-foreground hover:bg-muted/80"
+          ? "border-tab-active-indicator text-tab-active"
+          : "border-transparent text-tab-inactive hover:text-tab-active"
       }`}
     >
       {label}
       <span
-        className={`rounded-full px-1.5 text-xs ${
-          active ? "bg-primary-foreground/20" : "bg-background"
+        className={`px-1.5 text-xs ${
+          active ? "bg-primary/15" : "bg-muted"
         }`}
       >
         {count}
@@ -500,13 +523,14 @@ function SortButton({
       className="inline-flex items-center gap-1 text-xs font-medium"
     >
       {label}
-      <ArrowUpDown
-        className={`h-3 w-3 ${active ? "text-foreground" : "text-muted-foreground/50"}`}
-      />
-      {active && (
-        <span className="text-muted-foreground text-[10px]">
-          {direction === "asc" ? "↑" : "↓"}
-        </span>
+      {active ? (
+        direction === "asc" ? (
+          <ArrowUp className="text-foreground h-3 w-3" />
+        ) : (
+          <ArrowDown className="text-foreground h-3 w-3" />
+        )
+      ) : (
+        <ArrowUpDown className="text-muted-foreground/50 h-3 w-3" />
       )}
     </button>
   );

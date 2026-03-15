@@ -13,6 +13,8 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@fontsource-variable/zalando-sans": "^5.2.1",
+    "@fontsource-variable/zalando-sans-expanded": "^5.2.1",
     "@supabase/supabase-js": "^2.97.0",
     "@tailwindcss/vite": "^4.2.0",
     "@tanstack/react-query": "^5.90.21",

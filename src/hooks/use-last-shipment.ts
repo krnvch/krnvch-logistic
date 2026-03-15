@@ -1,4 +1,4 @@
-const STORAGE_KEY = "krnvch-last-shipment-id";
+const STORAGE_KEY = "grida-last-shipment-id";
 
 export function useLastShipment() {
   const get = (): string | null => {

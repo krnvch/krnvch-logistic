@@ -87,7 +87,7 @@ export function OrderSidebar({
       <div className="flex h-full flex-col">
         {/* Header */}
         <div className="flex items-center justify-between border-b px-4 py-2.5">
-          <h2 className="font-semibold">Заказы</h2>
+          <h2 className="font-heading font-semibold">Заказы</h2>
           {isOperator && !isReadOnly && (
             <Button size="sm" onClick={() => setFormOpen(true)}>
               <Plus className="mr-1 h-4 w-4" />

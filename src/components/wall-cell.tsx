@@ -37,12 +37,12 @@ export function WallCell({
       type="button"
       onClick={onClick}
       onAnimationEnd={animating ? onAnimationEnd : undefined}
-      className={`flex min-h-16 w-full items-center gap-2 rounded-lg border px-3 py-2 text-left transition-colors ${
+      className={`flex min-h-16 w-full items-center gap-2 border px-3 py-2 text-left transition-colors ${
         isEmpty
           ? "border-muted-foreground/30 bg-muted/40 hover:bg-muted/60 border-dashed"
           : isFull
-            ? "border-success/30 bg-card shadow-sm"
-            : "border-border bg-card hover:bg-accent/50 shadow-sm"
+            ? "border-success/30 bg-card"
+            : "border-border bg-card hover:bg-accent/50"
       } ${animating ? "wall-highlight" : ""} ${highlighted && !animating ? "ring-primary ring-2" : ""}`}
     >
       {/* Wall number */}

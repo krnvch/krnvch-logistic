@@ -103,7 +103,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
         >
           <X className="h-4 w-4" />
         </Button>
-        <h1 className="text-lg font-semibold">Профиль</h1>
+        <h1 className="font-heading text-lg font-semibold">Профиль</h1>
       </header>
 
       {/* Content */}

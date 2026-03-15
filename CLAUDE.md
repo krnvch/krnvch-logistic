@@ -73,8 +73,9 @@ Before writing or modifying any UI component, styling, or CSS:
 2. **Check** `docs/brand/brand-book.html` for design principles (left-alignment, shape language, voice)
 3. **Use oklch values** from visual-identity.md, NOT hex approximations from the brand book HTML
 4. **Follow font rules**: Zalando Sans Expanded for headings/buttons/badges/tabs. Zalando Sans for body/labels/inputs/tables.
-5. **Follow border tiers**: Tier 1 (2px), Tier 2 (1px), Tier 3 accent (4px). No shadows on cards.
+5. **Follow border tiers**: Tier 1 (2px) for cards, buttons, inputs, dialogs, badges, table rows. Tier 2 (1px) for wall cells, separators. Tier 3 accent (4px) for tab indicators. No shadows on cards.
 6. **Follow color rules**: Input focus = foreground color (not green). Tab active text = darker emerald (not bright primary). Badges = ALL CAPS.
+7. **Follow component patterns**: Dropdown hover = `bg-muted` (neutral gray, not green accent). Ghost-destructive buttons for delete icons. Status badges: blue = active, gray = completed (green ≠ status). Empty state dashes use `muted-foreground/40`. Header logo = icon-only (no wordmark). User avatar = outline button with User icon + initials.
 
 ### Code → Brand (after creating new patterns)
 

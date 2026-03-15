@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
 import App from "./App.tsx";
+import "@fontsource-variable/zalando-sans";
+import "@fontsource-variable/zalando-sans-expanded";
 import "./index.css";
 
 const queryClient = new QueryClient({

@@ -26,15 +26,8 @@ import { TrailerMap } from "@/components/trailer-map";
 import { WallPopover } from "@/components/wall-popover";
 import { useSearch } from "@/hooks/use-search";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
-import {
-  Package,
-  LogOut,
-  Menu,
-  RotateCcw,
-  List,
-  Pencil,
-  User,
-} from "lucide-react";
+import { GridaLogo } from "@/components/grida-logo";
+import { LogOut, RotateCcw, List, Pencil, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import type {
   OrderWithStatus,
@@ -49,6 +42,7 @@ interface AppLayoutProps {
   logout: () => Promise<void>;
   isOperator: boolean;
   isReadOnly?: boolean;
+  userInitials: string;
   shipmentName?: string;
   orders: OrderWithStatus[];
   walls: WallData[];
@@ -73,6 +67,7 @@ export function AppLayout({
   logout,
   isOperator,
   isReadOnly = false,
+  userInitials,
   shipmentName,
   orders,
   walls,
@@ -104,12 +99,9 @@ export function AppLayout({
   return (
     <div className="flex h-dvh flex-col">
       {/* Header */}
-      <header className="flex shrink-0 items-center gap-3 border-b px-3 py-2 md:px-4">
+      <header className="flex shrink-0 items-center gap-3 border-b px-4 py-3 md:px-6">
         <div className="flex items-center gap-2">
-          <Package className="h-5 w-5 shrink-0" />
-          <h1 className="text-lg font-semibold max-sm:hidden">
-            {shipmentName ?? "krnvch"}
-          </h1>
+          <GridaLogo size={28} showWordmark={false} className="text-primary shrink-0" />
           {isReadOnly && (
             <Badge variant="secondary" className="text-xs">
               Завершён
@@ -117,6 +109,7 @@ export function AppLayout({
           )}
         </div>
 
+        <div className="bg-border ml-2 h-5 w-px shrink-0 max-md:hidden" />
         <div className="max-md:hidden">
           <SummaryBar orders={orders} />
         </div>
@@ -130,8 +123,9 @@ export function AppLayout({
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <Menu className="h-4 w-4" />
+              <Button variant="outline">
+                <User className="h-4 w-4" />
+                <span className="text-xs font-medium">{userInitials}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

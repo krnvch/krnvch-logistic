@@ -8,7 +8,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Truck } from "lucide-react";
 import { toast } from "sonner";
 
 interface ShipmentFormDialogProps {
@@ -121,7 +120,6 @@ export function ShipmentFormDialog({
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={isCreating}>
-            <Truck className="mr-2 h-4 w-4" />
             {isCreating ? "Создаётся..." : "Создать рейс"}
           </Button>
         </form>

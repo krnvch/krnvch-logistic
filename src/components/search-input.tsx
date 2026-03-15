@@ -21,7 +21,7 @@ export function SearchInput({
       <Input
         type="search"
         placeholder="Поиск заказа..."
-        className="h-9 w-40 pr-8 pl-9 lg:w-56"
+        className="h-9 w-40 pr-8 pl-9 [&::-webkit-search-cancel-button]:hidden lg:w-56"
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           onChange(e.target.value)
@@ -38,7 +38,7 @@ export function SearchInput({
         </Button>
       )}
       {noResults && (
-        <p className="bg-popover text-muted-foreground absolute top-full left-0 z-10 mt-1 rounded-md border px-3 py-1.5 text-xs shadow-md">
+        <p className="bg-popover text-muted-foreground absolute top-full left-0 z-10 mt-1 border-2 px-3 py-1.5 text-xs">
           Ничего не найдено
         </p>
       )}

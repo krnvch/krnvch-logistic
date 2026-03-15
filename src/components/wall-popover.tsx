@@ -10,6 +10,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Trash2, Pencil, CircleCheck, Undo2 } from "lucide-react";
 import { toast } from "sonner";
 import type {
@@ -249,8 +256,8 @@ export function WallPopover({
                               </Button>
                               <Button
                                 size="icon"
-                                variant="ghost"
-                                className="text-destructive h-7 w-7"
+                                variant="ghost-destructive"
+                                className="h-7 w-7"
                                 onClick={() => handleDelete(pw.placement.id)}
                               >
                                 <Trash2 className="h-3 w-3" />
@@ -276,22 +283,25 @@ export function WallPopover({
               {wall.placements.length > 0 && <Separator />}
               <div className="grid gap-3">
                 <Label>Добавить заказ</Label>
-                <select
+                <Select
                   value={selectedOrderId}
-                  onChange={(e) => {
-                    setSelectedOrderId(e.target.value);
+                  onValueChange={(v) => {
+                    setSelectedOrderId(v);
                     setBoxCount("");
                   }}
-                  className="border-input flex h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm transition-colors"
                 >
-                  <option value="">Выберите заказ...</option>
-                  {availableOrders.map((o) => (
-                    <option key={o.order.id} value={o.order.id}>
-                      #{o.order.order_number} — {o.order.client_name} (
-                      {o.remaining_boxes} ост.)
-                    </option>
-                  ))}
-                </select>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Выберите заказ..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {availableOrders.map((o) => (
+                      <SelectItem key={o.order.id} value={o.order.id}>
+                        #{o.order.order_number} — {o.order.client_name} (
+                        {o.remaining_boxes} ост.)
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
                 {selectedOrderId && (
                   <div className="flex gap-2">
                     <Input
