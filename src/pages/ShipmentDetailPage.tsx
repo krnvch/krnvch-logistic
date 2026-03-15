@@ -12,11 +12,13 @@ import { toast } from "sonner";
 interface ShipmentDetailPageProps {
   logout: () => Promise<void>;
   isOperator: boolean;
+  userInitials: string;
 }
 
 export default function ShipmentDetailPage({
   logout,
   isOperator,
+  userInitials,
 }: ShipmentDetailPageProps) {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
@@ -115,6 +117,7 @@ export default function ShipmentDetailPage({
       logout={logout}
       isOperator={isOperator}
       isReadOnly={isReadOnly}
+      userInitials={userInitials}
       shipmentName={shipment.name}
       orders={ordersWithStatus}
       walls={walls}

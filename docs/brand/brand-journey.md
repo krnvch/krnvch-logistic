@@ -303,3 +303,44 @@ Interactive HTML brand book covering 9 sections:
 9. **Quick Reference** — one-page summary table of all values
 
 ---
+
+## Phase 7: Visual Redesign Implementation + UX Polish
+
+**Date**: 2026-03-15
+**Status**: Done
+**Branch**: `feature/visual-redesign`
+
+Full implementation of the Grida visual identity across the entire application, followed by a UX polish round with the product owner.
+
+### Implementation (4 phases)
+
+1. **Foundation** — Installed Zalando Sans / Expanded fonts, replaced all CSS tokens (colors, radius, fonts), registered new tokens (warning, info, tab-active, input-focus)
+2. **UI Components** — Applied border-2 to all Tier 1 components, font-heading to titles/buttons/badges, removed shadows, badge ALL CAPS, progress bar 6px
+3. **App Components** — Created `GridaLogo` component (Scoped G SVG with currentColor), replaced Package icon everywhere, updated wall cells, search popups, native selects
+4. **Pages & Polish** — Updated all pages, favicon Grid G, renamed krnvch→Grida everywhere, filter tabs with 4px accent indicators
+
+### UX Polish decisions (owner-driven)
+
+| Decision | Rationale |
+|----------|-----------|
+| Table row borders → 2px (Tier 1) | Visual consistency with outer table border |
+| Dropdown hover → neutral gray (`bg-muted`) | Green-tinted accent felt off in menus |
+| New `ghost-destructive` button variant | Delete icons need red hover, not green |
+| Active status badge → blue (`bg-info`) | Green implies "done"; blue = in progress |
+| Empty state text → `muted-foreground/40` | Dashes should be lighter than real content |
+| Header → icon-only logo | Wordmark too busy at small sizes |
+| Hamburger menu → user initials button | Personalized navigation (outline button with User icon + initials) |
+| Login page → icon + tagline | "The grid sees everything." as brand touchpoint |
+| Counter separators → middle dots (`·`) | Cleaner visual rhythm than spacing alone |
+| "Новый рейс" button → next to search | Better UX proximity to content area |
+| Button/input heights aligned → `h-9` | Visual consistency for adjacent elements |
+| Sort icons → single arrow when active | Cleaner than showing both ↑↓ and arrow |
+| Native select → shadcn Select | Consistent component library usage |
+| Dialog/Sheet X button → ghost Button | Consistent with all other icon buttons |
+
+### Brand book updates
+
+- `visual-identity.md` Section 3: Table rows promoted to Tier 1 (2px)
+- `visual-identity.md` Section 5 (new): Component Patterns — ghost-destructive, status semantics, logo usage, avatar button, dropdown hover, empty states, inline separators
+
+---

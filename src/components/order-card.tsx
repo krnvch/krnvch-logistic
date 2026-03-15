@@ -80,7 +80,7 @@ export function OrderCard({
             </span>
             <span>{Math.round(progress)}%</span>
           </div>
-          <Progress value={progress} className="h-2" />
+          <Progress value={progress} />
         </div>
 
         {/* Actions row */}
@@ -135,9 +135,9 @@ export function OrderCard({
                       <Pencil className="h-3.5 w-3.5" />
                     </Button>
                     <Button
-                      variant="ghost"
+                      variant="ghost-destructive"
                       size="icon"
-                      className="text-destructive h-8 w-8"
+                      className="h-8 w-8"
                       onClick={(e) => {
                         e.stopPropagation();
                         onDelete();

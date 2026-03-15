@@ -1,7 +1,58 @@
-# Changelog — krnvchLogistic
+# Changelog — Grida (formerly krnvchLogistic)
 
 All notable changes to the platform are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/).
+
+---
+
+## [3.0.0] — 2026-03-15
+
+### Visual Redesign — Grida Brand Identity
+
+Complete visual transformation from default shadcn/ui to the Grida brand design language. The platform now has its own identity: emerald green accent, Zalando Sans typography, square shapes, bold borders, and the Scoped G logo.
+
+#### Added
+- Zalando Sans (body) + Zalando Sans Expanded (headings/buttons/badges/tabs) — self-hosted via @fontsource
+- New CSS tokens: `--warning`, `--info`, `--tab-active`, `--tab-inactive`, `--tab-active-indicator`, `--input-focus`
+- `GridaLogo` reusable component (Scoped G SVG with `currentColor`)
+- Grid G favicon (`public/favicon.svg`)
+- `ghost-destructive` button variant (red text + light red hover)
+- User avatar button with initials (replaces hamburger menu)
+- User initials computed from Supabase `user_metadata` (first_name + last_name), fallback to email
+- Middle dot separators (`·`) between header counters
+- Vertical separator between logo and summary bar
+- Clear (X) button in shipments page search field
+- Font type declarations (`src/fonts.d.ts`)
+
+#### Changed
+- **Brand rename**: krnvchLogistic → **Grida** everywhere (page title, headers, login, localStorage key)
+- **Color palette**: emerald green primary `oklch(0.70 0.19 160)` — same in light and dark modes
+- **Neutrals**: green-whisper gray (hue 160, subtle chroma) for brand coherence
+- **Success color**: changed from lime (hue 145) to teal (hue 192) — visually distinct from brand green
+- **Border radius**: 0 on all components — no exceptions
+- **Border width**: Tier 1 (2px) for cards, buttons, inputs, dialogs, badges, table rows; Tier 2 (1px) for wall cells, separators; Tier 3 (4px) for active tab indicators
+- **Shadows**: removed from all components (flat + bold border approach)
+- **Input focus**: foreground color border (not green) — brand green reserved for actions
+- **Filter tabs**: underline style (4px accent indicator) instead of filled background
+- **Active status badge**: blue (`bg-info`) instead of green — green implies "done"
+- **Dropdown hover**: neutral gray (`bg-muted`) instead of green-tinted accent
+- **Table row borders**: 2px (promoted to Tier 1 for visual consistency)
+- **Progress bar**: 6px height, square ends
+- **Login page**: icon-only logo + tagline "The grid sees everything."
+- **Header logo**: icon-only (28px), no wordmark
+- **"Новый рейс" button**: moved from header to content area (next to search)
+- **Button/input heights**: aligned to `h-9` (36px) across the platform
+- **Sort column icons**: single arrow (↑ or ↓) when active, dual arrow when inactive
+- **Native `<select>` in wall popover**: replaced with shadcn `Select` component
+- **Dialog/Sheet close buttons**: now use `Button variant="ghost"` (consistent with all icon buttons)
+- **Empty state text**: `muted-foreground/40` for placeholder dashes
+- **Placeholder email**: `operator@krnvch.app` → `operator@grida.io`
+- **localStorage key**: `krnvch-last-shipment-id` → `grida-last-shipment-id`
+
+#### Updated Docs
+- `docs/brand/visual-identity.md` — new Section 5 (Component Patterns), updated border tiers
+- `docs/brand/brand-journey.md` — Phase 7 (implementation + UX polish)
+- `docs/TODO.md` — task 10.2 marked complete
 
 ---
 

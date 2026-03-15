@@ -8,6 +8,12 @@ importers:
 
   .:
     dependencies:
+      '@fontsource-variable/zalando-sans':
+        specifier: ^5.2.1
+        version: 5.2.1
+      '@fontsource-variable/zalando-sans-expanded':
+        specifier: ^5.2.1
+        version: 5.2.1
       '@supabase/supabase-js':
         specifier: ^2.97.0
         version: 2.97.0
@@ -396,6 +402,12 @@ packages:
 
   '@floating-ui/utils@0.2.10':
     resolution: {integrity: sha512-aGTxbpbg8/b5JfU1HXSrbH3wXZuLPJcNEcZQFMxLs3oSzgtVu6nFPkbbGGUvBcUjKV2YyB9Wxxabo+HEH9tcRQ==}
+
+  '@fontsource-variable/zalando-sans-expanded@5.2.1':
+    resolution: {integrity: sha512-+gNz/EbGvJPDJNOZ6TCei+CwAhPP96iyyd11W6uqFWQ+68vae0l8ThAwHdeU+jC8WOTgpQOKVkTBxzFRf3DAog==}
+
+  '@fontsource-variable/zalando-sans@5.2.1':
+    resolution: {integrity: sha512-exF36dj1RsVF5qhSjN9Puui2x065gxtQfagI1hVw0rWONFuo89CzQY/lUk3vFv3PazapYlveKLGxfRL1lAJstw==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -2714,6 +2726,10 @@ snapshots:
       react-dom: 19.2.4(react@19.2.4)
 
   '@floating-ui/utils@0.2.10': {}
+
+  '@fontsource-variable/zalando-sans-expanded@5.2.1': {}
+
+  '@fontsource-variable/zalando-sans@5.2.1': {}
 
   '@humanfs/core@0.19.1': {}
 

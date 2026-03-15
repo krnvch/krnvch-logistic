@@ -166,9 +166,11 @@ for visual separation. Values derived from card/secondary tokens.
 
 | Tier | Width | Elements |
 |------|-------|----------|
-| **Tier 1** | `2px` | Cards, buttons, inputs, dialogs, sheets, badges, alert dialogs |
-| **Tier 2** | `1px` | Table rows, wall cells, separators, dropdown items |
+| **Tier 1** | `2px` | Cards, buttons, inputs, dialogs, sheets, badges, alert dialogs, table rows, table header |
+| **Tier 2** | `1px` | Wall cells, separators |
 | **Tier 3 (Accent)** | `4px` | Active tab indicators, emphasis lines |
+
+> **Updated 2026-03-15:** Table rows promoted from Tier 2 to Tier 1 (2px) for visual consistency with the table's outer border.
 
 ### Progress Bar
 
@@ -180,6 +182,18 @@ Progress bar height: **6px**. Square-ended (no rounded ends). Brand green indica
 Shadow implies softness. Grida is sharp.
 
 Exception: focus ring `box-shadow` for accessibility is preserved.
+
+### Dropdown Hover
+
+Dropdown menu items use **neutral gray** (`bg-muted`) for hover/focus state — NOT the green-tinted `bg-accent`. This keeps menus visually calm. Destructive items use `bg-destructive/10` on hover.
+
+### Empty State Text
+
+Placeholder dashes ("—") in tables and empty fields use `text-muted-foreground/40` — noticeably lighter than real content, signaling absence without visual noise.
+
+### Inline Separators
+
+Counter groups in headers are separated by middle dots (`·`) in `text-muted-foreground/40`. Vertical separators between logo and content use a 1px `bg-border` line.
 
 ---
 
@@ -213,3 +227,48 @@ All radius tokens set to 0.
 | Package | Reason |
 |---------|--------|
 | None | Inter was loaded from system / @theme default, not a package |
+
+---
+
+## 5. Component Patterns (added during implementation)
+
+### Button: Ghost-Destructive Variant
+
+A new button variant for destructive icon buttons (e.g. delete trash icons):
+
+- **Default**: red text/icon (`text-destructive`)
+- **Hover**: light red background (`bg-destructive/10`), text stays red
+- **Dark mode**: uses `destructive-foreground` tokens
+
+Use instead of `variant="ghost" className="text-destructive"` — the old pattern broke on hover (green background replaced red text).
+
+### Status Badge Semantics
+
+| Status | Color | Token | Rationale |
+|--------|-------|-------|-----------|
+| Active / In Progress | Blue | `bg-info text-info-foreground` | Blue = ongoing activity |
+| Completed / Done | Gray | `bg-secondary text-secondary-foreground` | Muted = finished, not attention-worthy |
+| Success (loaded) | Teal | `bg-success text-success-foreground` | Teal hue 192 = positive completion |
+| Error / Delete | Red | `bg-destructive` | Red = danger / destructive |
+
+> Green (`bg-primary`) is reserved for primary actions (buttons, links), NOT status badges. Green badges create false "completed" impression.
+
+### Logo Usage Rules
+
+| Context | Variant | Size |
+|---------|---------|------|
+| **Login page** | Icon only (no wordmark) + tagline | 48px |
+| **App header** | Icon only (no wordmark) | 28px |
+| **Marketing / external** | Full lockup (icon + wordmark) | ≥ 32px |
+
+Header uses icon-only because the wordmark competes with page content at small sizes. The brand is recognizable from the Scoped G alone.
+
+### User Avatar Button
+
+Navigation trigger uses an **outline button** with:
+- `User` icon (lucide) on the left
+- Two-letter initials (first name + last name) from user metadata
+- Falls back to first letter of email, then `?`
+- Same height as adjacent inputs (`h-9` / 36px)
+
+Replaces the generic hamburger menu icon for personalized navigation.

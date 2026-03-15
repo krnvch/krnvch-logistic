@@ -1,15 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Package } from "lucide-react";
+import { GridaLogo } from "@/components/grida-logo";
 
 interface LoginFormProps {
   onLogin: (
@@ -40,12 +34,11 @@ export function LoginForm({ onLogin }: LoginFormProps) {
   return (
     <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-sm">
-        <CardHeader className="text-center">
-          <div className="bg-primary mx-auto mb-2 flex h-12 w-12 items-center justify-center rounded-full">
-            <Package className="text-primary-foreground h-6 w-6" />
-          </div>
-          <CardTitle className="text-2xl">krnvchLogistic</CardTitle>
-          <CardDescription>Войдите для управления загрузкой</CardDescription>
+        <CardHeader>
+          <GridaLogo size={48} showWordmark={false} className="text-primary" />
+          <p className="text-muted-foreground text-sm">
+            The grid sees everything.
+          </p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="grid gap-4">
@@ -54,7 +47,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
               <Input
                 id="email"
                 type="email"
-                placeholder="operator@krnvch.app"
+                placeholder="operator@grida.io"
                 value={email}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   setEmail(e.target.value)

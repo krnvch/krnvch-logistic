@@ -24,6 +24,12 @@ export default function App() {
   }
 
   const userEmail = session.user.email;
+  const meta = session.user.user_metadata;
+  const userInitials =
+    [meta?.first_name as string, meta?.last_name as string]
+      .filter(Boolean)
+      .map((n) => n[0].toUpperCase())
+      .join("") || userEmail?.charAt(0).toUpperCase() || "?";
 
   return (
     <Routes>
@@ -34,12 +40,19 @@ export default function App() {
             logout={logout}
             isOperator={isOperator}
             userEmail={userEmail}
+            userInitials={userInitials}
           />
         }
       />
       <Route
         path="/shipments/:id"
-        element={<ShipmentDetailPage logout={logout} isOperator={isOperator} />}
+        element={
+          <ShipmentDetailPage
+            logout={logout}
+            isOperator={isOperator}
+            userInitials={userInitials}
+          />
+        }
       />
       <Route
         path="/profile"
