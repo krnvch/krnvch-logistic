@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grida — Brand Book</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@300;400;500;600;700&family=Zalando+Sans+Expanded:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --emerald: #00875A;
+      --emerald-bright: #3ECF8E;
+      --emerald-dim: #006644;
+      --dark-bg: #0D1912;
+      --dark-surface: #132219;
+      --dark-border: #1E3A2C;
+      --dark-muted: #4A6B5C;
+      --light-bg: #FBFDFC;
+      --light-surface: #FFFFFF;
+      --light-border: #D4E5DC;
+      --light-muted: #6B8F7B;
+      --near-black: #0D1912;
+      --near-white: #F0FDF4;
+      --red: #DC3545;
+      --amber: #D4A017;
+      --blue: #2B7DE9;
+      --lime: #5CAD3C;
+    }
+
+    body {
+      font-family: 'Zalando Sans', system-ui, sans-serif;
+      background: var(--dark-bg);
+      color: var(--near-white);
+      line-height: 1.6;
+      font-size: 15px;
+    }
+
+    /* ── Layout ── */
+    .page { max-width: 1000px; margin: 0 auto; padding: 0 40px; }
+
+    /* ── Cover ── */
+    .cover {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center; padding: 80px 40px;
+    }
+    .cover svg { margin-bottom: 32px; }
+    .cover h1 {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 72px; font-weight: 700; color: var(--emerald);
+      letter-spacing: -2px; margin-bottom: 8px;
+    }
+    .cover .tagline {
+      font-size: 22px; color: var(--dark-muted);
+      font-style: italic; margin-bottom: 48px;
+    }
+    .cover .meta {
+      font-size: 12px; color: var(--dark-muted);
+      letter-spacing: 2px; text-transform: uppercase;
+    }
+
+    /* ── Section ── */
+    .section {
+      padding: 100px 0;
+      border-top: 1px solid var(--dark-border);
+    }
+    .section-num {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 11px; font-weight: 600; color: var(--emerald);
+      letter-spacing: 4px; text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section h2 {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 40px; font-weight: 700; color: var(--near-white);
+      letter-spacing: -1px; margin-bottom: 16px;
+    }
+    .section .lead {
+      font-size: 17px; color: var(--dark-muted);
+      max-width: 640px; line-height: 1.7; margin-bottom: 48px;
+    }
+
+    /* ── Subsection ── */
+    .sub { margin-bottom: 56px; }
+    .sub h3 {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 20px; font-weight: 600; color: var(--near-white);
+      margin-bottom: 12px;
+    }
+    .sub p { color: var(--dark-muted); max-width: 600px; margin-bottom: 16px; }
+
+    /* ── Cards & Grids ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; }
+    .grid-4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 2px; }
+    .grid-5 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr 1fr; gap: 2px; }
+
+    .card {
+      background: var(--dark-surface);
+      padding: 32px; position: relative;
+    }
+    .card.light { background: var(--light-bg); color: var(--near-black); }
+    .card.white { background: white; color: var(--near-black); }
+
+    .card-label {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      color: var(--dark-muted); margin-bottom: 12px;
+    }
+    .card.light .card-label { color: var(--light-muted); }
+
+    /* ── Brand Story ── */
+    .quote {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 24px; font-weight: 500; color: var(--near-white);
+      line-height: 1.5; margin-bottom: 24px;
+      padding-left: 24px;
+      border-left: 3px solid var(--emerald);
+    }
+
+    /* ── Color Swatches ── */
+    .swatch {
+      aspect-ratio: 1; display: flex;
+      flex-direction: column; justify-content: flex-end;
+      padding: 12px; position: relative;
+    }
+    .swatch-name {
+      font-size: 12px; font-weight: 600;
+      letter-spacing: 0.5px; margin-bottom: 2px;
+    }
+    .swatch-value { font-size: 11px; opacity: 0.7; }
+    .swatch.dark-text .swatch-name,
+    .swatch.dark-text .swatch-value { color: var(--near-black); }
+    .swatch.light-text .swatch-name,
+    .swatch.light-text .swatch-value { color: var(--near-white); }
+
+    /* ── Typography specimens ── */
+    .type-specimen {
+      padding: 40px 0;
+      border-bottom: 1px solid var(--dark-border);
+    }
+    .type-specimen .sample {
+      font-size: 48px; font-weight: 600;
+      margin-bottom: 8px; letter-spacing: -1px;
+    }
+    .type-specimen .detail {
+      font-size: 13px; color: var(--dark-muted);
+    }
+
+    /* ── Logo display ── */
+    .logo-display {
+      display: flex; align-items: center;
+      justify-content: center; padding: 56px;
+    }
+
+    /* ── Do / Don't ── */
+    .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 24px; }
+    .do-card, .dont-card {
+      padding: 24px; border: 2px solid;
+    }
+    .do-card { border-color: var(--emerald); }
+    .dont-card { border-color: var(--red); }
+    .do-card .badge, .dont-card .badge {
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 2px; text-transform: uppercase;
+      margin-bottom: 12px; display: inline-block; padding: 2px 8px;
+    }
+    .do-card .badge { background: var(--emerald); color: white; }
+    .dont-card .badge { background: var(--red); color: white; }
+    .do-card p, .dont-card p { font-size: 14px; color: var(--dark-muted); }
+
+    /* ── Mockup frames ── */
+    .mockup-frame {
+      border: 2px solid var(--dark-border);
+      overflow: hidden;
+    }
+    .mockup-bar {
+      height: 32px; background: var(--dark-surface);
+      border-bottom: 1px solid var(--dark-border);
+      display: flex; align-items: center; padding: 0 12px; gap: 6px;
+    }
+    .mockup-dot {
+      width: 8px; height: 8px; background: var(--dark-border);
+    }
+    .mockup-body { padding: 24px; }
+
+    /* ── Voice examples ── */
+    .voice-row {
+      display: grid; grid-template-columns: 120px 1fr 1fr;
+      gap: 16px; padding: 16px 0;
+      border-bottom: 1px solid var(--dark-border);
+      font-size: 14px;
+    }
+    .voice-label { color: var(--dark-muted); font-weight: 500; }
+    .voice-do { color: var(--emerald); }
+    .voice-dont { color: var(--red); opacity: 0.8; }
+
+    /* ── Table ── */
+    .spec-table { width: 100%; border-collapse: collapse; }
+    .spec-table th {
+      text-align: left; font-size: 10px; color: var(--dark-muted);
+      letter-spacing: 1.5px; text-transform: uppercase;
+      padding: 10px 16px; border-bottom: 1px solid var(--dark-border);
+    }
+    .spec-table td {
+      font-size: 14px; padding: 12px 16px;
+      border-bottom: 1px solid var(--dark-border);
+      color: var(--near-white);
+    }
+    .spec-table td.muted { color: var(--dark-muted); }
+    .spec-table code {
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 12px; background: var(--dark-surface);
+      padding: 2px 6px; color: var(--emerald-bright);
+    }
+
+    /* ── Lockup ── */
+    .lockup-demo {
+      display: flex; align-items: flex-end; gap: 3px;
+    }
+    .lockup-demo svg { flex-shrink: 0; margin-bottom: -8px; }
+    .lockup-demo .wordmark {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 26px; font-weight: 500; letter-spacing: -0.2px;
+      line-height: 1; transform: translateY(4px);
+    }
+
+    /* ── Spacing ── */
+    .mt-32 { margin-top: 32px; }
+    .mt-48 { margin-top: 48px; }
+    .mb-24 { margin-bottom: 24px; }
+    .mb-32 { margin-bottom: 32px; }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 40px 0; margin-top: 80px;
+      border-top: 1px solid var(--dark-border);
+      font-size: 12px; color: var(--dark-muted);
+      display: flex; justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- COVER -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="cover">
+  <svg viewBox="0 0 64 64" width="96" height="96">
+    <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+    <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+    <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+    <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+    <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+    <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+    <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+    <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+    <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+  </svg>
+  <h1>Grida</h1>
+  <p class="tagline">The grid sees everything.</p>
+  <p class="meta">Brand Guidelines &mdash; Version 1.0 &mdash; March 2026</p>
+</div>
+
+<div class="page">
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 01 — BRAND STORY -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">01 &mdash; Brand Story</div>
+  <h2>An island of craft in chaos</h2>
+  <p class="lead">
+    Truck loading is loud, physical, messy. The warehouse floor doesn't care
+    about design. But Grida does. Grida is the calm, precise, beautifully
+    crafted control center in the middle of all that chaos.
+  </p>
+
+  <div class="quote">
+    Someone cared enough to make this beautiful, even here.
+  </div>
+
+  <div class="sub">
+    <h3>What Grida is</h3>
+    <p>A logistics management platform that brings geometric precision to truck
+    loading. It tracks orders, maps trailer walls, and gives operators total
+    visibility into every shipment. Every pixel is intentional.</p>
+  </div>
+
+  <div class="sub">
+    <h3>Brand Personality</h3>
+    <div class="grid-5 mt-32">
+      <div class="card" style="text-align:center; padding:24px 16px;">
+        <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:28px;font-weight:700;color:var(--emerald);margin-bottom:8px;">Bold</div>
+        <p style="font-size:12px;color:var(--dark-muted);">Confident, decisive, unapologetic presence</p>
+      </div>
+      <div class="card" style="text-align:center; padding:24px 16px;">
+        <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:28px;font-weight:700;color:var(--emerald);margin-bottom:8px;">Precise</div>
+        <p style="font-size:12px;color:var(--dark-muted);">Every pixel intentional, grid-aligned</p>
+      </div>
+      <div class="card" style="text-align:center; padding:24px 16px;">
+        <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:28px;font-weight:700;color:var(--emerald);margin-bottom:8px;">Modern</div>
+        <p style="font-size:12px;color:var(--dark-muted);">Tech-forward, YC-era aesthetics</p>
+      </div>
+      <div class="card" style="text-align:center; padding:24px 16px;">
+        <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:28px;font-weight:700;color:var(--emerald);margin-bottom:8px;">Crafted</div>
+        <p style="font-size:12px;color:var(--dark-muted);">Attention to detail, designed with care</p>
+      </div>
+      <div class="card" style="text-align:center; padding:24px 16px;">
+        <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:28px;font-weight:700;color:var(--emerald);margin-bottom:8px;">Clear</div>
+        <p style="font-size:12px;color:var(--dark-muted);">Instantly readable, zero ambiguity</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 02 — LOGO -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">02 &mdash; Logo</div>
+  <h2>Logo System</h2>
+  <p class="lead">
+    The Grida logo consists of two assets: the Scoped G mark (primary) and
+    the Grid G (favicon). The horizontal lockup pairs the mark with the full wordmark.
+  </p>
+
+  <div class="sub">
+    <h3>Primary Mark &mdash; Scoped G</h3>
+    <p>Corner brackets framing a geometric G. All bars at equal 6px weight.
+    Used at sizes 32px and above.</p>
+    <div class="grid-2 mt-32">
+      <div class="card white logo-display">
+        <svg viewBox="0 0 64 64" width="80" height="80">
+          <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+          <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+          <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+          <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+          <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+          <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+          <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+          <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+          <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+        </svg>
+      </div>
+      <div class="card logo-display">
+        <svg viewBox="0 0 64 64" width="80" height="80">
+          <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+          <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+          <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+          <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+          <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+          <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+          <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+          <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+          <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Favicon &mdash; Grid G</h3>
+    <p>Standalone G without brackets. Used for browser tabs, app icons, and sizes under 32px.</p>
+    <div class="grid-2 mt-32">
+      <div class="card white logo-display">
+        <svg viewBox="0 0 56 64" width="48" height="55">
+          <rect x="0" y="0" width="56" height="11" fill="#3ECF8E"/>
+          <rect x="0" y="0" width="11" height="64" fill="#3ECF8E"/>
+          <rect x="0" y="53" width="56" height="11" fill="#3ECF8E"/>
+          <rect x="45" y="30" width="11" height="34" fill="#3ECF8E"/>
+          <rect x="24" y="30" width="32" height="11" fill="#3ECF8E"/>
+        </svg>
+      </div>
+      <div class="card logo-display">
+        <svg viewBox="0 0 56 64" width="48" height="55">
+          <rect x="0" y="0" width="56" height="11" fill="#3ECF8E"/>
+          <rect x="0" y="0" width="11" height="64" fill="#3ECF8E"/>
+          <rect x="0" y="53" width="56" height="11" fill="#3ECF8E"/>
+          <rect x="45" y="30" width="11" height="34" fill="#3ECF8E"/>
+          <rect x="24" y="30" width="32" height="11" fill="#3ECF8E"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Horizontal Lockup</h3>
+    <p>Scoped G mark + full "Grida" wordmark. The wordmark is self-sufficient.
+    Zalando Sans Expanded, weight 500, baseline-aligned to the inner G.</p>
+    <div class="grid-2 mt-32">
+      <div class="card white logo-display">
+        <div class="lockup-demo">
+          <svg viewBox="0 0 64 64" width="36" height="36">
+            <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+            <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+            <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+            <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+            <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+            <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+            <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+            <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+            <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+          </svg>
+          <span class="wordmark" style="color:var(--near-black);">Grida</span>
+        </div>
+      </div>
+      <div class="card logo-display">
+        <div class="lockup-demo">
+          <svg viewBox="0 0 64 64" width="36" height="36">
+            <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+            <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+            <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+            <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+            <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+            <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+            <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+            <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+            <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+          </svg>
+          <span class="wordmark" style="color:var(--near-white);">Grida</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Clear Space</h3>
+    <p>Minimum clear space around the logo equals the height of the G mark
+    within the icon. No text, graphics, or borders within this zone.</p>
+  </div>
+
+  <div class="sub">
+    <h3>Logo Usage Rules</h3>
+    <div class="do-dont">
+      <div class="do-card">
+        <span class="badge">Do</span>
+        <p>Use the provided SVG files without modification</p>
+        <p style="margin-top:8px;">Place on solid white or dark green-black backgrounds</p>
+        <p style="margin-top:8px;">Use favicon variant for sizes under 32px</p>
+      </div>
+      <div class="dont-card">
+        <span class="badge">Don't</span>
+        <p>Add rounded corners, shadows, or glow effects</p>
+        <p style="margin-top:8px;">Rotate, stretch, or skew the logo</p>
+        <p style="margin-top:8px;">Change the bar proportions or bracket angles</p>
+        <p style="margin-top:8px;">Use the Scoped G at sizes under 32px</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 03 — COLOR -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">03 &mdash; Color</div>
+  <h2>Color System</h2>
+  <p class="lead">
+    Monochrome base + one emerald punch. The brand uses a single accent color
+    against green-whisper neutrals. Functional colors have distinct hues to
+    avoid confusion with the brand green.
+  </p>
+
+  <div class="sub">
+    <h3>Brand Emerald</h3>
+    <p>Hue 160 in OKLCh. The only accent color in the system. Used like a weapon, not wallpaper.</p>
+    <div class="grid-4 mt-32">
+      <div class="swatch dark-text" style="background:#3ECF8E;">
+        <div class="swatch-name">Primary (Light)</div>
+        <div class="swatch-value">oklch(0.70 0.19 160)</div>
+      </div>
+      <div class="swatch dark-text" style="background:#3ECF8E;">
+        <div class="swatch-name">Primary (Dark)</div>
+        <div class="swatch-value">oklch(0.70 0.19 160)</div>
+      </div>
+      <div class="swatch light-text" style="background:#3ECF8E;">
+        <div class="swatch-name">Pressed</div>
+        <div class="swatch-value">oklch(0.55 0.20 160)</div>
+      </div>
+      <div class="swatch dark-text" style="background:#D1FAE5;">
+        <div class="swatch-name">Tint</div>
+        <div class="swatch-value">oklch(0.92 0.03 160)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Neutrals (Light Mode)</h3>
+    <p>Neutrals carry a whisper of green (hue 160, very low chroma) for brand coherence.</p>
+    <div class="grid-5 mt-32">
+      <div class="swatch dark-text" style="background:#FBFDFC;">
+        <div class="swatch-name">Background</div>
+        <div class="swatch-value">oklch(0.985 0 0)</div>
+      </div>
+      <div class="swatch dark-text" style="background:#FFFFFF;">
+        <div class="swatch-name">Card</div>
+        <div class="swatch-value">oklch(1 0 0)</div>
+      </div>
+      <div class="swatch dark-text" style="background:#D4E5DC;">
+        <div class="swatch-name">Border</div>
+        <div class="swatch-value">oklch(0.87 0.01 160)</div>
+      </div>
+      <div class="swatch dark-text" style="background:#EDF3EF;">
+        <div class="swatch-name">Muted</div>
+        <div class="swatch-value">oklch(0.94 0.005 100)</div>
+      </div>
+      <div class="swatch light-text" style="background:#0D1912;">
+        <div class="swatch-name">Foreground</div>
+        <div class="swatch-value">oklch(0.13 0.01 160)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Neutrals (Dark Mode)</h3>
+    <div class="grid-5 mt-32">
+      <div class="swatch light-text" style="background:#0D1912;">
+        <div class="swatch-name">Background</div>
+        <div class="swatch-value">oklch(0.13 0.01 160)</div>
+      </div>
+      <div class="swatch light-text" style="background:#132219;">
+        <div class="swatch-name">Card</div>
+        <div class="swatch-value">oklch(0.17 0.01 160)</div>
+      </div>
+      <div class="swatch light-text" style="background:#1E3A2C;">
+        <div class="swatch-name">Border</div>
+        <div class="swatch-value">oklch(0.27 0.02 160)</div>
+      </div>
+      <div class="swatch light-text" style="background:#1A2E23;">
+        <div class="swatch-name">Muted</div>
+        <div class="swatch-value">oklch(0.22 0.01 160)</div>
+      </div>
+      <div class="swatch dark-text" style="background:#F0FDF4;">
+        <div class="swatch-name">Foreground</div>
+        <div class="swatch-value">oklch(0.96 0.005 160)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Functional Colors</h3>
+    <p>Brand emerald (hue 160) must be visually distinct from success (hue 192, teal) at a glance.</p>
+    <div class="grid-4 mt-32">
+      <div class="swatch light-text" style="background:#2CA8A0;">
+        <div class="swatch-name">Success (Teal)</div>
+        <div class="swatch-value">Hue 192</div>
+      </div>
+      <div class="swatch light-text" style="background:#DC3545;">
+        <div class="swatch-name">Destructive</div>
+        <div class="swatch-value">Hue 27</div>
+      </div>
+      <div class="swatch dark-text" style="background:#D4A017;">
+        <div class="swatch-name">Warning</div>
+        <div class="swatch-value">Hue 80</div>
+      </div>
+      <div class="swatch light-text" style="background:#2B7DE9;">
+        <div class="swatch-name">Info</div>
+        <div class="swatch-value">Hue 250</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 04 — TYPOGRAPHY -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">04 &mdash; Typography</div>
+  <h2>Type System</h2>
+  <p class="lead">
+    Two fonts from the same family, different widths. Headings feel expansive
+    and bold. Body feels clean and compact. Zero visual friction between them.
+  </p>
+
+  <div class="type-specimen">
+    <div class="sample" style="font-family:'Zalando Sans Expanded',sans-serif;">
+      Zalando Sans Expanded
+    </div>
+    <div class="detail">
+      Headings, buttons, badges, tabs &middot; Weights 500, 600, 700 &middot; Page titles, card titles, buttons, badges, nav tabs
+    </div>
+  </div>
+
+  <div class="type-specimen">
+    <div class="sample" style="font-family:'Zalando Sans',sans-serif; font-weight:400;">
+      Zalando Sans
+    </div>
+    <div class="detail">
+      Body &middot; Weights 400, 500 &middot; Body text, labels, inputs, table cells, descriptions
+    </div>
+  </div>
+
+  <div class="sub mt-48">
+    <h3>Type Scale</h3>
+    <div class="mt-32">
+      <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:48px;font-weight:700;margin-bottom:4px;letter-spacing:-1px;">Page Title &mdash; 48px / 700</div>
+      <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:32px;font-weight:600;margin-bottom:4px;">Section Title &mdash; 32px / 600</div>
+      <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:20px;font-weight:600;margin-bottom:4px;">Card Title &mdash; 20px / 600</div>
+      <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:14px;font-weight:500;margin-bottom:4px;">Button &mdash; 14px / 500 / Expanded</div>
+      <div style="font-size:15px;font-weight:400;margin-bottom:4px;color:var(--dark-muted);">Body &mdash; 15px / 400</div>
+      <div style="font-size:13px;font-weight:500;margin-bottom:4px;color:var(--dark-muted);">Label &mdash; 13px / 500 / Regular</div>
+      <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;">Overline &mdash; 11px / 600 / Expanded / uppercase</div>
+    </div>
+  </div>
+
+  <div class="sub mt-48">
+    <h3>Usage Rules</h3>
+    <div class="do-dont">
+      <div class="do-card">
+        <span class="badge">Do</span>
+        <p>Use Expanded for headings, buttons, badges, tabs, brand name</p>
+        <p style="margin-top:8px;">Use weight 500 (Medium) for bold body text</p>
+        <p style="margin-top:8px;">Self-host via @fontsource (GDPR, performance)</p>
+      </div>
+      <div class="dont-card">
+        <span class="badge">Don't</span>
+        <p>Use Expanded for body paragraphs or input values</p>
+        <p style="margin-top:8px;">Use weight 700 for body (too heavy)</p>
+        <p style="margin-top:8px;">Load from Google Fonts CDN in production</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 05 — SHAPE & STRUCTURE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">05 &mdash; Shape</div>
+  <h2>Shape &amp; Structure</h2>
+  <p class="lead">
+    Everything is square. Grids are squares. Grida is squares.
+    Bold borders define structure. Shadows are replaced by borders.
+  </p>
+
+  <div class="sub">
+    <h3>Border Radius</h3>
+    <div class="grid-3 mt-32">
+      <div class="card" style="text-align:center;">
+        <div style="width:64px;height:64px;border:2px solid var(--emerald);margin:0 auto 16px;"></div>
+        <div style="font-size:13px;color:var(--emerald);font-weight:600;">0px</div>
+        <div style="font-size:12px;color:var(--dark-muted);">All components</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="width:64px;height:64px;border:2px solid var(--emerald);border-radius:8px;margin:0 auto 16px;opacity:0.3;"></div>
+        <div style="font-size:13px;color:var(--red);font-weight:600;text-decoration:line-through;">8px</div>
+        <div style="font-size:12px;color:var(--dark-muted);">Never</div>
+      </div>
+      <div class="card" style="text-align:center;">
+        <div style="width:64px;height:64px;border:2px solid var(--emerald);border-radius:32px;margin:0 auto 16px;opacity:0.3;"></div>
+        <div style="font-size:13px;color:var(--red);font-weight:600;text-decoration:line-through;">Full</div>
+        <div style="font-size:12px;color:var(--dark-muted);">Never</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Border Weight</h3>
+    <table class="spec-table mt-32">
+      <thead><tr><th>Tier</th><th>Width</th><th>Elements</th></tr></thead>
+      <tbody>
+        <tr><td>Tier 1</td><td><code>2px</code></td><td class="muted">Cards, buttons, inputs, dialogs, badges, sheets</td></tr>
+        <tr><td>Tier 2</td><td><code>1px</code></td><td class="muted">Table rows, wall cells, separators, dropdown items</td></tr>
+        <tr><td>Tier 3 (Accent)</td><td><code>4px</code></td><td class="muted">Active tab indicators, progress bars, emphasis lines</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sub">
+    <h3>Shadows</h3>
+    <p>No box-shadows on cards. Flat + bold border. Shadow implies softness.
+    Grida is sharp. Only exception: focus ring for accessibility.</p>
+  </div>
+
+  <div class="sub">
+    <h3>Alignment</h3>
+    <p>Left-align by default. Text, headings, form labels, logos, and content blocks
+    sit on the same left edge. Center alignment is the exception, not the rule.</p>
+    <div class="do-dont">
+      <div class="do-card">
+        <span class="badge">Do</span>
+        <p>Left-align logo, subtitle, and form fields to the same edge</p>
+        <p style="margin-top:8px;">Left-align page titles, card titles, body text</p>
+        <p style="margin-top:8px;">Anchor content to a consistent left margin</p>
+      </div>
+      <div class="dont-card">
+        <span class="badge">Don't</span>
+        <p>Center-align form headers while left-aligning inputs</p>
+        <p style="margin-top:8px;">Mix alignment directions within the same content block</p>
+        <p style="margin-top:8px;">Center body text or labels</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 06 — VOICE & TONE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">06 &mdash; Voice</div>
+  <h2>Voice &amp; Tone</h2>
+  <p class="lead">
+    Grida speaks like a smart colleague &mdash; confident, warm, plain.
+    Never like a corporate memo. Never like it's unsure of itself.
+  </p>
+
+  <div class="sub">
+    <h3>Voice Dimensions</h3>
+    <div class="mt-32">
+      <div class="voice-row">
+        <div class="voice-label">Formality</div>
+        <div class="voice-do">Casual-professional. "Your shipment is ready."</div>
+        <div class="voice-dont">Not corporate. Not "Dear User, we wish to inform you..."</div>
+      </div>
+      <div class="voice-row">
+        <div class="voice-label">Technical</div>
+        <div class="voice-do">Plain first. "15 orders loaded."</div>
+        <div class="voice-dont">Not jargon. Not "15 items ingested into the pipeline."</div>
+      </div>
+      <div class="voice-row">
+        <div class="voice-label">Warmth</div>
+        <div class="voice-do">Friendly but not chatty. One exclamation mark max.</div>
+        <div class="voice-dont">Not cold. Not "Error 403." Not "Yay!!! Amazing!!!"</div>
+      </div>
+      <div class="voice-row">
+        <div class="voice-label">Confidence</div>
+        <div class="voice-do">Self-assured. "Shipment complete."</div>
+        <div class="voice-dont">Not hedging. Not "We think your shipment might be ready."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub">
+    <h3>Copy Examples</h3>
+    <div class="do-dont">
+      <div class="do-card">
+        <span class="badge">Grida says</span>
+        <p>"Shipment created."</p>
+        <p style="margin-top:8px;">"All orders loaded."</p>
+        <p style="margin-top:8px;">"Save failed. Try again."</p>
+        <p style="margin-top:8px;">"Welcome."</p>
+      </div>
+      <div class="dont-card">
+        <span class="badge">Grida doesn't say</span>
+        <p>"Shipment was successfully created!!!"</p>
+        <p style="margin-top:8px;">"Dear User, loading has been completed."</p>
+        <p style="margin-top:8px;">"Error: SAVE_FAILED_ERR_500"</p>
+        <p style="margin-top:8px;">"Hey friend! So glad to see you! 🎉"</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 07 — COMPONENTS -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">07 &mdash; Components</div>
+  <h2>Component Expression</h2>
+  <p class="lead">
+    How the brand shows up in UI components. Every button, card, and input
+    should feel like Grida, not like a default library.
+  </p>
+
+  <div class="sub">
+    <h3>Buttons</h3>
+    <div class="grid-4 mt-32">
+      <div class="card white" style="display:flex;align-items:center;justify-content:center;padding:40px 16px;">
+        <div style="background:#3ECF8E;color:#0D1912;padding:10px 24px;font-family:'Zalando Sans Expanded',sans-serif;font-size:14px;font-weight:500;border:2px solid #3ECF8E;">Create shipment</div>
+      </div>
+      <div class="card white" style="display:flex;align-items:center;justify-content:center;padding:40px 16px;">
+        <div style="background:white;color:#0D1912;padding:10px 24px;font-family:'Zalando Sans Expanded',sans-serif;font-size:14px;font-weight:500;border:2px solid #D4E5DC;">Cancel</div>
+      </div>
+      <div class="card white" style="display:flex;align-items:center;justify-content:center;padding:40px 16px;">
+        <div style="background:#DC3545;color:white;padding:10px 24px;font-family:'Zalando Sans Expanded',sans-serif;font-size:14px;font-weight:500;border:2px solid #DC3545;">Delete</div>
+      </div>
+      <div class="card" style="display:flex;align-items:center;justify-content:center;padding:40px 16px;">
+        <div style="background:#3ECF8E;color:#0D1912;padding:10px 24px;font-family:'Zalando Sans Expanded',sans-serif;font-size:14px;font-weight:500;border:2px solid #3ECF8E;">Create shipment</div>
+      </div>
+    </div>
+    <p class="mt-32" style="font-size:13px;color:var(--dark-muted);">
+      Square corners. 2px border. No shadows. Brand green for primary actions.
+    </p>
+  </div>
+
+  <div class="sub">
+    <h3>Cards</h3>
+    <div class="grid-2 mt-32">
+      <div style="background:white;border:2px solid #D4E5DC;padding:24px;">
+        <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:16px;font-weight:600;color:#0D1912;margin-bottom:8px;">Shipment #142</div>
+        <div style="font-size:14px;color:#6B8F7B;">15 orders &middot; 3 loaded</div>
+        <div style="margin-top:16px;height:6px;background:#EDF3EF;">
+          <div style="width:20%;height:100%;background:#3ECF8E;"></div>
+        </div>
+      </div>
+      <div style="background:#132219;border:2px solid #1E3A2C;padding:24px;">
+        <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:16px;font-weight:600;color:#F0FDF4;margin-bottom:8px;">Shipment #142</div>
+        <div style="font-size:14px;color:#4A6B5C;">15 orders &middot; 3 loaded</div>
+        <div style="margin-top:16px;height:6px;background:#1E3A2C;">
+          <div style="width:20%;height:100%;background:#3ECF8E;"></div>
+        </div>
+      </div>
+    </div>
+    <p class="mt-32" style="font-size:13px;color:var(--dark-muted);">
+      2px border. No shadow. Heading in Expanded. Progress bar is square-ended.
+    </p>
+  </div>
+
+  <div class="sub">
+    <h3>Badges</h3>
+    <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+      <span style="padding:4px 12px;font-size:11px;font-weight:600;border:2px solid #D4E5DC;color:#6B8F7B;background:#EDF3EF;text-transform:uppercase;letter-spacing:1px;">Pending</span>
+      <span style="padding:4px 12px;font-size:11px;font-weight:600;border:2px solid #2CA8A0;color:#1E7A74;background:#E0F5F3;text-transform:uppercase;letter-spacing:1px;">Loaded</span>
+      <span style="padding:4px 12px;font-size:11px;font-weight:600;border:2px solid #3ECF8E;color:#1E7A60;background:#D1FAE5;text-transform:uppercase;letter-spacing:1px;">Active</span>
+      <span style="padding:4px 12px;font-size:11px;font-weight:600;border:2px solid #DC3545;color:#DC3545;background:#FEE2E5;text-transform:uppercase;letter-spacing:1px;">Error</span>
+    </div>
+    <p class="mt-32" style="font-size:13px;color:var(--dark-muted);">
+      Square (no pills). 2px border. ALL CAPS with letter-spacing. Status colors distinct from brand green.
+    </p>
+  </div>
+
+  <div class="sub">
+    <h3>Inputs</h3>
+    <div class="grid-2 mt-32">
+      <div class="card white">
+        <div style="border:2px solid #D4E5DC;padding:10px 14px;font-family:'Zalando Sans',sans-serif;font-size:14px;color:#0D1912;">example@grida.io</div>
+        <div style="margin-top:16px;border:2px solid #0D1912;padding:10px 14px;font-family:'Zalando Sans',sans-serif;font-size:14px;color:#0D1912;box-shadow:0 0 0 2px rgba(13,25,18,0.15);">Focused input</div>
+      </div>
+      <div class="card">
+        <div style="border:2px solid #1E3A2C;padding:10px 14px;font-family:'Zalando Sans',sans-serif;font-size:14px;color:#F0FDF4;background:#132219;">example@grida.io</div>
+        <div style="margin-top:16px;border:2px solid #F0FDF4;padding:10px 14px;font-family:'Zalando Sans',sans-serif;font-size:14px;color:#F0FDF4;background:#132219;box-shadow:0 0 0 2px rgba(240,253,244,0.15);">Focused input</div>
+      </div>
+    </div>
+    <p class="mt-32" style="font-size:13px;color:var(--dark-muted);">
+      2px border. Foreground-color focus border (not green). Square corners.
+      Input focus uses <code style="font-family:'SF Mono',monospace;font-size:11px;background:var(--dark-surface);padding:2px 6px;color:var(--emerald-bright);">--input-focus</code>
+      token: near-black (light) / near-white (dark).
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 08 — MOCKUPS -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">08 &mdash; Mockups</div>
+  <h2>Brand in Context</h2>
+  <p class="lead">
+    How Grida looks in real UI contexts. Login screen and dashboard header.
+  </p>
+
+  <div class="sub">
+    <h3>Login Screen</h3>
+    <div class="mockup-frame mt-32">
+      <div class="mockup-bar">
+        <div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div>
+      </div>
+      <div style="background:#FBFDFC;padding:64px 40px;display:flex;flex-direction:column;align-items:center;">
+        <div style="width:280px;">
+        <div style="display:flex;align-items:flex-end;gap:3px;margin-bottom:8px;">
+          <svg viewBox="0 0 64 64" width="32" height="32">
+            <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+            <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+            <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+            <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+            <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+            <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+            <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+            <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+            <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+          </svg>
+          <span style="font-family:'Zalando Sans Expanded',sans-serif;font-size:22px;font-weight:500;color:#0D1912;transform:translateY(3px);line-height:1;">Grida</span>
+        </div>
+        <div style="font-size:13px;color:#6B8F7B;margin-bottom:32px;">Sign in to your account</div>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:#0D1912;margin-bottom:4px;">Email</div>
+          <div style="border:2px solid #D4E5DC;padding:10px 14px;font-size:14px;color:#6B8F7B;margin-bottom:16px;">admin@grida.io</div>
+          <div style="font-size:13px;font-weight:500;color:#0D1912;margin-bottom:4px;">Password</div>
+          <div style="border:2px solid #D4E5DC;padding:10px 14px;font-size:14px;color:#6B8F7B;margin-bottom:24px;">••••••••</div>
+          <div style="background:#3ECF8E;color:#0D1912;padding:12px;text-align:center;font-family:'Zalando Sans Expanded',sans-serif;font-size:14px;font-weight:500;border:2px solid #3ECF8E;">Sign in</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sub mt-48">
+    <h3>Dashboard Header</h3>
+    <div class="mockup-frame mt-32">
+      <div class="mockup-bar">
+        <div class="mockup-dot"></div><div class="mockup-dot"></div><div class="mockup-dot"></div>
+      </div>
+      <div style="background:#FBFDFC;border-bottom:2px solid #D4E5DC;padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:16px;">
+          <div style="display:flex;align-items:flex-end;gap:2px;">
+            <svg viewBox="0 0 64 64" width="24" height="24">
+              <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+              <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+              <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+              <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+              <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+              <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+              <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+              <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+              <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+            </svg>
+            <span style="font-family:'Zalando Sans Expanded',sans-serif;font-size:16px;font-weight:500;color:#0D1912;transform:translateY(3px);line-height:1;">Grida</span>
+          </div>
+          <div style="display:flex;gap:24px;font-size:14px;margin-left:24px;">
+            <span style="font-family:'Zalando Sans Expanded',sans-serif;color:#00875A;font-weight:500;border-bottom:4px solid #3ECF8E;padding-bottom:12px;">Shipments</span>
+            <span style="font-family:'Zalando Sans Expanded',sans-serif;color:#4A5E52;">Profile</span>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:center;">
+          <div style="width:32px;height:32px;background:#3ECF8E;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:600;">AK</div>
+        </div>
+      </div>
+      <div style="background:#FBFDFC;padding:24px;min-height:80px;">
+        <div style="font-family:'Zalando Sans Expanded',sans-serif;font-size:24px;font-weight:600;color:#0D1912;">Shipments</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════ -->
+<!-- 09 — QUICK REFERENCE -->
+<!-- ═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-num">09 &mdash; Reference</div>
+  <h2>Quick Reference</h2>
+
+  <table class="spec-table mt-32">
+    <thead><tr><th>Property</th><th>Value</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Brand Name</td><td>Grida</td><td class="muted">Pronounced GRI-da</td></tr>
+      <tr><td>Tagline</td><td>The grid sees everything.</td><td class="muted"></td></tr>
+      <tr><td>Primary Color (Light)</td><td><code>oklch(0.70 0.19 160)</code></td><td class="muted">#3ECF8E — dark text on green</td></tr>
+      <tr><td>Primary Color (Dark)</td><td><code>oklch(0.70 0.19 160)</code></td><td class="muted">#3ECF8E</td></tr>
+      <tr><td>Heading Font</td><td>Zalando Sans Expanded</td><td class="muted">Headings: 600, 700. Buttons, badges: 500</td></tr>
+      <tr><td>Body Font</td><td>Zalando Sans</td><td class="muted">Body, labels, inputs, tables: 400, 500</td></tr>
+      <tr><td>Border Radius</td><td><code>0</code></td><td class="muted">All tokens, no exceptions</td></tr>
+      <tr><td>Tier 1 Border</td><td><code>2px</code></td><td class="muted">Cards, buttons, inputs</td></tr>
+      <tr><td>Tier 2 Border</td><td><code>1px</code></td><td class="muted">Tables, grid cells</td></tr>
+      <tr><td>Tier 3 Border (Accent)</td><td><code>4px</code></td><td class="muted">Tab indicators, progress bars</td></tr>
+      <tr><td>Shadows</td><td>None</td><td class="muted">Flat + border approach</td></tr>
+      <tr><td>Logo (Primary)</td><td>Scoped G</td><td class="muted">≥ 32px</td></tr>
+      <tr><td>Logo (Favicon)</td><td>Grid G</td><td class="muted">&lt; 32px</td></tr>
+      <tr><td>Tab Active Text</td><td><code>oklch(0.55 0.20 160)</code></td><td class="muted">Darker emerald for readability on white</td></tr>
+      <tr><td>Tab Active Underline</td><td><code>oklch(0.70 0.19 160)</code></td><td class="muted">Bright primary for indicator line</td></tr>
+      <tr><td>Tab Inactive Text</td><td><code>oklch(0.38 0.04 160)</code></td><td class="muted">Muted dark green-gray</td></tr>
+      <tr><td>Lockup Wordmark</td><td>Zalando Sans Expanded 500</td><td class="muted">Full "Grida", baseline-aligned</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div>Grida Brand Book v1.0</div>
+  <div>Designed by Alfredo (Brand Designer) &mdash; March 2026</div>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

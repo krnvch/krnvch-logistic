@@ -1,6 +1,7 @@
-# krnvchLogistic
+# Grida (formerly krnvchLogistic)
 
 Logistics management web application.
+**Brand name**: Grida. **Tagline**: "The grid sees everything."
 
 ## Tech Stack
 
@@ -59,6 +60,39 @@ src/
 - TypeScript strict mode with `noUnusedLocals` and `noUnusedParameters`
 - Environment variables prefixed with `VITE_` (accessed via `import.meta.env`)
 - Never commit `.env` files — use `.env.example` as reference
+
+## Brand Governance
+
+The brand book is the source of truth for all visual decisions. Two-directional sync:
+
+### Brand → Code (before any UI work)
+
+Before writing or modifying any UI component, styling, or CSS:
+
+1. **Consult** `docs/brand/visual-identity.md` for exact token values (colors, fonts, borders, radius)
+2. **Check** `docs/brand/brand-book.html` for design principles (left-alignment, shape language, voice)
+3. **Use oklch values** from visual-identity.md, NOT hex approximations from the brand book HTML
+4. **Follow font rules**: Zalando Sans Expanded for headings/buttons/badges/tabs. Zalando Sans for body/labels/inputs/tables.
+5. **Follow border tiers**: Tier 1 (2px), Tier 2 (1px), Tier 3 accent (4px). No shadows on cards.
+6. **Follow color rules**: Input focus = foreground color (not green). Tab active text = darker emerald (not bright primary). Badges = ALL CAPS.
+
+### Code → Brand (after creating new patterns)
+
+After implementing a new UI pattern, component variant, or design decision NOT covered by the brand book:
+
+1. **Update** `docs/brand/visual-identity.md` with new token values or rules
+2. **Update** `docs/brand/brand-book.html` if the change affects visual guidelines (add mockup, swatch, or rule)
+3. **Update** `docs/brand/brand-journey.md` with the decision and rationale
+4. Never let code drift from the brand book — if you make a visual choice, document it immediately
+
+### Key Brand Files
+
+| File | Purpose | When to read |
+|------|---------|-------------|
+| `docs/brand/visual-identity.md` | Token values (source of truth for implementation) | Before ANY CSS/styling work |
+| `docs/brand/brand-book.html` | Design principles, mockups, do's/don'ts | Before designing new UI patterns |
+| `docs/brand/brand-journey.md` | Decision log (why choices were made) | When questioning a design decision |
+| `docs/brand/logo/final-*.svg` | Logo SVG assets | When touching logo/favicon/header |
 
 ## Team & Agents
 

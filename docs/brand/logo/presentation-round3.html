@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grida — Logo Round 3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zalando+Sans:wght@400;500;600;700&family=Zalando+Sans+Expanded:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --emerald: #00875A;
+      --emerald-bright: #3ECF8E;
+      --dark-bg: #0D1912;
+      --dark-card: #132219;
+      --dark-border: #1E3A2C;
+      --dark-muted: #4A6B5C;
+      --light-bg: #FBFDFC;
+      --near-black: #0D1912;
+      --near-white: #F0FDF4;
+    }
+
+    body {
+      font-family: 'Zalando Sans', system-ui, sans-serif;
+      background: var(--dark-bg);
+      color: var(--near-white);
+    }
+
+    .container { max-width: 1100px; margin: 0 auto; padding: 80px 40px; }
+
+    .header { margin-bottom: 80px; text-align: center; }
+    .header .round-label {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 12px; font-weight: 600; color: var(--emerald);
+      letter-spacing: 4px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .header h1 {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 48px; font-weight: 700; color: var(--near-white);
+      margin-bottom: 12px; letter-spacing: -1px;
+    }
+    .header .subtitle {
+      font-size: 16px; color: var(--dark-muted); max-width: 560px; margin: 0 auto; line-height: 1.6;
+    }
+
+    .concept { margin-bottom: 100px; }
+    .concept-label {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 12px; font-weight: 600; color: var(--emerald);
+      letter-spacing: 3px; text-transform: uppercase; margin-bottom: 4px;
+    }
+    .concept-name {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 32px; font-weight: 600; color: var(--near-white); margin-bottom: 8px;
+    }
+    .concept-desc {
+      font-size: 15px; color: var(--dark-muted); max-width: 600px;
+      margin-bottom: 40px; line-height: 1.7;
+    }
+    .concept-desc strong { color: var(--near-white); }
+
+    .changes {
+      font-size: 13px; color: var(--emerald); margin-bottom: 24px;
+      padding: 12px 16px; border: 1px solid var(--dark-border); background: var(--dark-card);
+      display: inline-block;
+    }
+    .changes::before { content: "Round 3 changes: "; font-weight: 600; }
+
+    /* Grid */
+    .logo-row {
+      display: grid; grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 2px; margin-bottom: 2px;
+    }
+    .logo-card {
+      padding: 44px 32px; display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      min-height: 160px; position: relative;
+    }
+    .logo-card.light { background: var(--light-bg); }
+    .logo-card.dark { background: var(--dark-card); }
+    .logo-card .card-label {
+      position: absolute; top: 12px; left: 16px;
+      font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 600;
+    }
+    .logo-card.light .card-label { color: #6B8F7B; }
+    .logo-card.dark .card-label { color: var(--dark-muted); }
+
+    /* ── Option A lockup: G replaces first letter ── */
+    .lockup-a {
+      display: flex;
+      align-items: flex-end; /* baseline alignment */
+      gap: 2px; /* tight, like letter-spacing */
+    }
+    .lockup-a svg {
+      flex-shrink: 0;
+      /* Shift down slightly so G bottom bar sits on text baseline */
+      margin-bottom: 1px;
+    }
+    .lockup-a .wordmark {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 34px; font-weight: 600; letter-spacing: -0.3px;
+      line-height: 1;
+    }
+    .light .lockup-a .wordmark { color: var(--near-black); }
+    .dark .lockup-a .wordmark { color: var(--near-white); }
+
+    /* ── Option B lockup: icon + full wordmark ── */
+    .lockup-b {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .lockup-b .wordmark {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 30px; font-weight: 600; letter-spacing: -0.3px;
+    }
+    .light .lockup-b .wordmark { color: var(--near-black); }
+    .dark .lockup-b .wordmark { color: var(--near-white); }
+
+    /* ── Option C lockup: scoped G + rida ── */
+    .lockup-c {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+    }
+    .lockup-c svg {
+      flex-shrink: 0;
+      margin-bottom: 1px;
+    }
+    .lockup-c .wordmark {
+      font-family: 'Zalando Sans Expanded', system-ui, sans-serif;
+      font-size: 34px; font-weight: 600; letter-spacing: -0.3px;
+      line-height: 1;
+    }
+    .light .lockup-c .wordmark { color: var(--near-black); }
+    .dark .lockup-c .wordmark { color: var(--near-white); }
+
+    /* Favicon */
+    .favicon-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px; background: var(--dark-card);
+      border: 1px solid var(--dark-border); margin-top: 8px;
+    }
+    .fav-label {
+      font-size: 10px; color: var(--dark-muted);
+      letter-spacing: 1.5px; text-transform: uppercase;
+      font-weight: 600; min-width: 80px;
+    }
+    .fav-box {
+      width: 28px; height: 28px; display: flex;
+      align-items: center; justify-content: center;
+      border: 1px solid var(--dark-border);
+    }
+    .fav-box.light { background: white; }
+    .fav-box.dark { background: var(--dark-bg); }
+    .fav-box svg { width: 16px; height: 16px; }
+    .fav-box-32 {
+      width: 40px; height: 40px; display: flex;
+      align-items: center; justify-content: center;
+      border: 1px solid var(--dark-border);
+    }
+    .fav-box-32.light { background: white; }
+    .fav-box-32.dark { background: var(--dark-bg); }
+    .fav-box-32 svg { width: 32px; height: 32px; }
+    .fav-sep { width: 1px; height: 20px; background: var(--dark-border); margin: 0 4px; }
+
+    .footer {
+      margin-top: 80px; padding-top: 32px;
+      border-top: 1px solid var(--dark-border);
+      font-size: 12px; color: var(--dark-muted);
+      display: flex; justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="round-label">Round 3 &mdash; Refined</div>
+    <h1>Logo Concepts</h1>
+    <p class="subtitle">
+      Lockup proportions fixed: G mark and wordmark now balanced in visual volume.
+      Line weights harmonized across all options. Baseline alignment corrected.
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- OPTION A: GRID G -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="concept">
+    <div class="concept-label">Option A</div>
+    <div class="concept-name">Grid G</div>
+    <p class="concept-desc">
+      Letter G from 5 perpendicular bars. In the lockup, the mark replaces the
+      first letter: <strong>[G]rida</strong>. Tighter spacing, matched size.
+    </p>
+    <div class="changes">G scaled to cap-height, baseline aligned, gap tightened to letter-spacing</div>
+
+    <div class="logo-row">
+      <!-- Icon Light -->
+      <div class="logo-card light">
+        <span class="card-label">Icon &middot; Light</span>
+        <svg viewBox="0 0 56 64" width="48" height="55">
+          <rect x="0" y="0" width="56" height="11" fill="#00875A"/>
+          <rect x="0" y="0" width="11" height="64" fill="#00875A"/>
+          <rect x="0" y="53" width="56" height="11" fill="#00875A"/>
+          <rect x="45" y="30" width="11" height="34" fill="#00875A"/>
+          <rect x="24" y="30" width="32" height="11" fill="#00875A"/>
+        </svg>
+      </div>
+      <!-- Icon Dark -->
+      <div class="logo-card dark">
+        <span class="card-label">Icon &middot; Dark</span>
+        <svg viewBox="0 0 56 64" width="48" height="55">
+          <rect x="0" y="0" width="56" height="11" fill="#3ECF8E"/>
+          <rect x="0" y="0" width="11" height="64" fill="#3ECF8E"/>
+          <rect x="0" y="53" width="56" height="11" fill="#3ECF8E"/>
+          <rect x="45" y="30" width="11" height="34" fill="#3ECF8E"/>
+          <rect x="24" y="30" width="32" height="11" fill="#3ECF8E"/>
+        </svg>
+      </div>
+      <!-- Lockup Light — G sized to match text cap-height -->
+      <div class="logo-card light">
+        <span class="card-label">Lockup &middot; Light</span>
+        <div class="lockup-a">
+          <svg viewBox="0 0 56 64" width="22" height="25">
+            <rect x="0" y="0" width="56" height="11" fill="#00875A"/>
+            <rect x="0" y="0" width="11" height="64" fill="#00875A"/>
+            <rect x="0" y="53" width="56" height="11" fill="#00875A"/>
+            <rect x="45" y="30" width="11" height="34" fill="#00875A"/>
+            <rect x="24" y="30" width="32" height="11" fill="#00875A"/>
+          </svg>
+          <span class="wordmark">rida</span>
+        </div>
+      </div>
+      <!-- Lockup Dark -->
+      <div class="logo-card dark">
+        <span class="card-label">Lockup &middot; Dark</span>
+        <div class="lockup-a">
+          <svg viewBox="0 0 56 64" width="22" height="25">
+            <rect x="0" y="0" width="56" height="11" fill="#3ECF8E"/>
+            <rect x="0" y="0" width="11" height="64" fill="#3ECF8E"/>
+            <rect x="0" y="53" width="56" height="11" fill="#3ECF8E"/>
+            <rect x="45" y="30" width="11" height="34" fill="#3ECF8E"/>
+            <rect x="24" y="30" width="32" height="11" fill="#3ECF8E"/>
+          </svg>
+          <span class="wordmark">rida</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="favicon-row">
+      <span class="fav-label">Size test</span>
+      <div class="fav-box light"><svg viewBox="0 0 56 64"><rect x="0" y="0" width="56" height="11" fill="#00875A"/><rect x="0" y="0" width="11" height="64" fill="#00875A"/><rect x="0" y="53" width="56" height="11" fill="#00875A"/><rect x="45" y="30" width="11" height="34" fill="#00875A"/><rect x="24" y="30" width="32" height="11" fill="#00875A"/></svg></div>
+      <div class="fav-box dark"><svg viewBox="0 0 56 64"><rect x="0" y="0" width="56" height="11" fill="#3ECF8E"/><rect x="0" y="0" width="11" height="64" fill="#3ECF8E"/><rect x="0" y="53" width="56" height="11" fill="#3ECF8E"/><rect x="45" y="30" width="11" height="34" fill="#3ECF8E"/><rect x="24" y="30" width="32" height="11" fill="#3ECF8E"/></svg></div>
+      <div class="fav-sep"></div>
+      <div class="fav-box-32 light"><svg viewBox="0 0 56 64"><rect x="0" y="0" width="56" height="11" fill="#00875A"/><rect x="0" y="0" width="11" height="64" fill="#00875A"/><rect x="0" y="53" width="56" height="11" fill="#00875A"/><rect x="45" y="30" width="11" height="34" fill="#00875A"/><rect x="24" y="30" width="32" height="11" fill="#00875A"/></svg></div>
+      <div class="fav-box-32 dark"><svg viewBox="0 0 56 64"><rect x="0" y="0" width="56" height="11" fill="#3ECF8E"/><rect x="0" y="0" width="11" height="64" fill="#3ECF8E"/><rect x="0" y="53" width="56" height="11" fill="#3ECF8E"/><rect x="45" y="30" width="11" height="34" fill="#3ECF8E"/><rect x="24" y="30" width="32" height="11" fill="#3ECF8E"/></svg></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- OPTION B: THE SIGNAL -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="concept">
+    <div class="concept-label">Option B</div>
+    <div class="concept-name">The Signal</div>
+    <p class="concept-desc">
+      Two corner brackets framing empty space. Precision marks.
+      Pairs with the full wordmark: [mark] <strong>Grida</strong>.
+    </p>
+    <div class="changes">Bracket thickness increased from 6 to 8 to match font stroke weight</div>
+
+    <div class="logo-row">
+      <!-- Icon Light — thicker brackets (8px in 60x60 viewBox) -->
+      <div class="logo-card light">
+        <span class="card-label">Icon &middot; Light</span>
+        <svg viewBox="0 0 60 60" width="52" height="52">
+          <rect x="0" y="0" width="26" height="8" fill="#00875A"/>
+          <rect x="0" y="0" width="8" height="26" fill="#00875A"/>
+          <rect x="34" y="52" width="26" height="8" fill="#00875A"/>
+          <rect x="52" y="34" width="8" height="26" fill="#00875A"/>
+        </svg>
+      </div>
+      <!-- Icon Dark -->
+      <div class="logo-card dark">
+        <span class="card-label">Icon &middot; Dark</span>
+        <svg viewBox="0 0 60 60" width="52" height="52">
+          <rect x="0" y="0" width="26" height="8" fill="#3ECF8E"/>
+          <rect x="0" y="0" width="8" height="26" fill="#3ECF8E"/>
+          <rect x="34" y="52" width="26" height="8" fill="#3ECF8E"/>
+          <rect x="52" y="34" width="8" height="26" fill="#3ECF8E"/>
+        </svg>
+      </div>
+      <!-- Lockup Light -->
+      <div class="logo-card light">
+        <span class="card-label">Lockup &middot; Light</span>
+        <div class="lockup-b">
+          <svg viewBox="0 0 60 60" width="32" height="32">
+            <rect x="0" y="0" width="26" height="8" fill="#00875A"/>
+            <rect x="0" y="0" width="8" height="26" fill="#00875A"/>
+            <rect x="34" y="52" width="26" height="8" fill="#00875A"/>
+            <rect x="52" y="34" width="8" height="26" fill="#00875A"/>
+          </svg>
+          <span class="wordmark">Grida</span>
+        </div>
+      </div>
+      <!-- Lockup Dark -->
+      <div class="logo-card dark">
+        <span class="card-label">Lockup &middot; Dark</span>
+        <div class="lockup-b">
+          <svg viewBox="0 0 60 60" width="32" height="32">
+            <rect x="0" y="0" width="26" height="8" fill="#3ECF8E"/>
+            <rect x="0" y="0" width="8" height="26" fill="#3ECF8E"/>
+            <rect x="34" y="52" width="26" height="8" fill="#3ECF8E"/>
+            <rect x="52" y="34" width="8" height="26" fill="#3ECF8E"/>
+          </svg>
+          <span class="wordmark">Grida</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="favicon-row">
+      <span class="fav-label">Size test</span>
+      <div class="fav-box light"><svg viewBox="0 0 60 60"><rect x="0" y="0" width="26" height="8" fill="#00875A"/><rect x="0" y="0" width="8" height="26" fill="#00875A"/><rect x="34" y="52" width="26" height="8" fill="#00875A"/><rect x="52" y="34" width="8" height="26" fill="#00875A"/></svg></div>
+      <div class="fav-box dark"><svg viewBox="0 0 60 60"><rect x="0" y="0" width="26" height="8" fill="#3ECF8E"/><rect x="0" y="0" width="8" height="26" fill="#3ECF8E"/><rect x="34" y="52" width="26" height="8" fill="#3ECF8E"/><rect x="52" y="34" width="8" height="26" fill="#3ECF8E"/></svg></div>
+      <div class="fav-sep"></div>
+      <div class="fav-box-32 light"><svg viewBox="0 0 60 60"><rect x="0" y="0" width="26" height="8" fill="#00875A"/><rect x="0" y="0" width="8" height="26" fill="#00875A"/><rect x="34" y="52" width="26" height="8" fill="#00875A"/><rect x="52" y="34" width="8" height="26" fill="#00875A"/></svg></div>
+      <div class="fav-box-32 dark"><svg viewBox="0 0 60 60"><rect x="0" y="0" width="26" height="8" fill="#3ECF8E"/><rect x="0" y="0" width="8" height="26" fill="#3ECF8E"/><rect x="34" y="52" width="26" height="8" fill="#3ECF8E"/><rect x="52" y="34" width="8" height="26" fill="#3ECF8E"/></svg></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- OPTION C: SCOPED G -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="concept">
+    <div class="concept-label">Option C</div>
+    <div class="concept-name">Scoped G</div>
+    <p class="concept-desc">
+      Brackets frame the G. All elements at equal weight &mdash; brackets and G bars
+      share the same 6px thickness. One unified mark.
+    </p>
+    <div class="changes">Brackets and G bars equalized to 6px thickness (was 5 vs 7)</div>
+
+    <div class="logo-row">
+      <!-- Icon Light — all bars 6px -->
+      <div class="logo-card light">
+        <span class="card-label">Icon &middot; Light</span>
+        <svg viewBox="0 0 64 64" width="56" height="56">
+          <!-- Brackets (6px) -->
+          <rect x="0" y="0" width="22" height="6" fill="#00875A"/>
+          <rect x="0" y="0" width="6" height="22" fill="#00875A"/>
+          <rect x="42" y="58" width="22" height="6" fill="#00875A"/>
+          <rect x="58" y="42" width="6" height="22" fill="#00875A"/>
+          <!-- G (6px) -->
+          <rect x="15" y="14" width="34" height="6" fill="#00875A"/>
+          <rect x="15" y="14" width="6" height="36" fill="#00875A"/>
+          <rect x="15" y="44" width="34" height="6" fill="#00875A"/>
+          <rect x="43" y="31" width="6" height="19" fill="#00875A"/>
+          <rect x="30" y="31" width="19" height="6" fill="#00875A"/>
+        </svg>
+      </div>
+      <!-- Icon Dark -->
+      <div class="logo-card dark">
+        <span class="card-label">Icon &middot; Dark</span>
+        <svg viewBox="0 0 64 64" width="56" height="56">
+          <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+          <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+          <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+          <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+          <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+          <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+          <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+          <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+          <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+        </svg>
+      </div>
+      <!-- Lockup Light -->
+      <div class="logo-card light">
+        <span class="card-label">Lockup &middot; Light</span>
+        <div class="lockup-c">
+          <svg viewBox="0 0 64 64" width="28" height="28">
+            <rect x="0" y="0" width="22" height="6" fill="#00875A"/>
+            <rect x="0" y="0" width="6" height="22" fill="#00875A"/>
+            <rect x="42" y="58" width="22" height="6" fill="#00875A"/>
+            <rect x="58" y="42" width="6" height="22" fill="#00875A"/>
+            <rect x="15" y="14" width="34" height="6" fill="#00875A"/>
+            <rect x="15" y="14" width="6" height="36" fill="#00875A"/>
+            <rect x="15" y="44" width="34" height="6" fill="#00875A"/>
+            <rect x="43" y="31" width="6" height="19" fill="#00875A"/>
+            <rect x="30" y="31" width="19" height="6" fill="#00875A"/>
+          </svg>
+          <span class="wordmark">rida</span>
+        </div>
+      </div>
+      <!-- Lockup Dark -->
+      <div class="logo-card dark">
+        <span class="card-label">Lockup &middot; Dark</span>
+        <div class="lockup-c">
+          <svg viewBox="0 0 64 64" width="28" height="28">
+            <rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/>
+            <rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/>
+            <rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/>
+            <rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/>
+            <rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/>
+            <rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/>
+            <rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/>
+            <rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/>
+            <rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/>
+          </svg>
+          <span class="wordmark">rida</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="favicon-row">
+      <span class="fav-label">Size test</span>
+      <div class="fav-box light"><svg viewBox="0 0 64 64"><rect x="0" y="0" width="22" height="6" fill="#00875A"/><rect x="0" y="0" width="6" height="22" fill="#00875A"/><rect x="42" y="58" width="22" height="6" fill="#00875A"/><rect x="58" y="42" width="6" height="22" fill="#00875A"/><rect x="15" y="14" width="34" height="6" fill="#00875A"/><rect x="15" y="14" width="6" height="36" fill="#00875A"/><rect x="15" y="44" width="34" height="6" fill="#00875A"/><rect x="43" y="31" width="6" height="19" fill="#00875A"/><rect x="30" y="31" width="19" height="6" fill="#00875A"/></svg></div>
+      <div class="fav-box dark"><svg viewBox="0 0 64 64"><rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/><rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/><rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/><rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/><rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/><rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/><rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/><rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/><rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/></svg></div>
+      <div class="fav-sep"></div>
+      <div class="fav-box-32 light"><svg viewBox="0 0 64 64"><rect x="0" y="0" width="22" height="6" fill="#00875A"/><rect x="0" y="0" width="6" height="22" fill="#00875A"/><rect x="42" y="58" width="22" height="6" fill="#00875A"/><rect x="58" y="42" width="6" height="22" fill="#00875A"/><rect x="15" y="14" width="34" height="6" fill="#00875A"/><rect x="15" y="14" width="6" height="36" fill="#00875A"/><rect x="15" y="44" width="34" height="6" fill="#00875A"/><rect x="43" y="31" width="6" height="19" fill="#00875A"/><rect x="30" y="31" width="19" height="6" fill="#00875A"/></svg></div>
+      <div class="fav-box-32 dark"><svg viewBox="0 0 64 64"><rect x="0" y="0" width="22" height="6" fill="#3ECF8E"/><rect x="0" y="0" width="6" height="22" fill="#3ECF8E"/><rect x="42" y="58" width="22" height="6" fill="#3ECF8E"/><rect x="58" y="42" width="6" height="22" fill="#3ECF8E"/><rect x="15" y="14" width="34" height="6" fill="#3ECF8E"/><rect x="15" y="14" width="6" height="36" fill="#3ECF8E"/><rect x="15" y="44" width="34" height="6" fill="#3ECF8E"/><rect x="43" y="31" width="6" height="19" fill="#3ECF8E"/><rect x="30" y="31" width="19" height="6" fill="#3ECF8E"/></svg></div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>Grida Brand &mdash; Logo Round 3</div>
+    <div>Alfredo &mdash; March 2026</div>
+  </div>
+</div>
+</body>
+</html>

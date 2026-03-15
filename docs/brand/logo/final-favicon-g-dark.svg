@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 56 64" width="56" height="64" role="img" aria-labelledby="title desc">
+  <title id="title">Grida Favicon — Dark</title>
+  <desc id="desc">Grid G without brackets — dark mode, for browser tabs and small sizes</desc>
+  <rect x="0" y="0" width="56" height="11" fill="#3ECF8E"/>
+  <rect x="0" y="0" width="11" height="64" fill="#3ECF8E"/>
+  <rect x="0" y="53" width="56" height="11" fill="#3ECF8E"/>
+  <rect x="45" y="30" width="11" height="34" fill="#3ECF8E"/>
+  <rect x="24" y="30" width="32" height="11" fill="#3ECF8E"/>
+</svg>
