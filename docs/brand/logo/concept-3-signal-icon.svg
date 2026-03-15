@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="60" height="60" role="img" aria-labelledby="title desc">
+  <title id="title">Grida Logo</title>
+  <desc id="desc">Two corner brackets forming a precision viewfinder — the grid sees everything</desc>
+  <!-- Top-left corner bracket -->
+  <rect x="0" y="0" width="26" height="6" fill="#00875A"/>
+  <rect x="0" y="0" width="6" height="26" fill="#00875A"/>
+  <!-- Bottom-right corner bracket -->
+  <rect x="34" y="54" width="26" height="6" fill="#00875A"/>
+  <rect x="54" y="34" width="6" height="26" fill="#00875A"/>
+</svg>
