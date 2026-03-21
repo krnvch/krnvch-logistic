@@ -5,6 +5,46 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [3.2.0] — 2026-03-21
+
+### Password Strength Enhancement
+
+Password change now enforces strong passwords with real-time visual feedback — you can see exactly which requirements are met as you type.
+
+#### Added
+- 5 password rules: 8+ characters, uppercase, lowercase, digit, special character (was: only 6 characters minimum)
+- Live checklist below "Новый пароль" field — each rule shows a green checkmark or gray circle as you type
+- Strength meter (3 bars): weak (red), medium (yellow), strong (green) with label
+- Eye toggle on all password fields (profile page + login page) to show/hide entered text
+- `getPasswordRules()` and `getPasswordStrength()` utilities in `src/lib/validate-password.ts`
+- 15 unit tests for password validation (was: 5)
+
+#### Changed
+- Minimum password length increased from 6 to 8 characters
+- Password rules checklist is always visible when the section is open (no need to start typing first)
+
+---
+
+## [3.1.0] — 2026-03-21
+
+### Domain Split — grida.space
+
+Separated the brand's web presence from the application following the standard SaaS pattern.
+
+#### Added
+- Placeholder website at `grida.space` — logo lockup, tagline, CTA to app, light/dark theme (OS-driven), CSS fade-in animation
+- New repo `krnvch/grida-website` (Vite + vanilla TS + Tailwind CSS 4 + Zalando Sans fonts)
+- `app.grida.space` custom domain for the logistics application
+- `robots.txt` for both sites (allow on marketing, disallow on app)
+- `sitemap.xml` for the placeholder site
+- PRD: `docs/prd-domain-split.md`
+- Architecture decision AD-06 in `docs/architecture.md`
+
+#### Changed
+- Hosting entry in architecture doc: "TBD" → "Vercel (auto-deploy from main)"
+
+---
+
 ## [3.0.0] — 2026-03-15
 
 ### Visual Redesign — Grida Brand Identity
