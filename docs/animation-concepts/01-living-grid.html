@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grida — Concept A: Living Grid</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: oklch(0.70 0.19 160);
+    --bg: oklch(0.985 0 0);
+    --fg: oklch(0.13 0.01 160);
+    --card: oklch(1 0 0);
+    --border: oklch(0.87 0.01 160);
+    --muted: oklch(0.46 0.01 160);
+    --grid-color: oklch(0.70 0.19 160 / 0.07);
+    --node-color: oklch(0.70 0.19 160 / 0.18);
+    --cell-size: 48px;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── Living Grid Background ── */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  /* Grid lines via repeating gradients */
+  .grid-lines {
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        to right,
+        var(--grid-color) 0px,
+        var(--grid-color) 1px,
+        transparent 1px,
+        transparent var(--cell-size)
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--grid-color) 0px,
+        var(--grid-color) 1px,
+        transparent 1px,
+        transparent var(--cell-size)
+      );
+  }
+
+  /* Intersection nodes */
+  .grid-nodes {
+    position: absolute;
+    inset: 0;
+  }
+
+  .node {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--node-color);
+    opacity: 0;
+    animation: pulse var(--duration) ease-in-out var(--delay) infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0; }
+    40% { opacity: 1; }
+    60% { opacity: 1; }
+  }
+
+  /* Reduced motion: show static grid, no animation */
+  @media (prefers-reduced-motion: reduce) {
+    .node { animation: none; opacity: 0.12; }
+  }
+
+  /* ── Login Card ── */
+  .card {
+    position: relative;
+    z-index: 1;
+    background: var(--card);
+    border: 2px solid var(--border);
+    width: 100%;
+    max-width: 384px;
+    padding: 32px 24px 24px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .tagline {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .field { margin-bottom: 16px; }
+
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    background: var(--card);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .field input:focus {
+    border-color: var(--fg);
+  }
+
+  .btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary);
+    color: oklch(0.13 0.02 160);
+    border: 2px solid transparent;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+
+  .btn:hover { background: oklch(0.55 0.20 160); }
+
+  /* ── Concept Label ── */
+  .concept-label {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--fg);
+    color: var(--card);
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 10;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg">
+  <div class="grid-lines"></div>
+  <div class="grid-nodes" id="nodes"></div>
+</div>
+
+<div class="card">
+  <svg class="logo" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square">
+    <line x1="4" y1="14" x2="4" y2="4" /><line x1="4" y1="4" x2="14" y2="4" />
+    <line x1="50" y1="4" x2="60" y2="4" /><line x1="60" y1="4" x2="60" y2="14" />
+    <line x1="60" y1="50" x2="60" y2="60" /><line x1="60" y1="60" x2="50" y2="60" />
+    <line x1="14" y1="60" x2="4" y2="60" /><line x1="4" y1="60" x2="4" y2="50" />
+    <text x="32" y="44" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="32" fill="currentColor" stroke="none">G</text>
+  </svg>
+  <p class="tagline">The grid sees everything.</p>
+  <form onsubmit="return false">
+    <div class="field">
+      <label>Email</label>
+      <input type="email" placeholder="operator@grida.io" />
+    </div>
+    <div class="field">
+      <label>Пароль</label>
+      <input type="password" />
+    </div>
+    <button class="btn" type="submit">Войти</button>
+  </form>
+</div>
+
+<div class="concept-label">Concept A — Living Grid</div>
+
+<script>
+  const container = document.getElementById('nodes');
+  const cellSize = 48;
+  const cols = Math.ceil(window.innerWidth / cellSize) + 1;
+  const rows = Math.ceil(window.innerHeight / cellSize) + 1;
+
+  // Create nodes at grid intersections
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const node = document.createElement('div');
+      node.className = 'node';
+      node.style.left = (c * cellSize - 3) + 'px';
+      node.style.top = (r * cellSize - 3) + 'px';
+      // Random animation timing for organic feel
+      const duration = 3 + Math.random() * 4;       // 3–7s
+      const delay = Math.random() * duration * -1;   // stagger
+      node.style.setProperty('--duration', duration + 's');
+      node.style.setProperty('--delay', delay + 's');
+      container.appendChild(node);
+    }
+  }
+</script>
+</body>
+</html>
