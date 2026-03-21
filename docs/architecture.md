@@ -33,7 +33,7 @@
 | Styling | Tailwind CSS 4, shadcn/ui (new-york) | CSS variables, OKLch color space |
 | State / Data | TanStack React Query + Supabase Realtime | Optimistic updates + cache invalidation |
 | Backend | Supabase (PostgreSQL, Auth, Realtime) | No Edge Functions for MVP |
-| Hosting | TBD (Vercel, Netlify, or Supabase hosting) | Static SPA deploy |
+| Hosting | Vercel (auto-deploy from `main`) | Static SPA deploy |
 
 ---
 
@@ -623,6 +623,14 @@ components/ui/ ← (no app dependencies, standalone primitives)
 - **Decision**: Enforce in app layer only. DB has column-level constraints but no aggregate triggers.
 - **Rationale**: For 5 concurrent users with 40 orders, race conditions on aggregate checks are theoretical. App-level validation is sufficient.
 - **Reversal cost**: Low. Can add a Supabase Edge Function or PostgreSQL trigger later for server-side validation.
+
+### AD-06: Domain Split — Apex for Marketing, Subdomain for App
+
+- **Context**: Grida needs a public web presence separate from the logistics app. Domain `grida.space` is owned via Vercel.
+- **Decision**: `grida.space` serves a static placeholder (future landing page). `app.grida.space` serves the logistics app. Separate Vercel projects, separate GitHub repos (`krnvch/grida-website` + `krnvch/krnvch-logistic`).
+- **Rationale**: Standard SaaS pattern. Marketing and product evolve independently — different stacks, deploy cadences, and (eventually) teams. Separate repos enforce this boundary cleanly.
+- **Trade-off**: Two Vercel projects to manage. Acceptable — path-based routing in a monorepo adds complexity for zero benefit at this scale.
+- **Reversal cost**: Low. Merging back is a DNS + Vercel config change.
 
 ---
 

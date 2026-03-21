@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grida — Concept C: Cursor Stick Field</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: oklch(0.70 0.19 160);
+    --bg: oklch(0.985 0 0);
+    --fg: oklch(0.13 0.01 160);
+    --card: oklch(1 0 0);
+    --border: oklch(0.87 0.01 160);
+    --muted: oklch(0.46 0.01 160);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  canvas#field {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    background: var(--card);
+    border: 2px solid var(--border);
+    width: 100%;
+    max-width: 384px;
+    padding: 32px 24px 24px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .tagline {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .field { margin-bottom: 16px; }
+
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    background: var(--card);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .field input:focus { border-color: var(--fg); }
+
+  .btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary);
+    color: oklch(0.13 0.02 160);
+    border: 2px solid transparent;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+
+  .btn:hover { background: oklch(0.55 0.20 160); }
+
+  .concept-label {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--fg);
+    color: var(--card);
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 10;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="field"></canvas>
+
+<div class="card">
+  <svg class="logo" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square">
+    <line x1="4" y1="14" x2="4" y2="4" /><line x1="4" y1="4" x2="14" y2="4" />
+    <line x1="50" y1="4" x2="60" y2="4" /><line x1="60" y1="4" x2="60" y2="14" />
+    <line x1="60" y1="50" x2="60" y2="60" /><line x1="60" y1="60" x2="50" y2="60" />
+    <line x1="14" y1="60" x2="4" y2="60" /><line x1="4" y1="60" x2="4" y2="50" />
+    <text x="32" y="44" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="32" fill="currentColor" stroke="none">G</text>
+  </svg>
+  <p class="tagline">The grid sees everything.</p>
+  <form onsubmit="return false">
+    <div class="field">
+      <label>Email</label>
+      <input type="email" placeholder="operator@grida.io" />
+    </div>
+    <div class="field">
+      <label>Пароль</label>
+      <input type="password" />
+    </div>
+    <button class="btn" type="submit">Войти</button>
+  </form>
+</div>
+
+<div class="concept-label">Concept C — Cursor Stick Field</div>
+
+<script>
+  const canvas = document.getElementById('field');
+  const ctx = canvas.getContext('2d');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ── Config ──
+  const GAP = 48;          // distance between sticks (spacious, not noisy)
+  const STICK_LEN = 8;     // half-length of each stick (short & thick)
+  const STICK_WIDTH = 3;   // line thickness (chunky, not scratchy)
+  const COLOR = 'rgba(30, 45, 38, 0.10)';  // barely visible, whisper-light
+  const DOT_RADIUS = 0;    // no endpoint dots (cleaner)
+  const LERP_SPEED = 0.12; // faster response so all sticks track cursor
+
+  let W, H, cols, rows;
+  let mouse = { x: -9999, y: -9999 };
+  let sticks = []; // { x, y, currentAngle, targetAngle }
+
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    cols = Math.ceil(W / GAP) + 1;
+    rows = Math.ceil(H / GAP) + 1;
+
+    // Rebuild sticks grid
+    sticks = [];
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = c * GAP + GAP / 2;
+        const y = r * GAP + GAP / 2;
+        sticks.push({
+          x,
+          y,
+          currentAngle: -Math.PI / 2, // start vertical
+          targetAngle: -Math.PI / 2,
+        });
+      }
+    }
+  }
+
+  // Shortest angle lerp (handles wrapping around PI/-PI)
+  function lerpAngle(a, b, t) {
+    let diff = b - a;
+    // Normalize to [-PI, PI]
+    while (diff > Math.PI) diff -= Math.PI * 2;
+    while (diff < -Math.PI) diff += Math.PI * 2;
+    return a + diff * t;
+  }
+
+  function update() {
+    for (const s of sticks) {
+      // Target angle: point toward cursor
+      s.targetAngle = Math.atan2(mouse.y - s.y, mouse.x - s.x);
+      // Smooth interpolation
+      s.currentAngle = lerpAngle(s.currentAngle, s.targetAngle, LERP_SPEED);
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    ctx.strokeStyle = COLOR;
+    ctx.fillStyle = COLOR;
+    ctx.lineWidth = STICK_WIDTH;
+    ctx.lineCap = 'round';
+
+    for (const s of sticks) {
+      const angle = reducedMotion ? -Math.PI / 2 : s.currentAngle;
+      const dx = Math.cos(angle) * STICK_LEN;
+      const dy = Math.sin(angle) * STICK_LEN;
+
+      const x1 = s.x - dx;
+      const y1 = s.y - dy;
+      const x2 = s.x + dx;
+      const y2 = s.y + dy;
+
+      // Draw stick
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.stroke();
+    }
+  }
+
+  function animate() {
+    if (!reducedMotion) update();
+    draw();
+    requestAnimationFrame(animate);
+  }
+
+  // ── Mouse tracking ──
+  document.addEventListener('mousemove', (e) => {
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  document.addEventListener('mouseleave', () => {
+    mouse.x = -9999;
+    mouse.y = -9999;
+    // Return to vertical when cursor leaves
+    for (const s of sticks) {
+      s.targetAngle = -Math.PI / 2;
+    }
+  });
+
+  window.addEventListener('resize', resize);
+  resize();
+  animate();
+</script>
+</body>
+</html>

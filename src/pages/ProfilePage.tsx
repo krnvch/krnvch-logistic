@@ -3,7 +3,18 @@ import { useNavigate } from "react-router-dom";
 import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
-import { X, ChevronDown, ChevronUp, Sun, Moon, Monitor } from "lucide-react";
+import {
+  X,
+  ChevronDown,
+  ChevronUp,
+  Sun,
+  Moon,
+  Monitor,
+  Check,
+  Circle,
+  Eye,
+  EyeOff,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -21,7 +32,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useProfile } from "@/hooks/use-profile";
-import { validatePasswordChange } from "@/lib/validate-password";
+import {
+  validatePasswordChange,
+  getPasswordRules,
+  getPasswordStrength,
+} from "@/lib/validate-password";
 import type { UserRole, Theme } from "@/types";
 
 interface ProfilePageProps {
@@ -51,6 +66,9 @@ export default function ProfilePage({ session }: ProfilePageProps) {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [profileError, setProfileError] = useState<string | null>(null);
   const [passwordError, setPasswordError] = useState<string | null>(null);
 
@@ -219,34 +237,148 @@ export default function ProfilePage({ session }: ProfilePageProps) {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="currentPassword">Текущий пароль</Label>
-                <Input
-                  id="currentPassword"
-                  type="password"
-                  value={currentPassword}
-                  onChange={(e) => setCurrentPassword(e.target.value)}
-                />
+                <div className="relative">
+                  <Input
+                    id="currentPassword"
+                    type={showCurrentPassword ? "text" : "password"}
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    className="pr-9"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-0 top-0 h-9 w-9"
+                    onClick={() => setShowCurrentPassword((v) => !v)}
+                    tabIndex={-1}
+                  >
+                    {showCurrentPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="newPassword">Новый пароль</Label>
-                <Input
-                  id="newPassword"
-                  type="password"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
+                <div className="relative">
+                  <Input
+                    id="newPassword"
+                    type={showNewPassword ? "text" : "password"}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="pr-9"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-0 top-0 h-9 w-9"
+                    onClick={() => setShowNewPassword((v) => !v)}
+                    tabIndex={-1}
+                  >
+                    {showNewPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                {(() => {
+                  const { level, score } = getPasswordStrength(newPassword);
+                  const colors = {
+                    weak: "bg-destructive",
+                    medium: "bg-warning",
+                    strong: "bg-success",
+                  };
+                  const labels = {
+                    weak: "Слабый",
+                    medium: "Средний",
+                    strong: "Надёжный",
+                  };
+                  return (
+                    <div className="space-y-1 pt-1">
+                      <div className="flex gap-1">
+                        {[1, 2, 3].map((i) => (
+                          <div
+                            key={i}
+                            className={`h-1.5 flex-1 ${
+                              score >= i
+                                ? colors[level]
+                                : "bg-muted"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      {newPassword.length > 0 && (
+                        <p className={`text-xs ${
+                          level === "weak"
+                            ? "text-destructive"
+                            : level === "medium"
+                              ? "text-warning"
+                              : "text-success"
+                        }`}>
+                          {labels[level]}
+                        </p>
+                      )}
+                    </div>
+                  );
+                })()}
+                <ul className="space-y-1 pt-1">
+                    {getPasswordRules(newPassword).map((rule) => (
+                      <li
+                        key={rule.key}
+                        className="flex items-center gap-1.5 text-xs"
+                      >
+                        {rule.passed ? (
+                          <Check className="text-success h-3 w-3" />
+                        ) : (
+                          <Circle className="text-muted-foreground/40 h-3 w-3" />
+                        )}
+                        <span
+                          className={
+                            rule.passed
+                              ? "text-success"
+                              : "text-muted-foreground"
+                          }
+                        >
+                          {rule.label}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 pt-2">
                 <Label htmlFor="confirmPassword">
                   Подтверждение пароля
                 </Label>
-                <Input
-                  id="confirmPassword"
-                  type="password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
+                <div className="relative">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? "text" : "password"}
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="pr-9"
+                  />
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="absolute right-0 top-0 h-9 w-9"
+                    onClick={() => setShowConfirmPassword((v) => !v)}
+                    tabIndex={-1}
+                  >
+                    {showConfirmPassword ? (
+                      <EyeOff className="h-4 w-4" />
+                    ) : (
+                      <Eye className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
               </div>
 
               {passwordError && (

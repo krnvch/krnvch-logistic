@@ -36,6 +36,8 @@ Logistics management web application.
 - **Branching**: feature branches (`feature/task-name`) → PR → merge to `main`
 - **CI**: GitHub Actions (`.github/workflows/ci.yml`) runs on every PR and push to `main`: lint → test → build
 - **Deploy**: Vercel auto-deploys from `main` branch
+- **App URL**: `https://app.grida.space` (custom domain on Vercel)
+- **Website URL**: `https://grida.space` (placeholder, separate repo `krnvch/grida-website`)
 - All CI checks must pass (green) before merging a PR
 - **Changelog**: After every merge that adds features, changes behavior, or fixes bugs — update `docs/CHANGELOG.md` (Technical Writer agent owns this). Follow semver and [Keep a Changelog](https://keepachangelog.com/) format.
 

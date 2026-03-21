@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grida — Concept B: ASCII Animation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --primary: oklch(0.70 0.19 160);
+    --bg: oklch(0.985 0 0);
+    --fg: oklch(0.13 0.01 160);
+    --card: oklch(1 0 0);
+    --border: oklch(0.87 0.01 160);
+    --muted: oklch(0.46 0.01 160);
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--fg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* ── ASCII Background ── */
+  .ascii-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  canvas#ascii {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* ── Login Card ── */
+  .card {
+    position: relative;
+    z-index: 1;
+    background: var(--card);
+    border: 2px solid var(--border);
+    width: 100%;
+    max-width: 384px;
+    padding: 32px 24px 24px;
+  }
+
+  .logo {
+    width: 48px;
+    height: 48px;
+    color: var(--primary);
+    margin-bottom: 8px;
+  }
+
+  .tagline {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .field { margin-bottom: 16px; }
+
+  .field label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+
+  .field input {
+    width: 100%;
+    padding: 8px 12px;
+    border: 2px solid var(--border);
+    background: var(--card);
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .field input:focus { border-color: var(--fg); }
+
+  .btn {
+    width: 100%;
+    padding: 10px;
+    background: var(--primary);
+    color: oklch(0.13 0.02 160);
+    border: 2px solid transparent;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: background 0.15s;
+  }
+
+  .btn:hover { background: oklch(0.55 0.20 160); }
+
+  .concept-label {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--fg);
+    color: var(--card);
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    z-index: 10;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+
+<div class="ascii-bg">
+  <canvas id="ascii"></canvas>
+</div>
+
+<div class="card">
+  <svg class="logo" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="square">
+    <line x1="4" y1="14" x2="4" y2="4" /><line x1="4" y1="4" x2="14" y2="4" />
+    <line x1="50" y1="4" x2="60" y2="4" /><line x1="60" y1="4" x2="60" y2="14" />
+    <line x1="60" y1="50" x2="60" y2="60" /><line x1="60" y1="60" x2="50" y2="60" />
+    <line x1="14" y1="60" x2="4" y2="60" /><line x1="4" y1="60" x2="4" y2="50" />
+    <text x="32" y="44" text-anchor="middle" font-family="Inter, sans-serif" font-weight="700" font-size="32" fill="currentColor" stroke="none">G</text>
+  </svg>
+  <p class="tagline">The grid sees everything.</p>
+  <form onsubmit="return false">
+    <div class="field">
+      <label>Email</label>
+      <input type="email" placeholder="operator@grida.io" />
+    </div>
+    <div class="field">
+      <label>Пароль</label>
+      <input type="password" />
+    </div>
+    <button class="btn" type="submit">Войти</button>
+  </form>
+</div>
+
+<div class="concept-label">Concept B — ASCII Animation</div>
+
+<script>
+  const canvas = document.getElementById('ascii');
+  const ctx = canvas.getContext('2d');
+
+  // Characters: grid/logistics themed — brackets, pipes, dots, slashes
+  const charSets = [
+    '[ ] | — + · : / \\ # = _ '.split(' '),
+    'G R I D A'.split(' '),
+    '0 1'.split(' '),
+  ];
+  const chars = charSets[0];
+  const gridChars = '[]|—+·:/\\#=_><^v'.split('');
+
+  const fontSize = 16;
+  const lineHeight = 20;
+  let cols, rows;
+  let grid = [];
+  let opacities = [];
+  let targets = [];
+
+  // Emerald green in different opacities
+  const primaryR = 62, primaryG = 207, primaryB = 142; // approx #3ECF8E
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    cols = Math.ceil(canvas.width / (fontSize * 0.6)) + 2;
+    rows = Math.ceil(canvas.height / lineHeight) + 2;
+    initGrid();
+  }
+
+  function initGrid() {
+    grid = [];
+    opacities = [];
+    targets = [];
+    for (let r = 0; r < rows; r++) {
+      grid[r] = [];
+      opacities[r] = [];
+      targets[r] = [];
+      for (let c = 0; c < cols; c++) {
+        grid[r][c] = randomChar();
+        opacities[r][c] = Math.random() * 0.06;
+        targets[r][c] = 0.02 + Math.random() * 0.06;
+      }
+    }
+  }
+
+  function randomChar() {
+    return gridChars[Math.floor(Math.random() * gridChars.length)];
+  }
+
+  // Periodically "activate" random cells — they brighten then fade
+  let activeCells = [];
+
+  function spawnWave() {
+    // Pick a random row or column to light up (scan line effect)
+    if (Math.random() > 0.5) {
+      // Horizontal scan
+      const r = Math.floor(Math.random() * rows);
+      for (let c = 0; c < cols; c++) {
+        activeCells.push({
+          r, c,
+          age: 0,
+          maxAge: 60 + Math.random() * 40,
+          delay: c * 1.5,
+          peak: 0.12 + Math.random() * 0.10,
+        });
+      }
+    } else {
+      // Vertical scan
+      const c = Math.floor(Math.random() * cols);
+      for (let r = 0; r < rows; r++) {
+        activeCells.push({
+          r, c,
+          age: 0,
+          maxAge: 60 + Math.random() * 40,
+          delay: r * 1.5,
+          peak: 0.12 + Math.random() * 0.10,
+        });
+      }
+    }
+  }
+
+  // Also spawn random clusters
+  function spawnCluster() {
+    const cr = Math.floor(Math.random() * rows);
+    const cc = Math.floor(Math.random() * cols);
+    const size = 2 + Math.floor(Math.random() * 4);
+    for (let dr = -size; dr <= size; dr++) {
+      for (let dc = -size; dc <= size; dc++) {
+        const r = cr + dr;
+        const c = cc + dc;
+        if (r >= 0 && r < rows && c >= 0 && c < cols) {
+          const dist = Math.abs(dr) + Math.abs(dc);
+          if (dist <= size) {
+            activeCells.push({
+              r, c,
+              age: 0,
+              maxAge: 50 + Math.random() * 40,
+              delay: dist * 3,
+              peak: 0.15 * (1 - dist / (size + 1)),
+            });
+          }
+        }
+      }
+    }
+  }
+
+  let frame = 0;
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = `400 ${fontSize}px "JetBrains Mono", "SF Mono", "Fira Code", monospace`;
+    ctx.textBaseline = 'top';
+
+    // Base grid — very faint
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const x = c * fontSize * 0.6;
+        const y = r * lineHeight;
+        const alpha = opacities[r][c];
+        if (alpha > 0.005) {
+          ctx.fillStyle = `rgba(${primaryR}, ${primaryG}, ${primaryB}, ${alpha})`;
+          ctx.fillText(grid[r][c], x, y);
+        }
+      }
+    }
+
+    if (!reducedMotion) {
+      // Update active cells
+      for (let i = activeCells.length - 1; i >= 0; i--) {
+        const cell = activeCells[i];
+        cell.age++;
+        if (cell.age < cell.delay) continue;
+        const t = (cell.age - cell.delay) / cell.maxAge;
+        if (t > 1) {
+          activeCells.splice(i, 1);
+          continue;
+        }
+        // Bell curve opacity
+        const alpha = cell.peak * Math.sin(t * Math.PI);
+        if (cell.r < rows && cell.c < cols) {
+          opacities[cell.r][cell.c] = Math.max(opacities[cell.r][cell.c], alpha);
+          // Occasionally change the character
+          if (Math.random() < 0.02) {
+            grid[cell.r][cell.c] = randomChar();
+          }
+        }
+      }
+
+      // Fade all cells back toward base
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          opacities[r][c] *= 0.985;
+          if (opacities[r][c] < 0.01) opacities[r][c] = 0.01 + Math.random() * 0.02;
+        }
+      }
+
+      // Spawn new waves/clusters periodically
+      frame++;
+      if (frame % 90 === 0) spawnWave();
+      if (frame % 45 === 0) spawnCluster();
+
+      // Randomly flip some chars
+      if (frame % 3 === 0) {
+        const r = Math.floor(Math.random() * rows);
+        const c = Math.floor(Math.random() * cols);
+        grid[r][c] = randomChar();
+      }
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  // Initial spawns
+  spawnWave();
+  spawnCluster();
+  spawnCluster();
+  draw();
+</script>
+</body>
+</html>

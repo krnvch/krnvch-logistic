@@ -344,3 +344,38 @@ Full implementation of the Grida visual identity across the entire application, 
 - `visual-identity.md` Section 5 (new): Component Patterns — ghost-destructive, status semantics, logo usage, avatar button, dropdown hover, empty states, inline separators
 
 ---
+
+## Phase 8: Domain Split + Placeholder Website
+
+**Date**: 2026-03-21
+**Status**: Done
+**PRD**: `docs/prd-domain-split.md`
+**Architecture**: AD-06 in `docs/architecture.md`
+
+Split `grida.space` into two domains following the standard SaaS pattern (Figma, Linear, Notion):
+
+- **`grida.space`** — placeholder website (brand presence)
+- **`app.grida.space`** — logistics application
+
+### Placeholder design decisions
+
+| Decision | Choice | Rationale |
+|----------|--------|-----------|
+| Mood | "A quiet room, not an empty room" | Confident presence, not a "coming soon" apology |
+| Content | 5 elements only (logo, tagline, CTA, separator, descriptor) | Intentional minimalism — landing page (10.9) handles the full story |
+| Logo | Full lockup (icon + wordmark) | Marketing context = full lockup per brand rules |
+| Animation | CSS-only staggered fade-in | No canvas/shader — save for login page (10.10) |
+| Theme | Both (OS-driven, `prefers-color-scheme`) | Ecosystem consistency with the app |
+| Alignment | Center | Exception to left-align rule — no data hierarchy to serve |
+| CTA text | "OPEN GRIDA" | Brand voice: plain, direct, confident |
+| Tech stack | Vite + vanilla TS + Tailwind | Same toolchain, zero framework overhead, easy migration to Next.js/Astro for 10.9 |
+
+### Infrastructure
+
+- New repo: `krnvch/grida-website` (private)
+- New Vercel project linked to `grida.space` + `www.grida.space` (redirect)
+- Existing app: `app.grida.space` added as custom domain
+- `robots.txt`: allow on marketing site, disallow on app
+- Supabase Site URL updated to `https://app.grida.space`
+
+---
