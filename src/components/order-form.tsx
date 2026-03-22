@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -47,6 +48,7 @@ export function OrderForm({
   const [pickupTime, setPickupTime] = useState("");
   const [priority, setPriority] = useState<OrderPriority>("normal");
   const [submitting, setSubmitting] = useState(false);
+  const { t } = useTranslation();
 
   const isEdit = !!editOrder;
 
@@ -75,12 +77,12 @@ export function OrderForm({
 
     const boxes = parseInt(boxCount, 10);
     if (isNaN(boxes) || boxes < 1) {
-      toast.error("Укажите количество коробок (больше 0)");
+      toast.error(t("orders.form.error.boxCount"));
       return;
     }
 
     if (boxes < minBoxCount) {
-      toast.error(`Минимум ${minBoxCount} коробок (уже размещено)`);
+      toast.error(t("orders.form.error.minBoxCount", { min: minBoxCount }));
       return;
     }
 
@@ -90,7 +92,7 @@ export function OrderForm({
       .includes(orderNumber.trim());
 
     if (isDuplicate) {
-      toast.error("Заказ с таким номером уже существует");
+      toast.error(t("orders.form.error.duplicate"));
       return;
     }
 
@@ -107,7 +109,7 @@ export function OrderForm({
           pickup_time: pickupTime.trim() || null,
           priority,
         });
-        toast.success("Заказ обновлён");
+        toast.success(t("toast.orderUpdated"));
       } else {
         await onSubmit({
           shipment_id: shipmentId,
@@ -119,7 +121,7 @@ export function OrderForm({
           pickup_time: pickupTime.trim() || null,
           priority,
         });
-        toast.success("Заказ создан");
+        toast.success(t("toast.orderCreated"));
       }
       onClose();
     } catch {
@@ -134,13 +136,13 @@ export function OrderForm({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
-            {isEdit ? "Редактировать заказ" : "Новый заказ"}
+            {isEdit ? t("orders.form.editTitle") : t("orders.form.createTitle")}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-2">
-              <Label htmlFor="order-number">Номер заказа *</Label>
+              <Label htmlFor="order-number">{t("orders.form.orderNumber")} *</Label>
               <Input
                 id="order-number"
                 placeholder="123"
@@ -152,7 +154,7 @@ export function OrderForm({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="box-count">Коробок *</Label>
+              <Label htmlFor="box-count">{t("orders.form.boxCount")} *</Label>
               <Input
                 id="box-count"
                 type="number"
@@ -167,10 +169,10 @@ export function OrderForm({
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="client-name">Клиент *</Label>
+            <Label htmlFor="client-name">{t("orders.form.client")} *</Label>
             <Input
               id="client-name"
-              placeholder="Иванов"
+              placeholder="Smith"
               value={clientName}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setClientName(e.target.value)
@@ -179,10 +181,10 @@ export function OrderForm({
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="description">Описание</Label>
+            <Label htmlFor="description">{t("orders.form.description")}</Label>
             <Input
               id="description"
-              placeholder="Описание товара"
+              placeholder={t("orders.form.descriptionPlaceholder")}
               value={description}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setDescription(e.target.value)
@@ -191,7 +193,7 @@ export function OrderForm({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-2">
-              <Label htmlFor="item-count">Количество</Label>
+              <Label htmlFor="item-count">{t("orders.form.itemCount")}</Label>
               <Input
                 id="item-count"
                 type="number"
@@ -204,7 +206,7 @@ export function OrderForm({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="pickup-time">Время выдачи</Label>
+              <Label htmlFor="pickup-time">{t("orders.form.pickupTime")}</Label>
               <Input
                 id="pickup-time"
                 placeholder="10:00"
@@ -216,7 +218,7 @@ export function OrderForm({
             </div>
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="priority">Приоритет</Label>
+            <Label htmlFor="priority">{t("orders.form.priority")}</Label>
             <Select
               value={priority}
               onValueChange={(v) => setPriority(v as OrderPriority)}
@@ -225,17 +227,17 @@ export function OrderForm({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="normal">Обычный</SelectItem>
-                <SelectItem value="urgent">Срочный</SelectItem>
+                <SelectItem value="normal">{t("orders.priority.normal")}</SelectItem>
+                <SelectItem value="urgent">{t("orders.priority.urgent")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
           <Button type="submit" disabled={submitting}>
             {submitting
-              ? "Сохранение..."
+              ? t("common.saving")
               : isEdit
-                ? "Сохранить"
-                : "Добавить заказ"}
+                ? t("common.save")
+                : t("orders.form.submit")}
           </Button>
         </form>
       </DialogContent>

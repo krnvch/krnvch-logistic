@@ -51,7 +51,8 @@ src/
   components/          — app-level components
   pages/               — route page components
   hooks/               — custom React hooks
-  lib/                 — utilities (supabase client, cn helper)
+  lib/                 — utilities (supabase client, cn helper, i18n config)
+  locales/             — translation files (en.json, ru.json)
   types/               — shared TypeScript types
 ```
 
@@ -62,6 +63,30 @@ src/
 - TypeScript strict mode with `noUnusedLocals` and `noUnusedParameters`
 - Environment variables prefixed with `VITE_` (accessed via `import.meta.env`)
 - Never commit `.env` files — use `.env.example` as reference
+
+## Internationalization (i18n)
+
+The app is a **multilanguage platform** (English + Russian). All user-facing strings MUST go through the translation system — never hardcode text in components.
+
+### Rules
+
+1. **Never hardcode user-facing strings** in components, pages, or hooks. Use `t("key")` from `react-i18next` (in components) or `i18n.t("key")` from `@/lib/i18n` (in hooks/utilities).
+2. **Add keys to both locale files** when creating new UI text: `src/locales/en.json` (English) and `src/locales/ru.json` (Russian).
+3. **English is the default and fallback language**. Write English keys first, then add Russian translations.
+4. **Key naming convention**: flat, dot-separated namespaces — `{namespace}.{element}.{variant}` (e.g., `orders.status.pending`, `toast.orderCreated`, `common.cancel`).
+5. **Use interpolation** for dynamic values: `t("wall.title", { number: 5 })` → "Wall 5" / "Стена 5".
+6. **Use correct logistics terminology** for English translations (see glossary in `docs/prd-i18n.md` Section 7). "Рейс" = Shipment (not trip), "Стена" = Wall, "Загружен" = Loaded (not uploaded).
+7. **Locale persistence**: `raw_user_meta_data.locale` in Supabase + `localStorage["grida-locale"]`. Same pattern as theme sync.
+
+### Key Files
+
+| File | Purpose |
+|------|---------|
+| `src/locales/en.json` | English translations (source of truth) |
+| `src/locales/ru.json` | Russian translations |
+| `src/lib/i18n.ts` | i18next configuration |
+| `src/hooks/use-locale-sync.ts` | Locale persistence (Supabase + localStorage) |
+| `src/components/language-submenu.tsx` | Language switcher in dropdown menu |
 
 ## Brand Governance
 

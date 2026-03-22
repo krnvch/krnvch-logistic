@@ -1,4 +1,5 @@
 import { useState, useMemo, useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,6 +31,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ThemeSubmenu } from "@/components/theme-submenu";
+import { LanguageSubmenu } from "@/components/language-submenu";
 import {
   Plus,
   Search,
@@ -66,6 +68,7 @@ export default function ShipmentsPage({
   userEmail,
   userInitials,
 }: ShipmentsPageProps) {
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const {
     shipments,
@@ -203,14 +206,15 @@ export default function ShipmentsPage({
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <ThemeSubmenu />
+              <LanguageSubmenu />
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate("/profile")}>
                 <User className="mr-2 h-4 w-4" />
-                Профиль
+                {t("nav.profile")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
-                Выйти
+                {t("nav.signOut")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -225,26 +229,26 @@ export default function ShipmentsPage({
             <FilterTab
               active={filter === "all"}
               onClick={() => setFilter("all")}
-              label="Все"
+              label={t("shipments.filter.all")}
               count={shipments.length}
             />
             <FilterTab
               active={filter === "active"}
               onClick={() => setFilter("active")}
-              label="Активные"
+              label={t("shipments.filter.active")}
               count={activeCount}
             />
             <FilterTab
               active={filter === "completed"}
               onClick={() => setFilter("completed")}
-              label="Завершённые"
+              label={t("shipments.filter.completed")}
               count={completedCount}
             />
           </div>
           <div className="relative ml-auto w-full sm:w-64">
             <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
             <Input
-              placeholder="Поиск по названию..."
+              placeholder={t("shipments.searchPlaceholder")}
               value={search}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearch(e.target.value)
@@ -265,7 +269,7 @@ export default function ShipmentsPage({
           {isOperator && (
             <Button onClick={() => setFormOpen(true)}>
               <Plus className="mr-1 h-4 w-4" />
-              Новый рейс
+              {t("shipments.create")}
             </Button>
           )}
         </div>
@@ -274,8 +278,8 @@ export default function ShipmentsPage({
         {filtered.length === 0 ? (
           <div className="text-muted-foreground py-12 text-center text-sm">
             {shipments.length === 0
-              ? "Нет рейсов. Создайте первый рейс."
-              : "Ничего не найдено."}
+              ? t("shipments.empty")
+              : t("shipments.noResults")}
           </div>
         ) : (
           <div className="border-2">
@@ -284,7 +288,7 @@ export default function ShipmentsPage({
                 <TableRow>
                   <TableHead>
                     <SortButton
-                      label="Название"
+                      label={t("shipments.column.name")}
                       active={sort.column === "name"}
                       direction={sort.direction}
                       onClick={() => toggleSort("name")}
@@ -292,16 +296,16 @@ export default function ShipmentsPage({
                   </TableHead>
                   <TableHead className="w-[100px]">
                     <SortButton
-                      label="Статус"
+                      label={t("shipments.column.status")}
                       active={sort.column === "status"}
                       direction={sort.direction}
                       onClick={() => toggleSort("status")}
                     />
                   </TableHead>
-                  <TableHead className="w-[160px] text-xs">Прогресс</TableHead>
+                  <TableHead className="w-[160px] text-xs">{t("shipments.column.progress")}</TableHead>
                   <TableHead className="w-[120px]">
                     <SortButton
-                      label="Создан"
+                      label={t("shipments.column.created")}
                       active={sort.column === "created_at"}
                       direction={sort.direction}
                       onClick={() => toggleSort("created_at")}
@@ -309,7 +313,7 @@ export default function ShipmentsPage({
                   </TableHead>
                   <TableHead className="w-[150px] max-sm:hidden">
                     <SortButton
-                      label="Автор"
+                      label={t("shipments.column.author")}
                       active={sort.column === "created_by"}
                       direction={sort.direction}
                       onClick={() => toggleSort("created_by")}
@@ -344,7 +348,7 @@ export default function ShipmentsPage({
                               : ""
                           }
                         >
-                          {s.status === "active" ? "Активный" : "Завершён"}
+                          {s.status === "active" ? t("shipments.status.active") : t("shipments.status.completed")}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -362,7 +366,7 @@ export default function ShipmentsPage({
                         )}
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
-                        {new Date(s.created_at).toLocaleDateString("ru")}
+                        {new Date(s.created_at).toLocaleDateString(i18n.language)}
                       </TableCell>
                       <TableCell className="text-sm max-sm:hidden">
                         {s.created_by ? (
@@ -396,7 +400,7 @@ export default function ShipmentsPage({
                                 }}
                               >
                                 <Pencil className="mr-2 h-4 w-4" />
-                                Переименовать
+                                {t("action.rename")}
                               </DropdownMenuItem>
                               {s.status === "completed" && (
                                 <DropdownMenuItem
@@ -406,7 +410,7 @@ export default function ShipmentsPage({
                                   }}
                                 >
                                   <RotateCcw className="mr-2 h-4 w-4" />
-                                  Возобновить
+                                  {t("action.reopen")}
                                 </DropdownMenuItem>
                               )}
                               <DropdownMenuItem
@@ -417,7 +421,7 @@ export default function ShipmentsPage({
                                 }}
                               >
                                 <Trash2 className="mr-2 h-4 w-4" />
-                                Удалить
+                                {t("common.delete")}
                               </DropdownMenuItem>
                             </DropdownMenuContent>
                           </DropdownMenu>
@@ -456,16 +460,15 @@ export default function ShipmentsPage({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Удалить рейс?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialog.deleteShipment.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Рейс &quot;{deleteTarget?.name}&quot; и все его данные будут
-              удалены безвозвратно.
+              {t("dialog.deleteShipment.description", { name: deleteTarget?.name })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteConfirm}>
-              Удалить
+              {t("common.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

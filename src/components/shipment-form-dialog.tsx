@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -30,6 +31,7 @@ export function ShipmentFormDialog({
   isCreating,
   userEmail,
 }: ShipmentFormDialogProps) {
+  const { t } = useTranslation();
   const [name, setName] = useState("");
   const [walls, setWalls] = useState("30");
   const [boxesPerWall, setBoxesPerWall] = useState("24");
@@ -41,15 +43,15 @@ export function ShipmentFormDialog({
     const boxCount = parseInt(boxesPerWall, 10);
 
     if (!name.trim()) {
-      toast.error("Введите название рейса");
+      toast.error(t("shipments.form.error.name"));
       return;
     }
     if (wallCount < 1 || wallCount > 100) {
-      toast.error("Количество стен: от 1 до 100");
+      toast.error(t("shipments.form.error.walls"));
       return;
     }
     if (boxCount < 1 || boxCount > 100) {
-      toast.error("Коробок на стену: от 1 до 100");
+      toast.error(t("shipments.form.error.boxes"));
       return;
     }
 
@@ -60,13 +62,13 @@ export function ShipmentFormDialog({
         boxes_per_wall: boxCount,
         created_by: userEmail ?? null,
       });
-      toast.success("Рейс создан!");
+      toast.success(t("toast.shipmentCreated"));
       setName("");
       setWalls("30");
       setBoxesPerWall("24");
       onClose();
     } catch {
-      toast.error("Не удалось создать рейс");
+      toast.error(t("toast.shipmentCreateError"));
     }
   };
 
@@ -74,14 +76,14 @@ export function ShipmentFormDialog({
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Новый рейс</DialogTitle>
+          <DialogTitle>{t("shipments.form.title")}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="shipment-name">Название</Label>
+            <Label htmlFor="shipment-name">{t("shipments.form.name")}</Label>
             <Input
               id="shipment-name"
-              placeholder="Например: Рейс на Москву"
+              placeholder={t("shipments.form.namePlaceholder")}
               value={name}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setName(e.target.value)
@@ -91,7 +93,7 @@ export function ShipmentFormDialog({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-2">
-              <Label htmlFor="shipment-walls">Стены</Label>
+              <Label htmlFor="shipment-walls">{t("shipments.form.walls")}</Label>
               <Input
                 id="shipment-walls"
                 type="number"
@@ -105,7 +107,7 @@ export function ShipmentFormDialog({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="shipment-boxes">Коробок / стену</Label>
+              <Label htmlFor="shipment-boxes">{t("shipments.form.boxesPerWall")}</Label>
               <Input
                 id="shipment-boxes"
                 type="number"
@@ -120,7 +122,7 @@ export function ShipmentFormDialog({
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={isCreating}>
-            {isCreating ? "Создаётся..." : "Создать рейс"}
+            {isCreating ? t("shipments.form.creating") : t("shipments.form.submit")}
           </Button>
         </form>
       </DialogContent>

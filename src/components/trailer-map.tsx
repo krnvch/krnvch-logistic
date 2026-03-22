@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { WallCell } from "@/components/wall-cell";
 import type { WallData } from "@/types";
@@ -21,12 +22,13 @@ export function TrailerMap({
   onAnimationEnd,
   firstMatchedWall,
 }: TrailerMapProps) {
+  const { t } = useTranslation();
   return (
     <ScrollArea className="h-full">
       <div className="mx-auto flex w-full max-w-lg flex-col gap-1.5 p-4">
         {/* Cab label */}
         <div className="text-muted-foreground mb-1 text-center text-xs font-medium tracking-wider uppercase">
-          Кабина (дальняя стенка)
+          {t("trailer.cab")}
         </div>
 
         {/* Walls 1..N */}
@@ -45,7 +47,7 @@ export function TrailerMap({
 
         {/* Doors label */}
         <div className="text-muted-foreground mt-1 text-center text-xs font-medium tracking-wider uppercase">
-          Двери
+          {t("trailer.doors")}
         </div>
       </div>
     </ScrollArea>

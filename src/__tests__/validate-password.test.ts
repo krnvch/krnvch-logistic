@@ -49,13 +49,13 @@ describe("getPasswordRules", () => {
 describe("validatePasswordChange", () => {
   it("returns first failing rule for weak password", () => {
     expect(validatePasswordChange("short", "short")).toBe(
-      "Минимум 8 символов"
+      "password.rule.length"
     );
   });
 
   it("returns error when passwords do not match", () => {
     expect(validatePasswordChange("Strong1!", "Strong2!")).toBe(
-      "Пароли не совпадают"
+      "password.error.mismatch"
     );
   });
 
@@ -64,24 +64,24 @@ describe("validatePasswordChange", () => {
   });
 
   it("returns rule error before mismatch error", () => {
-    expect(validatePasswordChange("abc", "xyz")).toBe("Минимум 8 символов");
+    expect(validatePasswordChange("abc", "xyz")).toBe("password.rule.length");
   });
 
   it("rejects password without uppercase", () => {
     expect(validatePasswordChange("strong1!", "strong1!")).toBe(
-      "Заглавная буква (A-Z)"
+      "password.rule.uppercase"
     );
   });
 
   it("rejects password without digit", () => {
     expect(validatePasswordChange("StrongPw!", "StrongPw!")).toBe(
-      "Цифра (0-9)"
+      "password.rule.digit"
     );
   });
 
   it("rejects password without special character", () => {
     expect(validatePasswordChange("Strong1a", "Strong1a")).toBe(
-      "Спецсимвол (!@#$%^&*…)"
+      "password.rule.special"
     );
   });
 });

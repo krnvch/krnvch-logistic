@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { queryKeys } from "@/lib/query-keys";
+import i18n from "@/lib/i18n";
 import type { ShipmentInsert } from "@/types";
 import { toast } from "sonner";
 
@@ -47,10 +48,10 @@ export function useShipments() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
-      toast.success("Рейс удалён");
+      toast.success(i18n.t("toast.shipmentDeleted"));
     },
     onError: () => {
-      toast.error("Не удалось удалить рейс");
+      toast.error(i18n.t("toast.shipmentDeleteError"));
     },
   });
 
@@ -68,10 +69,10 @@ export function useShipments() {
       queryClient.invalidateQueries({
         queryKey: queryKeys.shipment(shipmentId),
       });
-      toast.success("Рейс возобновлён");
+      toast.success(i18n.t("toast.shipmentReopened"));
     },
     onError: () => {
-      toast.error("Не удалось возобновить рейс");
+      toast.error(i18n.t("toast.shipmentReopenError"));
     },
   });
 
@@ -87,10 +88,10 @@ export function useShipments() {
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
       queryClient.invalidateQueries({ queryKey: queryKeys.shipment(id) });
-      toast.success("Название обновлено");
+      toast.success(i18n.t("toast.shipmentRenamed"));
     },
     onError: () => {
-      toast.error("Не удалось переименовать рейс");
+      toast.error(i18n.t("toast.shipmentRenameError"));
     },
   });
 
@@ -139,10 +140,10 @@ export function useShipment(id: string | undefined) {
       queryClient.invalidateQueries({
         queryKey: queryKeys.shipment(shipmentId),
       });
-      toast.success("Рейс завершён");
+      toast.success(i18n.t("toast.shipmentCompleted"));
     },
     onError: () => {
-      toast.error("Не удалось завершить рейс");
+      toast.error(i18n.t("toast.shipmentCompleteError"));
     },
   });
 
@@ -160,10 +161,10 @@ export function useShipment(id: string | undefined) {
       queryClient.invalidateQueries({
         queryKey: queryKeys.shipment(shipmentId),
       });
-      toast.success("Рейс возобновлён");
+      toast.success(i18n.t("toast.shipmentReopened"));
     },
     onError: () => {
-      toast.error("Не удалось возобновить рейс");
+      toast.error(i18n.t("toast.shipmentReopenError"));
     },
   });
 
@@ -179,10 +180,10 @@ export function useShipment(id: string | undefined) {
     onSuccess: (_data, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.shipments });
       queryClient.invalidateQueries({ queryKey: queryKeys.shipment(id) });
-      toast.success("Название обновлено");
+      toast.success(i18n.t("toast.shipmentRenamed"));
     },
     onError: () => {
-      toast.error("Не удалось переименовать рейс");
+      toast.error(i18n.t("toast.shipmentRenameError"));
     },
   });
 

@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { queryKeys } from "@/lib/query-keys";
+import i18n from "@/lib/i18n";
 import type { Placement, PlacementInsert, PlacementUpdate } from "@/types";
 import { toast } from "sonner";
 
@@ -51,7 +52,7 @@ export function usePlacements(shipmentId: string | undefined) {
     },
     onError: (_err, _data, context) => {
       queryClient.setQueryData(queryKey, context?.previous);
-      toast.error("Не удалось добавить размещение");
+      toast.error(i18n.t("toast.placementCreateError"));
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
@@ -82,7 +83,7 @@ export function usePlacements(shipmentId: string | undefined) {
     },
     onError: (_err, _data, context) => {
       queryClient.setQueryData(queryKey, context?.previous);
-      toast.error("Не удалось обновить размещение");
+      toast.error(i18n.t("toast.placementUpdateError"));
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
@@ -104,7 +105,7 @@ export function usePlacements(shipmentId: string | undefined) {
     },
     onError: (_err, _data, context) => {
       queryClient.setQueryData(queryKey, context?.previous);
-      toast.error("Не удалось удалить размещение");
+      toast.error(i18n.t("toast.placementDeleteError"));
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });

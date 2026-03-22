@@ -6,6 +6,9 @@ export type UserRole = "operator" | "worker";
 // --- Theme preference ---
 export type Theme = "light" | "dark" | "system";
 
+// --- Locale preference ---
+export type Locale = "en" | "ru";
+
 // --- Row types (shorthand aliases) ---
 export type Shipment = Database["public"]["Tables"]["shipments"]["Row"];
 export type Order = Database["public"]["Tables"]["orders"]["Row"];

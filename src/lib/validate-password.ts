@@ -54,10 +54,10 @@ export function validatePasswordChange(
   const rules = getPasswordRules(newPassword);
   const failedRule = rules.find((r) => !r.passed);
   if (failedRule) {
-    return failedRule.label;
+    return `password.rule.${failedRule.key}`;
   }
   if (newPassword !== confirmPassword) {
-    return "Пароли не совпадают";
+    return "password.error.mismatch";
   }
   return null;
 }

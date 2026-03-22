@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/lib/supabase";
 import { queryKeys } from "@/lib/query-keys";
+import i18n from "@/lib/i18n";
 import type { Order, OrderInsert, OrderUpdate } from "@/types";
 import { toast } from "sonner";
 
@@ -56,7 +57,7 @@ export function useOrders(shipmentId: string | undefined) {
     },
     onError: (_err, _data, context) => {
       queryClient.setQueryData(queryKey, context?.previous);
-      toast.error("Не удалось создать заказ");
+      toast.error(i18n.t("toast.orderCreateError"));
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
@@ -84,7 +85,7 @@ export function useOrders(shipmentId: string | undefined) {
     },
     onError: (_err, _data, context) => {
       queryClient.setQueryData(queryKey, context?.previous);
-      toast.error("Не удалось обновить заказ");
+      toast.error(i18n.t("toast.orderUpdateError"));
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });
@@ -106,7 +107,7 @@ export function useOrders(shipmentId: string | undefined) {
     },
     onError: (_err, _data, context) => {
       queryClient.setQueryData(queryKey, context?.previous);
-      toast.error("Не удалось удалить заказ");
+      toast.error(i18n.t("toast.orderDeleteError"));
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey });

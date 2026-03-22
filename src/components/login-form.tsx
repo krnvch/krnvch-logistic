@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -14,6 +15,7 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ onLogin }: LoginFormProps) {
+  const { t, i18n } = useTranslation();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -28,14 +30,31 @@ export function LoginForm({ onLogin }: LoginFormProps) {
     const { error } = await onLogin(email, password);
 
     if (error) {
-      setError("Неверный email или пароль");
+      setError(t("login.error"));
       setLoading(false);
     }
   };
 
   return (
     <div className="bg-background flex min-h-screen items-center justify-center p-4">
-      <Card className="w-full max-w-sm">
+      <Card className="relative w-full max-w-sm">
+        <div className="absolute top-4 right-4 flex gap-1.5 text-xs text-muted-foreground">
+          <button
+            type="button"
+            className={`hover:text-foreground ${i18n.language === "en" ? "text-foreground font-medium" : ""}`}
+            onClick={() => i18n.changeLanguage("en")}
+          >
+            EN
+          </button>
+          <span>/</span>
+          <button
+            type="button"
+            className={`hover:text-foreground ${i18n.language === "ru" ? "text-foreground font-medium" : ""}`}
+            onClick={() => i18n.changeLanguage("ru")}
+          >
+            RU
+          </button>
+        </div>
         <CardHeader>
           <GridaLogo size={48} showWordmark={false} className="text-primary" />
           <p className="text-muted-foreground text-sm">
@@ -45,7 +64,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
         <CardContent>
           <form onSubmit={handleSubmit} className="grid gap-4">
             <div className="grid gap-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t("login.email")}</Label>
               <Input
                 id="email"
                 type="email"
@@ -58,7 +77,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="password">Пароль</Label>
+              <Label htmlFor="password">{t("login.password")}</Label>
               <div className="relative">
                 <Input
                   id="password"
@@ -88,7 +107,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
             </div>
             {error && <p className="text-destructive text-sm">{error}</p>}
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "Вход..." : "Войти"}
+              {loading ? t("login.loading") : t("login.submit")}
             </Button>
           </form>
         </CardContent>

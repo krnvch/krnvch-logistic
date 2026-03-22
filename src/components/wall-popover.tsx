@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -59,6 +60,7 @@ export function WallPopover({
   onMarkDone,
   onUndoDone,
 }: WallPopoverProps) {
+  const { t } = useTranslation();
   const [selectedOrderId, setSelectedOrderId] = useState("");
   const [boxCount, setBoxCount] = useState("");
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -85,17 +87,17 @@ export function WallPopover({
 
   const handleAdd = async () => {
     if (!selectedOrderId) {
-      toast.error("Выберите заказ");
+      toast.error(t("wall.error.selectOrder"));
       return;
     }
     const count = parseInt(boxCount, 10);
     if (isNaN(count) || count < 1) {
-      toast.error("Укажите количество коробок");
+      toast.error(t("wall.error.boxCount"));
       return;
     }
     const max = maxBoxes();
     if (count > max) {
-      toast.error(`Максимум ${max} коробок`);
+      toast.error(t("wall.error.maxBoxes", { max }));
       return;
     }
 
@@ -107,7 +109,7 @@ export function WallPopover({
         wall_number: wall.wall_number,
         box_count: count,
       });
-      toast.success(`Размещено ${count} коробок на стене ${wall.wall_number}`);
+      toast.success(t("toast.placementCreated", { count, wall: wall.wall_number }));
       setSelectedOrderId("");
       setBoxCount("");
     } catch {
@@ -120,7 +122,7 @@ export function WallPopover({
   const handleUpdate = async (id: string) => {
     const count = parseInt(editBoxCount, 10);
     if (isNaN(count) || count < 1) {
-      toast.error("Укажите количество коробок");
+      toast.error(t("wall.error.boxCount"));
       return;
     }
 
@@ -134,14 +136,14 @@ export function WallPopover({
     const max = Math.min(maxForOrder, maxForWall);
 
     if (count > max) {
-      toast.error(`Максимум ${max} коробок`);
+      toast.error(t("wall.error.maxBoxes", { max }));
       return;
     }
 
     setSubmitting(true);
     try {
       await onUpdatePlacement({ id, box_count: count });
-      toast.success("Размещение обновлено");
+      toast.success(t("toast.placementUpdated"));
       setEditingId(null);
     } catch {
       // error handled by hook
@@ -153,7 +155,7 @@ export function WallPopover({
   const handleDelete = async (id: string) => {
     try {
       await onDeletePlacement(id);
-      toast.success("Размещение удалено");
+      toast.success(t("toast.placementDeleted"));
     } catch {
       // error handled by hook
     }
@@ -164,9 +166,9 @@ export function WallPopover({
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
           <DialogTitle>
-            Стена {wall.wall_number}
+            {t("wall.title", { number: wall.wall_number })}
             <span className="text-muted-foreground ml-2 text-sm font-normal">
-              {wall.total_boxes} / {boxesPerWall} коробок
+              {t("wall.boxCount", { placed: wall.total_boxes, total: boxesPerWall })}
             </span>
           </DialogTitle>
         </DialogHeader>
@@ -210,13 +212,13 @@ export function WallPopover({
                         className="h-8"
                         onClick={() => setEditingId(null)}
                       >
-                        Отмена
+                        {t("common.cancel")}
                       </Button>
                     </>
                   ) : (
                     <>
                       <span className="flex-1 text-sm">
-                        {pw.placement.box_count} коробок
+                        {pw.placement.box_count} {t("orders.boxes")}
                       </span>
                       {isReadOnly ? null : isDone ? (
                         <Button
@@ -226,7 +228,7 @@ export function WallPopover({
                           onClick={() => onUndoDone(pw.order.id)}
                         >
                           <Undo2 className="mr-1 h-3 w-3" />
-                          Вернуть
+                          {t("action.undo")}
                         </Button>
                       ) : (
                         <>
@@ -234,7 +236,7 @@ export function WallPopover({
                             size="icon"
                             variant="ghost"
                             className="h-7 w-7"
-                            title="Готово"
+                            title={t("action.markDone")}
                             onClick={() => onMarkDone(pw.order.id)}
                           >
                             <CircleCheck className="h-3.5 w-3.5" />
@@ -282,7 +284,7 @@ export function WallPopover({
             <>
               {wall.placements.length > 0 && <Separator />}
               <div className="grid gap-3">
-                <Label>Добавить заказ</Label>
+                <Label>{t("wall.addOrder")}</Label>
                 <Select
                   value={selectedOrderId}
                   onValueChange={(v) => {
@@ -291,13 +293,13 @@ export function WallPopover({
                   }}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Выберите заказ..." />
+                    <SelectValue placeholder={t("wall.selectOrder")} />
                   </SelectTrigger>
                   <SelectContent>
                     {availableOrders.map((o) => (
                       <SelectItem key={o.order.id} value={o.order.id}>
                         #{o.order.order_number} — {o.order.client_name} (
-                        {o.remaining_boxes} ост.)
+                        {o.remaining_boxes} {t("orders.remaining")})
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -308,7 +310,7 @@ export function WallPopover({
                       type="number"
                       min={1}
                       max={maxBoxes()}
-                      placeholder={`До ${maxBoxes()}`}
+                      placeholder={`${t("common.add")} (max ${maxBoxes()})`}
                       value={boxCount}
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                         setBoxCount(e.target.value)
@@ -320,7 +322,7 @@ export function WallPopover({
                       disabled={submitting}
                       className="shrink-0"
                     >
-                      {submitting ? "..." : "Добавить"}
+                      {submitting ? "..." : t("common.add")}
                     </Button>
                   </div>
                 )}
@@ -331,7 +333,7 @@ export function WallPopover({
         {/* Full wall message */}
         {wall.is_full && (
           <p className="text-muted-foreground text-center text-sm">
-            Стена заполнена
+            {t("wall.full")}
           </p>
         )}
 
@@ -340,7 +342,7 @@ export function WallPopover({
           availableOrders.length === 0 &&
           wall.placements.length === 0 && (
             <p className="text-muted-foreground text-center text-sm">
-              Нет заказов для размещения
+              {t("wall.noOrders")}
             </p>
           )}
       </DialogContent>

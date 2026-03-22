@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +24,7 @@ export function RenameShipmentDialog({
   currentName,
   onRename,
 }: RenameShipmentDialogProps) {
+  const { t } = useTranslation();
   const [name, setName] = useState(currentName);
   const [submitting, setSubmitting] = useState(false);
 
@@ -34,7 +36,7 @@ export function RenameShipmentDialog({
     e.preventDefault();
     const trimmed = name.trim();
     if (!trimmed) {
-      toast.error("Введите название рейса");
+      toast.error(t("shipments.form.error.name"));
       return;
     }
     if (trimmed === currentName) {
@@ -56,11 +58,11 @@ export function RenameShipmentDialog({
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="sm:max-w-sm">
         <DialogHeader>
-          <DialogTitle>Переименовать рейс</DialogTitle>
+          <DialogTitle>{t("shipments.rename.title")}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid gap-2">
-            <Label htmlFor="rename-name">Название</Label>
+            <Label htmlFor="rename-name">{t("shipments.form.name")}</Label>
             <Input
               id="rename-name"
               value={name}
@@ -73,10 +75,10 @@ export function RenameShipmentDialog({
           </div>
           <div className="flex justify-end gap-2">
             <Button type="button" variant="outline" onClick={onClose}>
-              Отмена
+              {t("common.cancel")}
             </Button>
             <Button type="submit" disabled={submitting}>
-              {submitting ? "Сохранение..." : "Сохранить"}
+              {submitting ? t("common.saving") : t("common.save")}
             </Button>
           </div>
         </form>
