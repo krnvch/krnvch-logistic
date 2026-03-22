@@ -3,7 +3,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Pencil, Trash2, Clock, CircleCheck, Undo2 } from "lucide-react";
+import {
+  Pencil,
+  Trash2,
+  Clock,
+  CircleCheck,
+  Undo2,
+  AlertTriangle,
+} from "lucide-react";
 import type { OrderWithStatus } from "@/types";
 
 interface OrderCardProps {
@@ -44,6 +51,7 @@ export function OrderCard({
   const ref = useRef<HTMLDivElement>(null);
   const { order, placed_boxes, status } = data;
   const isDone = status === "done";
+  const isUrgent = order.priority === "urgent";
   const progress =
     order.box_count > 0 ? (placed_boxes / order.box_count) * 100 : 0;
   const badge = statusConfig[status];
@@ -57,16 +65,24 @@ export function OrderCard({
   return (
     <Card
       ref={ref}
-      className={`cursor-pointer transition-shadow ${isDone ? "opacity-50" : ""} ${highlighted ? "ring-primary ring-2" : ""}`}
+      className={`cursor-pointer transition-shadow ${isDone ? "opacity-50" : ""} ${highlighted ? "ring-primary ring-2" : ""} ${isUrgent && !isDone ? "border-l-warning border-l-4" : ""}`}
       onClick={onTap}
     >
       <CardContent className="grid gap-2.5 p-4">
         {/* Top row: order number + status badge */}
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold">#{order.order_number}</span>
-          <Badge variant="secondary" className={badge.className}>
-            {badge.label}
-          </Badge>
+          <div className="flex items-center gap-1.5">
+            {isUrgent && (
+              <Badge className="bg-warning text-warning-foreground">
+                <AlertTriangle className="mr-1 h-3 w-3" />
+                Срочный
+              </Badge>
+            )}
+            <Badge variant="secondary" className={badge.className}>
+              {badge.label}
+            </Badge>
+          </div>
         </div>
 
         {/* Client name */}

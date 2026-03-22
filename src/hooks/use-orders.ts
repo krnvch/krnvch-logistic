@@ -48,6 +48,7 @@ export function useOrders(shipmentId: string | undefined) {
           description: null,
           item_count: null,
           pickup_time: null,
+          priority: "normal",
           ...newOrder,
         } as Order,
       ]);

@@ -40,15 +40,21 @@ export function useWallData({
 
   // Orders with computed status
   const ordersWithStatus: OrderWithStatus[] = useMemo(() => {
-    return orders.map((order) => {
-      const placed_boxes = placedBoxesByOrder.get(order.id) ?? 0;
-      return {
-        order,
-        placed_boxes,
-        remaining_boxes: order.box_count - placed_boxes,
-        status: getOrderStatus(order, placed_boxes),
-      };
-    });
+    return orders
+      .map((order) => {
+        const placed_boxes = placedBoxesByOrder.get(order.id) ?? 0;
+        return {
+          order,
+          placed_boxes,
+          remaining_boxes: order.box_count - placed_boxes,
+          status: getOrderStatus(order, placed_boxes),
+        };
+      })
+      .sort((a, b) => {
+        const aPriority = a.order.priority === "urgent" ? 0 : 1;
+        const bPriority = b.order.priority === "urgent" ? 0 : 1;
+        return aPriority - bPriority;
+      });
   }, [orders, placedBoxesByOrder]);
 
   // Wall data array
