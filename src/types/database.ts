@@ -25,6 +25,7 @@ export type Database = {
           is_done: boolean;
           order_number: string;
           pickup_time: string | null;
+          priority: string;
           shipment_id: string;
           item_count: number | null;
           updated_at: string;
@@ -39,6 +40,7 @@ export type Database = {
           is_done?: boolean;
           order_number: string;
           pickup_time?: string | null;
+          priority?: string;
           shipment_id: string;
           item_count?: number | null;
           updated_at?: string;
@@ -53,6 +55,7 @@ export type Database = {
           is_done?: boolean;
           order_number?: string;
           pickup_time?: string | null;
+          priority?: string;
           shipment_id?: string;
           item_count?: number | null;
           updated_at?: string;

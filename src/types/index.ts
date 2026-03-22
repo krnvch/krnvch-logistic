@@ -23,6 +23,9 @@ export type OrderUpdate = Database["public"]["Tables"]["orders"]["Update"];
 export type PlacementUpdate =
   Database["public"]["Tables"]["placements"]["Update"];
 
+// --- Order priority ---
+export type OrderPriority = "normal" | "urgent";
+
 // --- Computed status (not stored in DB) ---
 export type OrderDisplayStatus = "pending" | "loaded" | "done";
 

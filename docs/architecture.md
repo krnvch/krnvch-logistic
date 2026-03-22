@@ -86,6 +86,8 @@ CREATE TABLE orders (
   item_count INTEGER,
   box_count INTEGER NOT NULL CHECK (box_count > 0),
   pickup_time TEXT,
+  priority TEXT NOT NULL DEFAULT 'normal'
+    CHECK (priority IN ('normal', 'urgent')),
   is_done BOOLEAN NOT NULL DEFAULT false,
   done_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),

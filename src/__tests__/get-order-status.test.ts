@@ -15,6 +15,7 @@ function makeOrder(overrides: Partial<Order> = {}): Order {
     pickup_time: null,
     is_done: false,
     done_at: null,
+    priority: "normal",
     created_at: "2026-01-01T00:00:00Z",
     updated_at: "2026-01-01T00:00:00Z",
     ...overrides,

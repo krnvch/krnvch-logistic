@@ -5,6 +5,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [3.3.0] — 2026-03-22
+
+### Order Priority (Database Migration)
+
+Orders can now be marked as **urgent** — they get a visual indicator and are sorted to the top of the list.
+
+#### Added
+- `priority` column on `orders` table (`normal` | `urgent`, default `normal`) — first database migration on live prod
+- Priority selector (Обычный / Срочный) in the order create/edit form
+- Amber "Срочный" badge with warning icon on urgent order cards
+- Left border accent (4px warning color) on urgent cards for quick scanning
+- Urgent orders automatically sorted above normal orders in the sidebar
+
+#### Technical
+- `ALTER TABLE orders ADD COLUMN priority` with `CHECK` constraint and `DEFAULT` — backward-compatible, zero downtime
+- Updated `database.ts` types (Row, Insert, Update) and added `OrderPriority` type alias
+- Optimistic create includes `priority: "normal"` default
+- Sorting in `use-wall-data.ts` — stable sort preserves pickup_time order within same priority
+
+---
+
 ## [3.2.0] — 2026-03-21
 
 ### Password Strength Enhancement

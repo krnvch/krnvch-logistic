@@ -9,7 +9,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import type { Order, OrderInsert, OrderUpdate } from "@/types";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import type { Order, OrderInsert, OrderUpdate, OrderPriority } from "@/types";
 
 interface OrderFormProps {
   open: boolean;
@@ -38,6 +45,7 @@ export function OrderForm({
   const [itemCount, setItemCount] = useState("");
   const [boxCount, setBoxCount] = useState("");
   const [pickupTime, setPickupTime] = useState("");
+  const [priority, setPriority] = useState<OrderPriority>("normal");
   const [submitting, setSubmitting] = useState(false);
 
   const isEdit = !!editOrder;
@@ -50,6 +58,7 @@ export function OrderForm({
       setItemCount(editOrder.item_count?.toString() ?? "");
       setBoxCount(editOrder.box_count.toString());
       setPickupTime(editOrder.pickup_time ?? "");
+      setPriority((editOrder.priority as OrderPriority) ?? "normal");
     } else if (open) {
       setOrderNumber("");
       setClientName("");
@@ -57,6 +66,7 @@ export function OrderForm({
       setItemCount("");
       setBoxCount("");
       setPickupTime("");
+      setPriority("normal");
     }
   }, [open, editOrder]);
 
@@ -95,6 +105,7 @@ export function OrderForm({
           item_count: itemCount ? parseInt(itemCount, 10) : null,
           box_count: boxes,
           pickup_time: pickupTime.trim() || null,
+          priority,
         });
         toast.success("Заказ обновлён");
       } else {
@@ -106,6 +117,7 @@ export function OrderForm({
           item_count: itemCount ? parseInt(itemCount, 10) : null,
           box_count: boxes,
           pickup_time: pickupTime.trim() || null,
+          priority,
         });
         toast.success("Заказ создан");
       }
@@ -202,6 +214,21 @@ export function OrderForm({
                 }
               />
             </div>
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="priority">Приоритет</Label>
+            <Select
+              value={priority}
+              onValueChange={(v) => setPriority(v as OrderPriority)}
+            >
+              <SelectTrigger id="priority">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="normal">Обычный</SelectItem>
+                <SelectItem value="urgent">Срочный</SelectItem>
+              </SelectContent>
+            </Select>
           </div>
           <Button type="submit" disabled={submitting}>
             {submitting
