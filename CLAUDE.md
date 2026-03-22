@@ -39,7 +39,7 @@ Logistics management web application.
 - **App URL**: `https://app.grida.space` (custom domain on Vercel)
 - **Website URL**: `https://grida.space` (placeholder, separate repo `krnvch/grida-website`)
 - All CI checks must pass (green) before merging a PR
-- **Changelog**: After every merge that adds features, changes behavior, or fixes bugs — update `docs/CHANGELOG.md` (Technical Writer agent owns this). Follow semver and [Keep a Changelog](https://keepachangelog.com/) format.
+- **Changelog (MANDATORY)**: `docs/CHANGELOG.md` MUST be updated **in the same commit as the code** — never as a separate commit after merging. This is part of the definition of done for every feature, fix, or behavioral change. Follow semver and [Keep a Changelog](https://keepachangelog.com/) format. If you are about to commit code that adds features, changes behavior, or fixes bugs, and the changelog is not updated — **stop and update it first**.
 
 ## Project Structure
 
