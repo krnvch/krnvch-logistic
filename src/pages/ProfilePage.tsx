@@ -119,6 +119,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
         <Button
           variant="ghost"
           size="icon"
+          aria-label="Close"
           onClick={() => navigate(-1)}
         >
           <X className="h-4 w-4" />
@@ -279,6 +280,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                     className="absolute right-0 top-0 h-9 w-9"
                     onClick={() => setShowCurrentPassword((v) => !v)}
                     tabIndex={-1}
+                    aria-label="Toggle password visibility"
                   >
                     {showCurrentPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -306,6 +308,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                     className="absolute right-0 top-0 h-9 w-9"
                     onClick={() => setShowNewPassword((v) => !v)}
                     tabIndex={-1}
+                    aria-label="Toggle password visibility"
                   >
                     {showNewPassword ? (
                       <EyeOff className="h-4 w-4" />
@@ -398,6 +401,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                     className="absolute right-0 top-0 h-9 w-9"
                     onClick={() => setShowConfirmPassword((v) => !v)}
                     tabIndex={-1}
+                    aria-label="Toggle password visibility"
                   >
                     {showConfirmPassword ? (
                       <EyeOff className="h-4 w-4" />
