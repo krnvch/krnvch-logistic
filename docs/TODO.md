@@ -109,11 +109,19 @@
 
 > *"Как продакты и дизайнеры принимают решения на основе данных?"*
 
-### 5.1 🟡 Аналитика действий
+### ~~5.1 🟡 Аналитика действий~~ ✅
 
-Трекать ключевые события: логин, создание заказа, завершение рейса. Подключить Posthog или Mixpanel.
+~~Трекать ключевые события: логин, создание заказа, завершение рейса. Подключить Posthog или Mixpanel.~~
 
 **Чему научишься:** event tracking, product analytics, воронки, retention, data-driven decisions.
+
+> **Выполнено (2026-03-22):** PostHog JS SDK подключён. 10 кастомных событий (login, logout, shipment CRUD, order create/done, placement, language/theme). User identify + session reset. `autocapture: false` — только бизнес-события. PR [#14](https://github.com/krnvch/krnvch-logistic/pull/14). См. `docs/CHANGELOG.md` v4.2.0.
+
+### 5.3 🟡 PostHog Advanced — дашборды, воронки, session replay
+
+Углубиться в PostHog: создать dashboards для ключевых метрик, настроить воронки (login → shipment → orders → done), включить session replay (запись экрана пользователей), настроить retention-графики. Цель — получать actionable insights о том, как люди реально используют платформу.
+
+**Чему научишься:** product dashboards, funnel analysis, retention curves, session replay, cohort analysis, как продакты читают данные и принимают решения.
 
 ### 5.2 🟡 Feature Flags
 
@@ -350,8 +358,9 @@
 9. ~~**10.5** — Усиление требований к паролю~~ ✅
 10. ~~**3.1** — Миграция БД (работа с данными)~~ ✅
 11. ~~**10.1** — Мультиязычность (i18n)~~ ✅
-13. **6.1** — Lighthouse (понимание качества)
-14. **5.1** — Аналитика (продуктовый взгляд)
+13. ~~**6.1** — Lighthouse (понимание качества)~~ ✅
+14. ~~**5.1** — Аналитика (продуктовый взгляд)~~ ✅
 15. **6.3** — Sentry (мониторинг ошибок)
-16. ...и дальше по интересу
+16. **5.3** — PostHog Advanced (дашборды, воронки, session replay)
+17. ...и дальше по интересу
 
