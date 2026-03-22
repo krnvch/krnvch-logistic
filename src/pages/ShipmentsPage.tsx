@@ -261,6 +261,7 @@ export default function ShipmentsPage({
                 size="icon"
                 className="absolute top-0.5 right-0.5 h-8 w-8"
                 onClick={() => setSearch("")}
+                aria-label="Clear search"
               >
                 <X className="h-3.5 w-3.5" />
               </Button>
@@ -388,6 +389,7 @@ export default function ShipmentsPage({
                                 variant="ghost"
                                 size="icon"
                                 className="h-8 w-8"
+                                aria-label="Actions"
                               >
                                 <MoreHorizontal className="h-4 w-4" />
                               </Button>

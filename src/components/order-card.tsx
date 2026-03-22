@@ -139,6 +139,7 @@ export function OrderCard({
                       variant="ghost"
                       size="icon"
                       className="h-8 w-8"
+                      aria-label="Edit order"
                       onClick={(e) => {
                         e.stopPropagation();
                         onEdit();
@@ -150,6 +151,7 @@ export function OrderCard({
                       variant="ghost-destructive"
                       size="icon"
                       className="h-8 w-8"
+                      aria-label="Delete order"
                       onClick={(e) => {
                         e.stopPropagation();
                         onDelete();

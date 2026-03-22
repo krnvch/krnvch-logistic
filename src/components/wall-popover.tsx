@@ -247,6 +247,7 @@ export function WallPopover({
                                 size="icon"
                                 variant="ghost"
                                 className="h-7 w-7"
+                                aria-label="Edit placement"
                                 onClick={() => {
                                   setEditingId(pw.placement.id);
                                   setEditBoxCount(
@@ -260,6 +261,7 @@ export function WallPopover({
                                 size="icon"
                                 variant="ghost-destructive"
                                 className="h-7 w-7"
+                                aria-label="Delete placement"
                                 onClick={() => handleDelete(pw.placement.id)}
                               >
                                 <Trash2 className="h-3 w-3" />

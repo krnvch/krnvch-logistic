@@ -96,6 +96,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
                   className="absolute right-0 top-0 h-9 w-9"
                   onClick={() => setShowPassword((v) => !v)}
                   tabIndex={-1}
+                  aria-label="Toggle password visibility"
                 >
                   {showPassword ? (
                     <EyeOff className="h-4 w-4" />

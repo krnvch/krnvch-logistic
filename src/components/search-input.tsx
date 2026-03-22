@@ -35,6 +35,7 @@ export function SearchInput({
           size="icon"
           className="absolute top-0.5 right-0.5 h-8 w-8"
           onClick={onClear}
+          aria-label="Clear search"
         >
           <X className="h-3.5 w-3.5" />
         </Button>

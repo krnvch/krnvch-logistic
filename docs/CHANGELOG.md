@@ -5,6 +5,30 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.1.0] — 2026-03-22
+
+### Lighthouse Audit & Optimization
+
+Performance, SEO, and accessibility improvements based on Lighthouse audit.
+
+#### Performance
+- Code-split JS bundle into 3 chunks: vendor (303 KB), app (302 KB), ui (160 KB) — was single 765 KB chunk
+- Vendor chunk (React, Supabase, Router) cached separately — changes less frequently than app code
+
+#### SEO
+- Added `<meta name="description">` to `index.html`
+- Added `<meta name="theme-color" content="#3ECF8E">` for mobile browsers
+- Fixed `<html lang="en">` (was hardcoded `"ru"`, now matches default language)
+
+#### Accessibility
+- Removed `maximum-scale=1.0, user-scalable=no` from viewport — was blocking pinch-to-zoom
+- Added `aria-label` to 12 icon-only buttons across 6 components (edit, delete, close, search clear, password toggle, actions)
+
+#### Cleanup
+- Removed unused `public/vite.svg` (Vite default asset)
+
+---
+
 ## [4.0.0] — 2026-03-22
 
 ### Internationalization (i18n) — English / Russian
