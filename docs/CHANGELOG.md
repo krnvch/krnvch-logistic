@@ -5,6 +5,41 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.0.0] — 2026-03-22
+
+### Internationalization (i18n) — English / Russian
+
+The app is now a multilanguage platform. All UI text comes from translation files — zero hardcoded strings. Users can switch between English and Russian.
+
+#### Added
+- `i18next` + `react-i18next` for translation runtime (~5 KB gzipped)
+- `src/locales/en.json` — English translations (~115 keys)
+- `src/locales/ru.json` — Russian translations (~115 keys)
+- Language toggle in user dropdown menu (same pattern as theme submenu)
+- Language card on profile page (English / Русский buttons)
+- EN / RU toggle on login page (top-right corner of card)
+- `useLocaleSync` hook — syncs locale to Supabase `user_metadata.locale` + localStorage
+- `<html lang>` attribute updates on language change (accessibility)
+- `Locale` type (`"en" | "ru"`) in `src/types/index.ts`
+- i18n rules added to `CLAUDE.md` — enforced for all future development
+- PRD (`docs/prd-i18n.md`) and implementation plan (`docs/impl-i18n.md`)
+
+#### Changed
+- Default language: **English** (was Russian)
+- All ~110 hardcoded Russian strings extracted from 20+ components, pages, and hooks
+- `validate-password.ts` returns translation keys instead of hardcoded labels
+- Date locale in shipments table follows active language (`toLocaleDateString(i18n.language)`)
+- Password validation tests updated to check translation keys
+
+#### Technical
+- Components use `useTranslation()` hook → `t("key")`
+- Hooks/utilities use `i18n.t("key")` from `@/lib/i18n` (avoids React hook dependency issues)
+- Interpolation for dynamic values: `t("wall.title", { number: 5 })` → "Wall 5" / "Стена 5"
+- Fallback chain: current locale → English → raw key (never shown to users)
+- Architecture supports N languages — add a new JSON file to ship a third language
+
+---
+
 ## [3.3.0] — 2026-03-22
 
 ### Order Priority (Database Migration)
