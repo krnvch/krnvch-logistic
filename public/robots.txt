@@ -1,2 +1,6 @@
 User-agent: *
-Disallow: /
+Allow: /
+Disallow: /shipments/
+Disallow: /profile
+
+Sitemap: https://app.grida.space/sitemap.xml

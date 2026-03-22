@@ -19,6 +19,8 @@ Performance, SEO, and accessibility improvements based on Lighthouse audit.
 - Added `<meta name="description">` to `index.html`
 - Added `<meta name="theme-color" content="#3ECF8E">` for mobile browsers
 - Fixed `<html lang="en">` (was hardcoded `"ru"`, now matches default language)
+- Fixed `robots.txt`: allow login page, block `/shipments/` and `/profile` (was `Disallow: /` blocking everything)
+- Added `vercel.json` with SPA rewrite rule (all routes → `index.html`, fixes 404 on direct URL access)
 
 #### Accessibility
 - Removed `maximum-scale=1.0, user-scalable=no` from viewport — was blocking pinch-to-zoom
