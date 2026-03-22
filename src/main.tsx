@@ -8,6 +8,7 @@ import App from "./App.tsx";
 import "@fontsource-variable/zalando-sans";
 import "@fontsource-variable/zalando-sans-expanded";
 import "./lib/i18n";
+import "./lib/analytics";
 import "./index.css";
 
 const queryClient = new QueryClient({

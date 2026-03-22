@@ -54,6 +54,7 @@ import { useLastShipment } from "@/hooks/use-last-shipment";
 import { ShipmentFormDialog } from "@/components/shipment-form-dialog";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
 import type { Shipment, ShipmentFilter, ShipmentsSort } from "@/types";
+import { track } from "@/lib/analytics";
 
 interface ShipmentsPageProps {
   logout: () => Promise<void>;
@@ -163,6 +164,7 @@ export default function ShipmentsPage({
   const handleDeleteConfirm = async () => {
     if (!deleteTarget) return;
     await deleteShipment(deleteTarget.id);
+    track("shipment_deleted", { shipment_id: deleteTarget.id });
     lastShipment.clear();
     setDeleteTarget(null);
   };

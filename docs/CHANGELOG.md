@@ -5,6 +5,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.2.0] — 2026-03-22
+
+### Product Analytics (PostHog)
+
+Key user actions are now tracked via PostHog — enabling data-driven product decisions, funnel analysis, and retention metrics.
+
+#### Added
+- PostHog JS SDK (`posthog-js`) integrated via `src/lib/analytics.ts`
+- User identification on login (`posthog.identify` with user ID, email, role)
+- Session reset on logout (`posthog.reset`)
+- 10 tracked events: `user_logged_in`, `user_logged_out`, `shipment_created`, `shipment_completed`, `shipment_deleted`, `order_created`, `order_updated`, `order_marked_done`, `placement_created`, `language_changed`, `theme_changed`
+- `VITE_POSTHOG_KEY` env var (added to `.env.example`)
+- Graceful degradation: if `VITE_POSTHOG_KEY` is not set, all tracking is silently skipped
+
+#### Technical
+- `autocapture: false` — only explicit events, no noise
+- `capture_pageview: true` — automatic page view tracking via PostHog
+- Analytics module is a no-op when key is missing (safe for local dev without PostHog)
+
+---
+
 ## [4.1.0] — 2026-03-22
 
 ### Lighthouse Audit & Optimization

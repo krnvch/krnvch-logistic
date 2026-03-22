@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Trash2, Pencil, CircleCheck, Undo2 } from "lucide-react";
 import { toast } from "sonner";
+import { track } from "@/lib/analytics";
 import type {
   WallData,
   OrderWithStatus,
@@ -110,6 +111,7 @@ export function WallPopover({
         box_count: count,
       });
       toast.success(t("toast.placementCreated", { count, wall: wall.wall_number }));
+      track("placement_created", { wall_number: wall.wall_number, box_count: count });
       setSelectedOrderId("");
       setBoxCount("");
     } catch {

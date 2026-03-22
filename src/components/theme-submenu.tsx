@@ -8,6 +8,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
+import { track } from "@/lib/analytics";
 
 const themeIcon = {
   light: Sun,
@@ -28,7 +29,7 @@ export function ThemeSubmenu() {
         {t("theme.title")}
       </DropdownMenuSubTrigger>
       <DropdownMenuSubContent>
-        <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
+        <DropdownMenuRadioGroup value={theme} onValueChange={(v) => { setTheme(v); track("theme_changed", { theme: v }); }}>
           <DropdownMenuRadioItem value="light">
             <Sun className="mr-2 h-4 w-4" />
             {t("theme.light")}
