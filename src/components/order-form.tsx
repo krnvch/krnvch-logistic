@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Order, OrderInsert, OrderUpdate, OrderPriority } from "@/types";
+import { track } from "@/lib/analytics";
 
 interface OrderFormProps {
   open: boolean;
@@ -110,6 +111,7 @@ export function OrderForm({
           priority,
         });
         toast.success(t("toast.orderUpdated"));
+        track("order_updated", { order_id: editOrder.id, priority, box_count: boxes });
       } else {
         await onSubmit({
           shipment_id: shipmentId,
@@ -122,6 +124,7 @@ export function OrderForm({
           priority,
         });
         toast.success(t("toast.orderCreated"));
+        track("order_created", { priority, box_count: boxes });
       }
       onClose();
     } catch {

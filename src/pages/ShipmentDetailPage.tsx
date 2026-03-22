@@ -9,6 +9,7 @@ import { useRealtimeSync } from "@/hooks/use-realtime";
 import { useLastShipment } from "@/hooks/use-last-shipment";
 import { toast } from "sonner";
 import i18n from "@/lib/i18n";
+import { track } from "@/lib/analytics";
 
 interface ShipmentDetailPageProps {
   logout: () => Promise<void>;
@@ -69,6 +70,7 @@ export default function ShipmentDetailPage({
         done_at: new Date().toISOString(),
       });
       toast.success(i18n.t("toast.orderMarkedDone"));
+      track("order_marked_done", { order_id: orderId });
     },
     [updateOrder]
   );
@@ -81,6 +83,7 @@ export default function ShipmentDetailPage({
         done_at: null,
       });
       toast.success(i18n.t("toast.orderUndone"));
+      track("order_undone", { order_id: orderId });
     },
     [updateOrder]
   );
@@ -88,6 +91,7 @@ export default function ShipmentDetailPage({
   const handleCompleteShipment = useCallback(async () => {
     if (!shipment) return;
     await completeShipment(shipment.id);
+    track("shipment_completed", { shipment_id: shipment.id });
   }, [shipment, completeShipment]);
 
   const handleReopenShipment = useCallback(async () => {

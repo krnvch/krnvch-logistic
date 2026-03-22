@@ -7,6 +7,7 @@ import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
 } from "@/components/ui/dropdown-menu";
+import { track } from "@/lib/analytics";
 
 export function LanguageSubmenu() {
   const { t, i18n } = useTranslation();
@@ -20,7 +21,7 @@ export function LanguageSubmenu() {
       <DropdownMenuSubContent>
         <DropdownMenuRadioGroup
           value={i18n.language}
-          onValueChange={(lng) => i18n.changeLanguage(lng)}
+          onValueChange={(lng) => { i18n.changeLanguage(lng); track("language_changed", { locale: lng }); }}
         >
           <DropdownMenuRadioItem value="en">
             {t("language.en")}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
 import { supabase } from "@/lib/supabase";
+import { identify, reset, track } from "@/lib/analytics";
 import type { UserRole } from "@/types";
 
 export function useAuth() {
@@ -34,11 +35,24 @@ export function useAuth() {
       email,
       password,
     });
+    if (!error) {
+      const { data } = await supabase.auth.getSession();
+      const user = data.session?.user;
+      if (user) {
+        identify(user.id, {
+          email: user.email,
+          role: user.user_metadata?.role as string | undefined,
+        });
+        track("user_logged_in", { email: user.email });
+      }
+    }
     return { error };
   };
 
   const logout = async () => {
+    track("user_logged_out");
     await supabase.auth.signOut();
+    reset();
   };
 
   return { session, loading, login, logout, role, isOperator };

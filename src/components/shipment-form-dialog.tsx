@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { track } from "@/lib/analytics";
 
 interface ShipmentFormDialogProps {
   open: boolean;
@@ -63,6 +64,7 @@ export function ShipmentFormDialog({
         created_by: userEmail ?? null,
       });
       toast.success(t("toast.shipmentCreated"));
+      track("shipment_created", { name: name.trim(), trailer_walls: wallCount, boxes_per_wall: boxCount });
       setName("");
       setWalls("30");
       setBoxesPerWall("24");
