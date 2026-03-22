@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {
@@ -43,6 +44,7 @@ export function OrderSidebar({
   matchedOrderIds,
   onOrderTap,
 }: OrderSidebarProps) {
+  const { t } = useTranslation();
   const [formOpen, setFormOpen] = useState(false);
   const [editOrder, setEditOrder] = useState<Order | null>(null);
   const [deleteOrder, setDeleteOrder] = useState<OrderWithStatus | null>(null);
@@ -87,11 +89,11 @@ export function OrderSidebar({
       <div className="flex h-full flex-col">
         {/* Header */}
         <div className="flex items-center justify-between border-b px-4 py-2.5">
-          <h2 className="font-heading font-semibold">Заказы</h2>
+          <h2 className="font-heading font-semibold">{t("orders.title")}</h2>
           {isOperator && !isReadOnly && (
             <Button size="sm" onClick={() => setFormOpen(true)}>
               <Plus className="mr-1 h-4 w-4" />
-              Добавить
+              {t("common.add")}
             </Button>
           )}
         </div>
@@ -101,7 +103,7 @@ export function OrderSidebar({
           <div className="grid gap-2 p-3">
             {orders.length === 0 ? (
               <div className="text-muted-foreground py-12 text-center text-sm">
-                Нет заказов. Добавьте первый заказ.
+                {t("orders.empty")}
               </div>
             ) : (
               orders.map((data) => (
@@ -141,22 +143,20 @@ export function OrderSidebar({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Удалить заказ?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialog.deleteOrder.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Заказ #{deleteOrder?.order.order_number} будет удалён.
+              {t("dialog.deleteOrder.description", { number: deleteOrder?.order.order_number })}
               {deleteOrder && deleteOrder.placed_boxes > 0 && (
                 <>
-                  {" "}
-                  Это также удалит {deleteOrder.placed_boxes} размещённых
-                  коробок с карты.
+                  {t("dialog.deleteOrder.placementsWarning", { count: deleteOrder.placed_boxes })}
                 </>
               )}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDeleteConfirm}>
-              Удалить
+              {t("common.delete")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -169,16 +169,15 @@ export function OrderSidebar({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Отметить как готово?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialog.markDone.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Заказ #{doneOrder?.order.order_number} (
-              {doneOrder?.order.client_name}) будет отмечен как выданный.
+              {t("dialog.markDone.description", { number: doneOrder?.order.order_number, client: doneOrder?.order.client_name })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction onClick={handleDoneConfirm}>
-              Готово
+              {t("action.markDone")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

@@ -1,3 +1,4 @@
+import { useTranslation } from "react-i18next";
 import { Search, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -15,12 +16,13 @@ export function SearchInput({
   onClear,
   noResults,
 }: SearchInputProps) {
+  const { t } = useTranslation();
   return (
     <div className="relative">
       <Search className="text-muted-foreground absolute top-2.5 left-2.5 h-4 w-4" />
       <Input
         type="search"
-        placeholder="Поиск заказа..."
+        placeholder={t("search.placeholder")}
         className="h-9 w-40 pr-8 pl-9 [&::-webkit-search-cancel-button]:hidden lg:w-56"
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -39,7 +41,7 @@ export function SearchInput({
       )}
       {noResults && (
         <p className="bg-popover text-muted-foreground absolute top-full left-0 z-10 mt-1 border-2 px-3 py-1.5 text-xs">
-          Ничего не найдено
+          {t("search.noResults")}
         </p>
       )}
     </div>

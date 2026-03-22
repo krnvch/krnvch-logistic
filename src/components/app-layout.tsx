@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ThemeSubmenu } from "@/components/theme-submenu";
+import { LanguageSubmenu } from "@/components/language-submenu";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -85,6 +87,7 @@ export function AppLayout({
   onReopenShipment,
   onRenameShipment,
 }: AppLayoutProps) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [activeWall, setActiveWall] = useState<number | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
@@ -104,7 +107,7 @@ export function AppLayout({
           <GridaLogo size={28} showWordmark={false} className="text-primary shrink-0" />
           {isReadOnly && (
             <Badge variant="secondary" className="text-xs">
-              Завершён
+              {t("shipments.badge.completed")}
             </Badge>
           )}
         </div>
@@ -133,36 +136,37 @@ export function AppLayout({
                 onClick={() => navigate("/", { state: { skipRedirect: true } })}
               >
                 <List className="mr-2 h-4 w-4" />
-                Все рейсы
+                {t("nav.allShipments")}
               </DropdownMenuItem>
               {isOperator && onRenameShipment && (
                 <DropdownMenuItem onClick={() => setRenameOpen(true)}>
                   <Pencil className="mr-2 h-4 w-4" />
-                  Переименовать
+                  {t("action.rename")}
                 </DropdownMenuItem>
               )}
               {isOperator && !isReadOnly && (
                 <DropdownMenuItem onClick={() => setConfirmReset(true)}>
                   <RotateCcw className="mr-2 h-4 w-4" />
-                  Завершить рейс
+                  {t("action.completeShipment")}
                 </DropdownMenuItem>
               )}
               {isOperator && isReadOnly && onReopenShipment && (
                 <DropdownMenuItem onClick={() => onReopenShipment()}>
                   <RotateCcw className="mr-2 h-4 w-4" />
-                  Возобновить рейс
+                  {t("action.reopenShipment")}
                 </DropdownMenuItem>
               )}
               <DropdownMenuSeparator />
               <ThemeSubmenu />
+              <LanguageSubmenu />
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => navigate("/profile")}>
                 <User className="mr-2 h-4 w-4" />
-                Профиль
+                {t("nav.profile")}
               </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
-                Выйти
+                {t("nav.signOut")}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -238,21 +242,20 @@ export function AppLayout({
       <AlertDialog open={confirmReset} onOpenChange={setConfirmReset}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Завершить рейс?</AlertDialogTitle>
+            <AlertDialogTitle>{t("dialog.completeShipment.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              Текущий рейс будет завершён. Все данные сохранятся, но вы
-              перейдёте к созданию нового рейса.
+              {t("dialog.completeShipment.description")}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel>Отмена</AlertDialogCancel>
+            <AlertDialogCancel>{t("common.cancel")}</AlertDialogCancel>
             <AlertDialogAction
               onClick={async () => {
                 await onCompleteShipment();
                 setConfirmReset(false);
               }}
             >
-              Завершить
+              {t("dialog.completeShipment.confirm")}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

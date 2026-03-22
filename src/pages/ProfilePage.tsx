@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import type { Session } from "@supabase/supabase-js";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
@@ -45,6 +46,7 @@ interface ProfilePageProps {
 
 export default function ProfilePage({ session }: ProfilePageProps) {
   const navigate = useNavigate();
+  const { t, i18n } = useTranslation();
   const { theme, setTheme } = useTheme();
   const { updateProfile, changePassword, saving, changingPassword } =
     useProfile();
@@ -76,10 +78,10 @@ export default function ProfilePage({ session }: ProfilePageProps) {
     setProfileError(null);
     try {
       await updateProfile({ firstName, lastName, role });
-      toast.success("Профиль обновлён");
+      toast.success(t("toast.profileUpdated"));
     } catch (err) {
       setProfileError(
-        err instanceof Error ? err.message : "Не удалось сохранить"
+        err instanceof Error ? err.message : t("toast.profileSaveError")
       );
     }
   };
@@ -92,20 +94,20 @@ export default function ProfilePage({ session }: ProfilePageProps) {
       confirmPassword
     );
     if (validationError) {
-      setPasswordError(validationError);
+      setPasswordError(t(validationError));
       return;
     }
 
     try {
       await changePassword(email, currentPassword, newPassword);
-      toast.success("Пароль изменён");
+      toast.success(t("toast.passwordChanged"));
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
       setPasswordOpen(false);
     } catch (err) {
       setPasswordError(
-        err instanceof Error ? err.message : "Не удалось сменить пароль"
+        err instanceof Error ? err.message : t("toast.passwordChangeError")
       );
     }
   };
@@ -121,7 +123,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
         >
           <X className="h-4 w-4" />
         </Button>
-        <h1 className="font-heading text-lg font-semibold">Профиль</h1>
+        <h1 className="font-heading text-lg font-semibold">{t("profile.title")}</h1>
       </header>
 
       {/* Content */}
@@ -129,26 +131,26 @@ export default function ProfilePage({ session }: ProfilePageProps) {
         {/* Personal data card */}
         <Card>
           <CardHeader>
-            <CardTitle>Личные данные</CardTitle>
+            <CardTitle>{t("profile.personalInfo")}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="firstName">Имя</Label>
+              <Label htmlFor="firstName">{t("profile.firstName")}</Label>
               <Input
                 id="firstName"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                placeholder="Имя"
+                placeholder={t("profile.firstName")}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="lastName">Фамилия</Label>
+              <Label htmlFor="lastName">{t("profile.lastName")}</Label>
               <Input
                 id="lastName"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                placeholder="Фамилия"
+                placeholder={t("profile.lastName")}
               />
             </div>
 
@@ -158,7 +160,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="role">Роль</Label>
+              <Label htmlFor="role">{t("profile.role")}</Label>
               <Select
                 value={role}
                 onValueChange={(v) => setRole(v as UserRole)}
@@ -167,13 +169,12 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="operator">Оператор</SelectItem>
-                  <SelectItem value="worker">Работник</SelectItem>
+                  <SelectItem value="operator">{t("profile.role.operator")}</SelectItem>
+                  <SelectItem value="worker">{t("profile.role.worker")}</SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-muted-foreground text-sm">
-                Оператор — полный доступ. Работник — только просмотр и
-                отметка &laquo;Готово&raquo;.
+                {t("profile.roleDescription")}
               </p>
             </div>
 
@@ -183,7 +184,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
 
             <div className="flex justify-end">
               <Button onClick={handleSaveProfile} disabled={saving}>
-                {saving ? "Сохранение..." : "Сохранить"}
+                {saving ? t("common.saving") : t("common.save")}
               </Button>
             </div>
           </CardContent>
@@ -192,16 +193,16 @@ export default function ProfilePage({ session }: ProfilePageProps) {
         {/* Appearance card */}
         <Card>
           <CardHeader>
-            <CardTitle>Оформление</CardTitle>
+            <CardTitle>{t("profile.appearance")}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex gap-2">
               {(
                 [
-                  { value: "light", label: "Светлая", icon: Sun },
-                  { value: "dark", label: "Тёмная", icon: Moon },
-                  { value: "system", label: "Системная", icon: Monitor },
-                ] as const
+                  { value: "light" as const, label: t("theme.light"), icon: Sun },
+                  { value: "dark" as const, label: t("theme.dark"), icon: Moon },
+                  { value: "system" as const, label: t("theme.system"), icon: Monitor },
+                ]
               ).map(({ value, label, icon: Icon }) => (
                 <Button
                   key={value}
@@ -217,6 +218,32 @@ export default function ProfilePage({ session }: ProfilePageProps) {
           </CardContent>
         </Card>
 
+        {/* Language card */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("profile.language")}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex gap-2">
+              {(
+                [
+                  { value: "en", label: t("language.en") },
+                  { value: "ru", label: t("language.ru") },
+                ] as const
+              ).map(({ value, label }) => (
+                <Button
+                  key={value}
+                  variant={i18n.language === value ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => i18n.changeLanguage(value)}
+                >
+                  {label}
+                </Button>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
         {/* Password change card */}
         <Card>
           <CardHeader>
@@ -225,7 +252,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
               className="flex w-full items-center justify-between"
               onClick={() => setPasswordOpen((v) => !v)}
             >
-              <CardTitle>Смена пароля</CardTitle>
+              <CardTitle>{t("profile.changePassword")}</CardTitle>
               {passwordOpen ? (
                 <ChevronUp className="h-4 w-4" />
               ) : (
@@ -236,7 +263,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
           {passwordOpen && (
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword">Текущий пароль</Label>
+                <Label htmlFor="currentPassword">{t("profile.currentPassword")}</Label>
                 <div className="relative">
                   <Input
                     id="currentPassword"
@@ -263,7 +290,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="newPassword">Новый пароль</Label>
+                <Label htmlFor="newPassword">{t("profile.newPassword")}</Label>
                 <div className="relative">
                   <Input
                     id="newPassword"
@@ -295,9 +322,9 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                     strong: "bg-success",
                   };
                   const labels = {
-                    weak: "Слабый",
-                    medium: "Средний",
-                    strong: "Надёжный",
+                    weak: t("password.strength.weak"),
+                    medium: t("password.strength.medium"),
+                    strong: t("password.strength.strong"),
                   };
                   return (
                     <div className="space-y-1 pt-1">
@@ -345,7 +372,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                               : "text-muted-foreground"
                           }
                         >
-                          {rule.label}
+                          {t(`password.rule.${rule.key}`)}
                         </span>
                       </li>
                     ))}
@@ -354,7 +381,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
 
               <div className="space-y-2 pt-2">
                 <Label htmlFor="confirmPassword">
-                  Подтверждение пароля
+                  {t("profile.confirmPassword")}
                 </Label>
                 <div className="relative">
                   <Input
@@ -393,8 +420,8 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                   disabled={changingPassword}
                 >
                   {changingPassword
-                    ? "Смена пароля..."
-                    : "Сменить пароль"}
+                    ? t("profile.changingPassword")
+                    : t("profile.changePasswordSubmit")}
                 </Button>
               </div>
             </CardContent>

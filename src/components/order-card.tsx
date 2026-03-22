@@ -1,4 +1,5 @@
 import { useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -26,16 +27,10 @@ interface OrderCardProps {
 }
 
 const statusConfig = {
-  pending: {
-    label: "Ожидает",
-    className: "bg-secondary text-secondary-foreground",
-  },
-  loaded: {
-    label: "Загружен",
-    className: "bg-success text-success-foreground",
-  },
-  done: { label: "Готово", className: "bg-muted text-muted-foreground" },
-} as const;
+  pending: { className: "bg-secondary text-secondary-foreground" },
+  loaded: { className: "bg-success text-success-foreground" },
+  done: { className: "bg-muted text-muted-foreground" },
+};
 
 export function OrderCard({
   data,
@@ -48,6 +43,7 @@ export function OrderCard({
   onTap,
   highlighted,
 }: OrderCardProps) {
+  const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const { order, placed_boxes, status } = data;
   const isDone = status === "done";
@@ -76,11 +72,11 @@ export function OrderCard({
             {isUrgent && (
               <Badge className="bg-warning text-warning-foreground">
                 <AlertTriangle className="mr-1 h-3 w-3" />
-                Срочный
+                {t("orders.priority.urgent")}
               </Badge>
             )}
             <Badge variant="secondary" className={badge.className}>
-              {badge.label}
+              {t(`orders.status.${status}`)}
             </Badge>
           </div>
         </div>
@@ -92,7 +88,7 @@ export function OrderCard({
         <div className="grid gap-1">
           <div className="text-muted-foreground flex items-center justify-between text-xs">
             <span>
-              {placed_boxes} / {order.box_count} коробок
+              {placed_boxes} / {order.box_count} {t("orders.boxes")}
             </span>
             <span>{Math.round(progress)}%</span>
           </div>
@@ -121,7 +117,7 @@ export function OrderCard({
                 }}
               >
                 <Undo2 className="mr-1 h-3.5 w-3.5" />
-                Вернуть
+                {t("action.undo")}
               </Button>
             ) : (
               <>
@@ -135,7 +131,7 @@ export function OrderCard({
                   }}
                 >
                   <CircleCheck className="mr-1 h-3.5 w-3.5" />
-                  Готово
+                  {t("action.markDone")}
                 </Button>
                 {isOperator && (
                   <>

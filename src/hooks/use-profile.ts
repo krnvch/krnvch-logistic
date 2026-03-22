@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "@/lib/supabase";
+import i18n from "@/lib/i18n";
 import type { UserRole } from "@/types";
 
 interface ProfileData {
@@ -42,7 +43,7 @@ export function useProfile() {
           password: currentPassword,
         });
       if (signInError) {
-        throw new Error("Неверный текущий пароль");
+        throw new Error(i18n.t("toast.wrongCurrentPassword"));
       }
 
       // Update to new password

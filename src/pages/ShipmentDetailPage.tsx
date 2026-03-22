@@ -8,6 +8,7 @@ import { useWallData } from "@/hooks/use-wall-data";
 import { useRealtimeSync } from "@/hooks/use-realtime";
 import { useLastShipment } from "@/hooks/use-last-shipment";
 import { toast } from "sonner";
+import i18n from "@/lib/i18n";
 
 interface ShipmentDetailPageProps {
   logout: () => Promise<void>;
@@ -45,7 +46,7 @@ export default function ShipmentDetailPage({
   // Redirect if shipment not found (deleted or invalid)
   useEffect(() => {
     if (!isLoading && !shipment && id) {
-      toast.error("Рейс не найден");
+      toast.error(i18n.t("toast.shipmentNotFound"));
       lastShipment.clear();
       navigate("/", { replace: true });
     }
@@ -67,7 +68,7 @@ export default function ShipmentDetailPage({
         is_done: true,
         done_at: new Date().toISOString(),
       });
-      toast.success("Заказ отмечен как готово");
+      toast.success(i18n.t("toast.orderMarkedDone"));
     },
     [updateOrder]
   );
@@ -79,7 +80,7 @@ export default function ShipmentDetailPage({
         is_done: false,
         done_at: null,
       });
-      toast.success("Заказ возвращён в работу");
+      toast.success(i18n.t("toast.orderUndone"));
     },
     [updateOrder]
   );

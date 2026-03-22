@@ -1,4 +1,5 @@
 import { useTheme } from "next-themes";
+import { useTranslation } from "react-i18next";
 import { Sun, Moon, Monitor } from "lucide-react";
 import {
   DropdownMenuSub,
@@ -15,6 +16,7 @@ const themeIcon = {
 } as const;
 
 export function ThemeSubmenu() {
+  const { t } = useTranslation();
   const { theme = "system", setTheme } = useTheme();
 
   const TriggerIcon = themeIcon[theme as keyof typeof themeIcon] ?? Monitor;
@@ -23,21 +25,21 @@ export function ThemeSubmenu() {
     <DropdownMenuSub>
       <DropdownMenuSubTrigger>
         <TriggerIcon className="mr-2 h-4 w-4" />
-        Тема
+        {t("theme.title")}
       </DropdownMenuSubTrigger>
       <DropdownMenuSubContent>
         <DropdownMenuRadioGroup value={theme} onValueChange={setTheme}>
           <DropdownMenuRadioItem value="light">
             <Sun className="mr-2 h-4 w-4" />
-            Светлая
+            {t("theme.light")}
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="dark">
             <Moon className="mr-2 h-4 w-4" />
-            Тёмная
+            {t("theme.dark")}
           </DropdownMenuRadioItem>
           <DropdownMenuRadioItem value="system">
             <Monitor className="mr-2 h-4 w-4" />
-            Системная
+            {t("theme.system")}
           </DropdownMenuRadioItem>
         </DropdownMenuRadioGroup>
       </DropdownMenuSubContent>
