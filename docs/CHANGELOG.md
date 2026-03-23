@@ -5,6 +5,31 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.3.0] — 2026-03-23
+
+### Linear Integration (Project Management)
+
+All tasks, planning, and progress tracking have moved from a local TODO.md file to **Linear** — a professional project management tool, managed directly from the terminal via Linear MCP.
+
+#### Added
+- Linear MCP server connection — create, search, update, and close issues from Claude Code
+- "Learning Roadmap" project in the Grida team (GRD)
+- 34 issues migrated with full English translations, completion notes, and PR references
+- Label taxonomy: 9 categories (Testing, CI/CD, Database, UX/UI, Product, Performance, Collaboration, Security, Infrastructure) + 3 complexity levels (Easy, Medium, Hard) + type (Feature, Improvement, Bug)
+- Priority system based on recommended learning order (High → Medium → Low)
+- 14 completed issues moved to Done state with historical context preserved
+- New "Task Management (Linear)" section in CLAUDE.md — Linear is the single source of truth
+
+#### Changed
+- `docs/TODO.md` replaced with a pointer to Linear (no longer contains tasks)
+- CLAUDE.md updated with Linear workflow rules and English-only requirement for all issues
+
+#### Technical
+- Patched 2 bugs in the Linear MCP server (`create_issues` batch mutation used wrong GraphQL operation; `delete_issue` used array param instead of singular)
+- All issues linked to Learning Roadmap project with labels via `issueBatchCreate` API
+
+---
+
 ## [4.2.0] — 2026-03-22
 
 ### Product Analytics (PostHog)

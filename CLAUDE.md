@@ -31,6 +31,25 @@ Logistics management web application.
 - **Conventions**: `describe` + `it` blocks, `makeOrder()` helper for test fixtures, import from `@/types`
 - Pure functions first — ideal candidates for unit tests (no mocks needed)
 
+## Task Management (Linear)
+
+**Linear is the single source of truth** for all tasks, planning, and progress tracking. `docs/TODO.md` is a pointer only — never add tasks there.
+
+- **Workspace**: [test-uxd](https://linear.app/test-uxd)
+- **Team**: Grida (`GRD`)
+- **Project**: Learning Roadmap
+- **Integration**: Linear MCP server — create, update, search, and close issues directly from Claude Code
+- **Language**: All Linear issues, titles, and descriptions MUST be in **English only**
+- **Labels**: Category (Testing, CI/CD, Database, UX/UI, Product, Performance, Collaboration, Security, Infrastructure) + Complexity (Easy, Medium, Hard) + Type (Feature, Improvement, Bug)
+- **States**: Backlog → Todo → In Progress → Done (+ Canceled, Duplicate)
+
+### Workflow
+
+1. Before starting work, find or create the corresponding Linear issue
+2. Move issue to "In Progress" when starting
+3. Move issue to "Done" when complete
+4. Reference the Linear issue ID (e.g., `GRD-52`) in PR descriptions and commits
+
 ## Development Workflow
 
 - **Branching**: feature branches (`feature/task-name`) → PR → merge to `main`
