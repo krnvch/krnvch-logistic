@@ -172,5 +172,14 @@
   "toast.wrongCurrentPassword": "Неверный текущий пароль",
 
   "trailer.cab": "Кабина (дальняя стенка)",
-  "trailer.doors": "Двери"
+  "trailer.doors": "Двери",
+
+  "suggestion.title": "Есть идея? Мы слушаем!",
+  "suggestion.reassurance": "Большая или маленькая — расскажите. Без имён, только роль для контекста.",
+  "suggestion.placeholder": "Что бы упростило вам работу?",
+  "suggestion.submit": "Отправить",
+  "suggestion.success": "Предложение отправлено! Спасибо.",
+  "suggestion.error": "Не удалось отправить предложение. Попробуйте ещё раз.",
+  "suggestion.minLength": "Минимум 10 символов",
+  "suggestion.ariaLabel": "Предложить идею"
 }

@@ -5,6 +5,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.4.0] — 2026-03-28
+
+### In-App Idea Suggestions (User Feedback Channel)
+
+Users can now submit feature ideas and suggestions directly from within the app — a lightweight feedback loop that routes to a dedicated Linear project for triage.
+
+#### Added
+- Lightbulb icon button in the header (both ShipmentsPage and AppLayout), left of the avatar
+- Suggestion dialog with free-form text field (10–1000 chars), character counter, and reassurance text
+- Supabase Edge Function `create-suggestion` — validates payload and creates Linear issues via GraphQL API
+- "User Suggestions" Linear project (separate from Learning Roadmap) for triage
+- Bilingual UI: 8 i18n keys in both `en.json` and `ru.json`
+- PostHog events: `suggestion_submitted` and `suggestion_failed`
+- `Textarea` shadcn/ui component (`src/components/ui/textarea.tsx`)
+
+#### Technical
+- Edge Function at `supabase/functions/create-suggestion/index.ts` — Deno runtime, Linear GraphQL API
+- `LINEAR_API_KEY` stored in Supabase Edge Function secrets (never exposed to client)
+- Metadata attached to Linear issues: user role, current page, timestamp (no PII)
+- Linear workflow rule added to CLAUDE.md: post PRDs and updates as comments on issues
+
+---
+
 ## [4.3.0] — 2026-03-23
 
 ### Linear Integration (Project Management)
