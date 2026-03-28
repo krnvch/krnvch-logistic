@@ -28,6 +28,7 @@ import { TrailerMap } from "@/components/trailer-map";
 import { WallPopover } from "@/components/wall-popover";
 import { useSearch } from "@/hooks/use-search";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
+import { SuggestionDialog } from "@/components/suggestion-dialog";
 import { GridaLogo } from "@/components/grida-logo";
 import { LogOut, RotateCcw, List, Pencil, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -123,6 +124,9 @@ export function AppLayout({
             onChange={search.setQuery}
             onClear={search.clearSearch}
             noResults={search.noResults}
+          />
+          <SuggestionDialog
+            userRole={isOperator ? "operator" : "worker"}
           />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>

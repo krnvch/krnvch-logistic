@@ -47,8 +47,13 @@ Logistics management web application.
 
 1. Before starting work, find or create the corresponding Linear issue
 2. Move issue to "In Progress" when starting
-3. Move issue to "Done" when complete
-4. Reference the Linear issue ID (e.g., `GRD-52`) in PR descriptions and commits
+3. **Post updates as comments** on the Linear issue throughout the work:
+   - PRD summary (with link to file in repo) when PRD is written
+   - Architecture decisions or scope changes
+   - Implementation progress at major milestones
+   - Final summary when work is complete
+4. Move issue to "Done" when complete
+5. Reference the Linear issue ID (e.g., `GRD-52`) in PR descriptions and commits
 
 ## Development Workflow
 

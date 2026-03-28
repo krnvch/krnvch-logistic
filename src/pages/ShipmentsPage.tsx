@@ -53,6 +53,7 @@ import { useRealtimeShipments } from "@/hooks/use-realtime";
 import { useLastShipment } from "@/hooks/use-last-shipment";
 import { ShipmentFormDialog } from "@/components/shipment-form-dialog";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
+import { SuggestionDialog } from "@/components/suggestion-dialog";
 import type { Shipment, ShipmentFilter, ShipmentsSort } from "@/types";
 import { track } from "@/lib/analytics";
 
@@ -199,6 +200,9 @@ export default function ShipmentsPage({
           <GridaLogo size={28} showWordmark={false} className="text-primary shrink-0" />
         </div>
         <div className="ml-auto flex items-center gap-2">
+          <SuggestionDialog
+            userRole={isOperator ? "operator" : "worker"}
+          />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">

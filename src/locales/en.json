@@ -172,5 +172,14 @@
   "toast.wrongCurrentPassword": "Incorrect current password",
 
   "trailer.cab": "Cab (far wall)",
-  "trailer.doors": "Doors"
+  "trailer.doors": "Doors",
+
+  "suggestion.title": "Got an idea? We're all ears!",
+  "suggestion.reassurance": "Big or small, we'd love to hear it. No names attached — just your role for context.",
+  "suggestion.placeholder": "What would make your day easier?",
+  "suggestion.submit": "Submit",
+  "suggestion.success": "Suggestion sent! Thank you.",
+  "suggestion.error": "Failed to send suggestion. Please try again.",
+  "suggestion.minLength": "Minimum 10 characters",
+  "suggestion.ariaLabel": "Suggest an idea"
 }
