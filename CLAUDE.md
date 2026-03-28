@@ -65,6 +65,10 @@ Logistics management web application.
 - All CI checks must pass (green) before merging a PR
 - **Changelog (MANDATORY)**: `docs/CHANGELOG.md` MUST be updated **in the same commit as the code** — never as a separate commit after merging. This is part of the definition of done for every feature, fix, or behavioral change. Follow semver and [Keep a Changelog](https://keepachangelog.com/) format. If you are about to commit code that adds features, changes behavior, or fixes bugs, and the changelog is not updated — **stop and update it first**.
 
+## Platform Overview
+
+For a high-level guide to how the platform works (entities, data flow, integrations, file map), see [`docs/how-it-works.md`](docs/how-it-works.md). Read this first if you're new to the project.
+
 ## Project Structure
 
 ```
