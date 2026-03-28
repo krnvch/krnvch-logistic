@@ -5,6 +5,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.5.0] — 2026-03-28
+
+### Telegram Bot for Quick Idea Capture
+
+A private Telegram bot that captures ideas on the go — send a message and it creates a Linear issue in the Learning Roadmap project automatically.
+
+#### Added
+- Supabase Edge Function `telegram-bot` — receives Telegram webhook, creates Linear issues
+- Private auth: only the configured Telegram user ID can create issues
+- First line of message = issue title, rest = description
+- Bot replies with issue identifier and Linear link
+- `/start` command with usage instructions
+
+#### Technical
+- Telegram Bot API webhook → Supabase Edge Function → Linear GraphQL API
+- Secrets: `TELEGRAM_BOT_TOKEN`, `TELEGRAM_ALLOWED_USER_ID` (+ existing `LINEAR_API_KEY`)
+- All responses return 200 to Telegram (webhook contract requirement)
+
+---
+
 ## [4.4.0] — 2026-03-28
 
 ### In-App Idea Suggestions (User Feedback Channel)
