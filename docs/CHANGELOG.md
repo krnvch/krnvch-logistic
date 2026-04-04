@@ -5,6 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.5.1] — 2026-04-04
+
+### Seed Platform with Realistic Test Data
+
+A comprehensive SQL seed script that populates the database with realistic logistics data — 8 shipments in different lifecycle states, 198 orders with real German client names, and ~400 placements distributed across trailer walls.
+
+#### Added
+- `supabase/seed.sql` — idempotent seed script (re-runnable via Supabase SQL Editor or psql)
+- 8 shipments: 2 heavily loaded, 1 moderate, 1 light, 1 empty, 2 completed full, 1 completed small
+- 198 orders with realistic client names (hotels, markets, supermarkets, cafés, florists)
+- Mix of statuses: pending (0%), partially loaded, fully loaded, done
+- ~15% urgent priority orders across active shipments
+- Box counts ranging from 3 to 45 per order
+- Large orders split across 2–3 walls, some walls at full capacity (24 boxes)
+- Realistic timestamps spread across multiple days
+
+---
+
 ## [4.5.0] — 2026-03-28
 
 ### Telegram Bot for Quick Idea Capture
