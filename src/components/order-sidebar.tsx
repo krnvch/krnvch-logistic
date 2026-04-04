@@ -99,7 +99,7 @@ export function OrderSidebar({
         </div>
 
         {/* Order list */}
-        <ScrollArea className="flex-1">
+        <ScrollArea className="min-h-0 flex-1">
           <div className="grid gap-2 p-3">
             {orders.length === 0 ? (
               <div className="text-muted-foreground py-12 text-center text-sm">
