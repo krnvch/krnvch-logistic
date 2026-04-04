@@ -5,6 +5,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.6.0] — 2026-04-04
+
+### Postman API Collection & Learning Roadmap (GRD-96)
+
+Set up Postman as an API exploration tool for the Grida platform. Built a complete API collection covering auth, REST CRUD, and Edge Functions — all tested against the live Supabase backend.
+
+#### Added
+- Postman workspace "Grida" with environment "Grida — dev" (supabase_url, supabase_anon_key, access_token)
+- Auth collection: Sign In (Operator) with auto-token-save post-response script
+- Shipments collection: List All (GET), Get Single (GET)
+- Orders collection: List by Shipment (GET), Create (POST), Update (PATCH), Delete (DELETE)
+- Placements collection: List by Shipment (GET)
+- Edge Functions collection: Create Suggestion (POST)
+- `docs/roadmap.md` — execution plan for all 21 backlog tasks across 7 phases (A–G)
+
+#### Learning outcomes
+- Full CRUD cycle demonstrated: GET (200) → POST (201) → PATCH (200) → DELETE (204)
+- REST API vs Edge Functions: auto-generated endpoints with OpenAPI spec vs custom undocumented endpoints (shadow API concept from Wallarm's API Discovery)
+- HTTP concepts: methods, headers, status codes, JWT auth, Bearer tokens
+- Environment variables and auto-scripting in Postman
+
+---
+
 ## [4.5.1] — 2026-04-04
 
 ### Seed Platform with Realistic Test Data
