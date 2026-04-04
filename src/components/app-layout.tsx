@@ -198,7 +198,7 @@ export function AppLayout({
         </main>
 
         {/* Sidebar */}
-        <aside className="bg-background w-full border-l max-md:h-[45%] max-md:shrink-0 max-md:border-t max-md:border-l-0 md:w-80 lg:w-96">
+        <aside className="bg-background w-full overflow-hidden border-l max-md:h-[45%] max-md:shrink-0 max-md:border-t max-md:border-l-0 md:w-80 lg:w-96">
           <OrderSidebar
             orders={orders}
             shipmentId={shipmentId}
