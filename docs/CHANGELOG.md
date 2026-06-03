@@ -5,6 +5,13 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.7.1] — 2026-06-03
+
+### Fixed
+- **Production build crash** (`Cannot read properties of undefined (reading 'createContext')` → blank screen). The manual `vendor`/`ui` chunk split separated React from React-dependent libraries (radix-ui) across chunks, creating a circular `ui ↔ vendor` dependency where the `ui` chunk evaluated before React was defined. Replaced with a single `vendor` chunk (all `node_modules`), keeping React and its consumers together. Surfaced after the v4.7.0 Sentry dependency tipped the latent cycle into a hard crash; the bug only manifests in the chunked production build, not `pnpm dev`. (GRD-52)
+
+---
+
 ## [4.7.0] — 2026-06-03
 
 ### Error Monitoring (Sentry) (GRD-52)
