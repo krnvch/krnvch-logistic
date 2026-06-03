@@ -181,5 +181,9 @@
   "suggestion.success": "Suggestion sent! Thank you.",
   "suggestion.error": "Failed to send suggestion. Please try again.",
   "suggestion.minLength": "Minimum 10 characters",
-  "suggestion.ariaLabel": "Suggest an idea"
+  "suggestion.ariaLabel": "Suggest an idea",
+
+  "error.title": "Something went wrong",
+  "error.description": "The app hit an unexpected error. We've been notified and are looking into it.",
+  "error.retry": "Reload"
 }
