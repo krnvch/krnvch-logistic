@@ -5,6 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [Infrastructure] — 2026-06-03
+
+### Cloudflare integration (GRD-94)
+
+DNS, edge proxy, WAF, and analytics for `grida.space`. Configuration only — no application code changes (managed in the Cloudflare and Vercel dashboards).
+
+#### Added
+- DNS migrated to Cloudflare nameservers
+- Edge proxy (orange cloud) on apex / `www` / `app`; SSL Full (Strict); Always Use HTTPS
+- WAF: Cloudflare managed ruleset, Bot Fight Mode, Browser Integrity Check, a custom scanner-block rule (`/wp-*`, `/.env`, `/.git`, …), and per-IP rate limiting
+- Cookieless Web Analytics (page views, visits, Core Web Vitals)
+
+#### Security
+- All `grida.space` traffic now passes through Cloudflare's edge (DDoS mitigation, WAF, bot filtering) before reaching the Vercel origin
+- Note: the Supabase backend is called directly by the frontend and is **not** behind Cloudflare — its protection relies on Supabase RLS/rate-limits
+
+---
+
 ## [4.7.1] — 2026-06-03
 
 ### Fixed
