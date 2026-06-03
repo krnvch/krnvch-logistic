@@ -23,6 +23,7 @@ export default defineConfig({
             "@supabase/supabase-js",
             "i18next",
             "react-i18next",
+            "@sentry/react",
           ],
           ui: ["radix-ui", "sonner", "next-themes", "lucide-react"],
         },

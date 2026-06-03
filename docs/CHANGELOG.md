@@ -5,6 +5,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.7.0] — 2026-06-03
+
+### Error Monitoring (Sentry) (GRD-52)
+
+Integrated Sentry for frontend error monitoring. Unhandled exceptions and React render crashes are now captured and reported, with a graceful fallback UI instead of a blank screen.
+
+#### Added
+- `@sentry/react` dependency
+- `src/lib/sentry.ts` — Sentry init module (graceful no-op when `VITE_SENTRY_DSN` is absent, mirroring the analytics pattern)
+- `src/components/error-fallback.tsx` — recoverable fallback UI (i18n) shown by the Sentry `ErrorBoundary` on render crashes
+- `ErrorBoundary` wrapping the app in `main.tsx`
+- `VITE_SENTRY_DSN` env var (added to `.env.example`)
+- i18n keys: `error.title`, `error.description`, `error.retry` (en + ru)
+
+#### Privacy
+- `sendDefaultPii: false` — no automatic collection of PII (IP address, cookies, request bodies)
+- Events tagged by `environment` (build mode) to separate production from local dev
+
+---
+
 ## [4.6.0] — 2026-04-04
 
 ### Postman API Collection & Learning Roadmap (GRD-96)
