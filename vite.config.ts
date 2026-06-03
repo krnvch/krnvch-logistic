@@ -14,18 +14,14 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks: {
-          vendor: [
-            "react",
-            "react-dom",
-            "react-router-dom",
-            "@tanstack/react-query",
-            "@supabase/supabase-js",
-            "i18next",
-            "react-i18next",
-            "@sentry/react",
-          ],
-          ui: ["radix-ui", "sonner", "next-themes", "lucide-react"],
+        // Bundle all third-party deps into a single vendor chunk. A manual
+        // vendor/ui split previously broke the production build: it separated
+        // React from React-dependent libs (radix-ui) across chunks, creating a
+        // circular ui<->vendor dependency where the ui chunk evaluated before
+        // React was defined ("Cannot read properties of undefined (reading
+        // 'createContext')"). Keeping React and its consumers together avoids it.
+        manualChunks(id) {
+          if (id.includes("node_modules")) return "vendor";
         },
       },
     },
