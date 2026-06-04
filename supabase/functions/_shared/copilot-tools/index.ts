@@ -1,0 +1,26 @@
+// ============================================================
+// Copilot tool registry (GRD-104)
+// ============================================================
+// The single list both consumers read:
+//   - Copilot Edge Function (supabase/functions/copilot) — browser JWT auth
+//   - Grida MCP server (GRD-105, future) — API-key auth
+// Add new tools here; NEVER import AI-SDK/MCP types into tool files.
+// ============================================================
+
+import type { CopilotRole, CopilotTool } from "./types.ts";
+import { getShipmentOverview } from "./get-shipment-overview.ts";
+
+export const tools: CopilotTool[] = [getShipmentOverview];
+
+/** Tools the given role is allowed to see and call. */
+export function filterByRole(role: CopilotRole): CopilotTool[] {
+  return tools.filter((tool) => tool.allowedRoles.includes(role));
+}
+
+export type {
+  CopilotLocale,
+  CopilotRole,
+  CopilotTool,
+  ToolContext,
+} from "./types.ts";
+export type { ShipmentOverview } from "./get-shipment-overview.ts";
