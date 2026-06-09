@@ -29,7 +29,13 @@ export function ThemeSubmenu() {
         {t("theme.title")}
       </DropdownMenuSubTrigger>
       <DropdownMenuSubContent>
-        <DropdownMenuRadioGroup value={theme} onValueChange={(v) => { setTheme(v); track("theme_changed", { theme: v }); }}>
+        <DropdownMenuRadioGroup
+          value={theme}
+          onValueChange={(v) => {
+            setTheme(v);
+            track("theme_changed", { theme: v });
+          }}
+        >
           <DropdownMenuRadioItem value="light">
             <Sun className="mr-2 h-4 w-4" />
             {t("theme.light")}

@@ -37,11 +37,10 @@ export function useProfile() {
     setChangingPassword(true);
     try {
       // Verify current password by signing in
-      const { error: signInError } =
-        await supabase.auth.signInWithPassword({
-          email,
-          password: currentPassword,
-        });
+      const { error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password: currentPassword,
+      });
       if (signInError) {
         throw new Error(i18n.t("toast.wrongCurrentPassword"));
       }

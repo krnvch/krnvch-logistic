@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { useThemeSync } from "@/hooks/use-theme-sync";
@@ -7,6 +8,9 @@ import ShipmentsPage from "@/pages/ShipmentsPage";
 import ShipmentDetailPage from "@/pages/ShipmentDetailPage";
 import ProfilePage from "@/pages/ProfilePage";
 import NotFoundPage from "@/pages/NotFoundPage";
+import { CopilotProvider } from "@/components/copilot/copilot-provider";
+
+const Copilot = lazy(() => import("@/components/copilot/copilot"));
 
 export default function App() {
   const { session, loading, login, logout, isOperator } = useAuth();
@@ -31,41 +35,49 @@ export default function App() {
     [meta?.first_name as string, meta?.last_name as string]
       .filter(Boolean)
       .map((n) => n[0].toUpperCase())
-      .join("") || userEmail?.charAt(0).toUpperCase() || "?";
+      .join("") ||
+    userEmail?.charAt(0).toUpperCase() ||
+    "?";
 
   return (
-    <Routes>
-      <Route
-        path="/"
-        element={
-          <ShipmentsPage
-            logout={logout}
-            isOperator={isOperator}
-            userEmail={userEmail}
-            userInitials={userInitials}
-          />
-        }
-      />
-      <Route
-        path="/shipments/:id"
-        element={
-          <ShipmentDetailPage
-            logout={logout}
-            isOperator={isOperator}
-            userInitials={userInitials}
-          />
-        }
-      />
-      <Route
-        path="/profile"
-        element={
-          <ProfilePage
-            key={session.user.updated_at}
-            session={session}
-          />
-        }
-      />
-      <Route path="*" element={<NotFoundPage />} />
-    </Routes>
+    <CopilotProvider firstName={(meta?.first_name as string) || undefined}>
+      <div className="flex h-dvh overflow-hidden">
+        <div className="min-w-0 flex-1 overflow-auto">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ShipmentsPage
+                  logout={logout}
+                  isOperator={isOperator}
+                  userEmail={userEmail}
+                  userInitials={userInitials}
+                />
+              }
+            />
+            <Route
+              path="/shipments/:id"
+              element={
+                <ShipmentDetailPage
+                  logout={logout}
+                  isOperator={isOperator}
+                  userInitials={userInitials}
+                />
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProfilePage key={session.user.updated_at} session={session} />
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+        <Suspense fallback={null}>
+          <Copilot />
+        </Suspense>
+      </div>
+    </CopilotProvider>
   );
 }

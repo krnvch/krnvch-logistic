@@ -95,6 +95,7 @@ Role is stored in Supabase user metadata (`raw_user_meta_data.role`). Security i
 │                                                  │
 │  create-suggestion ── App → Linear issue         │
 │  telegram-bot ─────── Telegram → Linear issue    │
+│  copilot ──────────── Mira AI assistant (Gemini) │
 │                                                  │
 ├─────────────────────────────────────────────────┤
 │              External Services                   │
@@ -113,6 +114,7 @@ Role is stored in Supabase user metadata (`raw_user_meta_data.role`). Security i
 | **PostHog** | Tracks 10 business events (login, order created, etc.) | `src/lib/analytics.ts` |
 | **Linear** | Task management — all planning and progress | Linear MCP in Claude Code |
 | **Telegram Bot** | Private bot to capture ideas → Linear issues | `supabase/functions/telegram-bot/` |
+| **Mira (AI assistant)** | In-app chat: ask about a shipment, answers grounded in DB data via tool calls (Gemini) | `supabase/functions/copilot/`, `src/components/copilot/` |
 | **Vercel** | Hosts the app, auto-deploys on merge to main | `vercel.json` |
 | **GitHub Actions** | CI: lint → test → build on every PR | `.github/workflows/ci.yml` |
 

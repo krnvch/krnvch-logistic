@@ -5,6 +5,31 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.8.0] — 2026-06-09
+
+### Mira — Grida's in-app AI assistant (GRD-104, Phase 1 + Stage A)
+
+Added **Mira**, an in-app AI assistant ("The grid, answered."). A header button opens a right-side push panel where users ask about the current shipment in English or Russian and get answers grounded in real data — the model calls a database tool instead of guessing. Read-only for now: one tool, no persistence, no write actions.
+
+#### Added
+- `get_shipment_overview(uuid)` Postgres RPC — single source of truth for shipment counts (total/done/open/urgent + per-wall breakdown); `SECURITY INVOKER`, so RLS applies; `EXECUTE` revoked from `anon`
+- Framework-agnostic tool registry (`supabase/functions/_shared/copilot-tools/`) with role filtering — designed for reuse by the future MCP server (GRD-105)
+- `copilot` Edge Function — agent runtime on Vercel AI SDK v5 + Gemini 2.5 Flash; deployed **with** JWT verification; the model key never reaches the browser; tool queries run under the caller's RLS; loop bounded to 5 steps / 1024 output tokens
+- Chat UI (`src/components/copilot/`): header launcher (Sparkles, far right, both main pages) toggling a **push panel** (480px, page shrinks and stays interactive — not a modal overlay); conversation survives panel close and route changes; lazy-loaded so it stays out of the initial bundle
+- Chat experience adapted from the owner's Wally design system (PRD v2 §1a — structure adopted, skin follows the Grida brand): personalized greeting + tappable suggestion pills, assistant answers rendered as **markdown without a bubble** (lists, headings, inline-code chips), **activity chain** showing tool calls live («Посмотрела сводку рейса»), copy action under answers, "Mira can make mistakes" disclaimer under the composer
+- `copilot.*` i18n keys (EN/RU); Russian copy uses feminine forms («Мира думает…», «Посмотрела…»)
+- Client deps: `ai@^5`, `@ai-sdk/react@^2` (pinned to the same major as the Edge Function runtime), `react-markdown`
+- Parity test `copilot-overview-parity.test.ts` guarding SQL ↔ `getOrderStatus` status-rule drift (27 tests total)
+- Migration backfill: `orders.priority` column formalized in a migration (`ADD COLUMN IF NOT EXISTS`)
+
+#### Notes
+- Edge Function secret `GOOGLE_GENERATIVE_AI_API_KEY` (documented in `.env.example`); the function returns a graceful 503 when unset
+- Naming: user-facing name **Mira**; technical slug stays `copilot` (see `docs/mira-naming-handoff.md`)
+- PRD bumped to v2.0 with delivery stages B–D tracked as GRD-124/125/126 (threads & history, write tools with approval cards, polish)
+- Known trade-off: `react-markdown` + AI SDK live in the shared `vendor` chunk (+~36 kB gzip) because of the single-vendor-chunk rule from the v4.7.1 fix; revisiting chunking is Stage-D material
+
+---
+
 ## [Infrastructure] — 2026-06-03
 
 ### Cloudflare integration (GRD-94)

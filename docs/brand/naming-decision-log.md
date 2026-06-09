@@ -114,3 +114,89 @@ Rationale: The pronunciation is magnetic — "GRI-da" is memorable, vivid, and s
 2. Visual identity (colors, typography, design tokens)
 3. SVG logo design
 4. Brand guidelines document
+
+---
+
+# Assistant Naming — Mira
+
+**Date**: 2026-06-04
+**Participants**: Product Owner (Artem), Brand Designer (Alfredo, agent #15)
+**Subject**: Naming the in-app AI assistant (GRD-104), working title "Copilot"
+**Process**: 3 rounds, ~60 web collision checks
+
+---
+
+## Starting Point
+
+**Working title**: Grida Copilot
+**Reason for rename**: "Copilot" is generic, owned mentally by Microsoft, says
+nothing about Grida, and transliterates poorly to Russian («Копайлот»).
+
+---
+
+## Round 1 — Open exploration
+
+6 territories (grid-derived, vision/seeing, logistics, persona, invented,
+intelligence/signal) → 45 raw candidates → shortlist of 7.
+
+| Name | Score /60 | Outcome |
+|------|-----------|---------|
+| Lumo | 51 | ❌ FATAL — Proton's Lumo AI assistant (post-hoc web check) |
+| Grava | 50 | Clean, but owner lukewarm; blurs with "Grida", brushes EN "grave" |
+| Mira | 49 | Owner's favorite — warm persona + *mirar* = "to see" |
+| Vista / Tally / Marshal | 48/48/47 | Eliminated (Windows Vista shadow / opaque to RU / military in RU) |
+| Veo | 45 | ❌ FATAL — Google Veo |
+
+**Lesson 1**: collision checks must be part of the process, not an afterthought.
+
+## Round 2 — The Mira spirit (warm human names)
+
+30 new candidates in the warm-persona vibe; 20+ web checks. **Every single one
+collided** with a live AI product (Vela, Lina, Zora, Liora, Akira, Tessa, Yara,
+Reka, Selva, Orla…). Also surfaced **PTV Mira** — a logistics AI agent (Jan 2026)
+positioned as a conversational "colleague," referred to as "she."
+
+**Lesson 2**: the "warm human first-name" category for AI assistants is fully
+saturated in 2026. Competitors are naming in our exact domain.
+
+## Round 3 — Invented-but-warm, search-first
+
+50+ invented coinages; web check BEFORE shortlisting (new mandatory step).
+~70% of invented names were already taken. 5 verified-clean survivors:
+**Yvenna** (55/70, cleanest), Vidanna (53, meaning "the one who sees"),
+Vondela (51), Quessa (51), Sennda (45).
+
+**Owner verdict**: clean survivors fail *at-a-glance readability* — "Yvenna"
+sounds fine but the eye stumbles (Y-onset, double letters). A name must parse
+instantly when read, not just sound good.
+
+**Lesson 3 — the naming triangle**: warm · collision-free · instantly readable —
+in 2026's AI naming space you can have at most two.
+
+---
+
+## Final Decision
+
+### Name: **Mira**
+
+- **Pronunciation**: MEE-ra · **Russian**: Мира (a real Russian name, flawless)
+- **Etymology**: *mirar* = "to see" → "The grid sees everything." Also a
+  variable star — a watcher in the sky.
+- **RU grammatical gender**: feminine («Мира нашла», «Мира думает») — locked.
+- **Trade-off accepted with eyes open**: crowded AI-name (eXp, Meltwater,
+  Smartsupp, PTV Mira in logistics). Survivable because Mira is an in-app
+  feature, not a searched-for standalone product. Not trademarkable; accepted.
+- **Scope**: display name only. Technical slug stays `copilot` (Edge Function,
+  folders, i18n key namespace).
+
+### Alfredo's Recommendation vs Owner's Decision
+
+Alfredo recommended Option B (invented/ownable, e.g. Yvenna) on distinctiveness
+grounds. Owner chose **Mira** on warmth + readability + etymology — the same
+sound-and-feel instinct that picked "Grida" over the recommended "Kubik."
+Conviction sustained across three rounds against 100+ alternatives is signal.
+
+### Implementation handoff
+
+See `docs/mira-naming-handoff.md` for the list of places to update (PRD, i18n,
+system prompt, changelog).

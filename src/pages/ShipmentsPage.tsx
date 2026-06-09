@@ -54,6 +54,7 @@ import { useLastShipment } from "@/hooks/use-last-shipment";
 import { ShipmentFormDialog } from "@/components/shipment-form-dialog";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
 import { SuggestionDialog } from "@/components/suggestion-dialog";
+import { CopilotLauncher } from "@/components/copilot/copilot-launcher";
 import type { Shipment, ShipmentFilter, ShipmentsSort } from "@/types";
 import { track } from "@/lib/analytics";
 
@@ -197,12 +198,14 @@ export default function ShipmentsPage({
       {/* Header */}
       <header className="flex shrink-0 items-center gap-3 border-b px-6 py-3">
         <div className="flex items-center gap-2">
-          <GridaLogo size={28} showWordmark={false} className="text-primary shrink-0" />
+          <GridaLogo
+            size={28}
+            showWordmark={false}
+            className="text-primary shrink-0"
+          />
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <SuggestionDialog
-            userRole={isOperator ? "operator" : "worker"}
-          />
+          <SuggestionDialog userRole={isOperator ? "operator" : "worker"} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -224,6 +227,7 @@ export default function ShipmentsPage({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <CopilotLauncher />
         </div>
       </header>
 
@@ -259,7 +263,7 @@ export default function ShipmentsPage({
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSearch(e.target.value)
               }
-              className="pl-9 pr-8"
+              className="pr-8 pl-9"
             />
             {search && (
               <Button
@@ -309,7 +313,9 @@ export default function ShipmentsPage({
                       onClick={() => toggleSort("status")}
                     />
                   </TableHead>
-                  <TableHead className="w-[160px] text-xs">{t("shipments.column.progress")}</TableHead>
+                  <TableHead className="w-[160px] text-xs">
+                    {t("shipments.column.progress")}
+                  </TableHead>
                   <TableHead className="w-[120px]">
                     <SortButton
                       label={t("shipments.column.created")}
@@ -355,7 +361,9 @@ export default function ShipmentsPage({
                               : ""
                           }
                         >
-                          {s.status === "active" ? t("shipments.status.active") : t("shipments.status.completed")}
+                          {s.status === "active"
+                            ? t("shipments.status.active")
+                            : t("shipments.status.completed")}
                         </Badge>
                       </TableCell>
                       <TableCell>
@@ -373,7 +381,9 @@ export default function ShipmentsPage({
                         )}
                       </TableCell>
                       <TableCell className="text-muted-foreground text-sm">
-                        {new Date(s.created_at).toLocaleDateString(i18n.language)}
+                        {new Date(s.created_at).toLocaleDateString(
+                          i18n.language
+                        )}
                       </TableCell>
                       <TableCell className="text-sm max-sm:hidden">
                         {s.created_by ? (
@@ -468,9 +478,13 @@ export default function ShipmentsPage({
       >
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("dialog.deleteShipment.title")}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("dialog.deleteShipment.title")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
-              {t("dialog.deleteShipment.description", { name: deleteTarget?.name })}
+              {t("dialog.deleteShipment.description", {
+                name: deleteTarget?.name,
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -502,14 +516,12 @@ function FilterTab({
       className={`font-heading inline-flex items-center gap-1.5 border-b-4 px-3 py-1.5 text-sm font-medium transition-colors ${
         active
           ? "border-tab-active-indicator text-tab-active"
-          : "border-transparent text-tab-inactive hover:text-tab-active"
+          : "text-tab-inactive hover:text-tab-active border-transparent"
       }`}
     >
       {label}
       <span
-        className={`px-1.5 text-xs ${
-          active ? "bg-primary/15" : "bg-muted"
-        }`}
+        className={`px-1.5 text-xs ${active ? "bg-primary/15" : "bg-muted"}`}
       >
         {count}
       </span>

@@ -29,6 +29,7 @@ import { WallPopover } from "@/components/wall-popover";
 import { useSearch } from "@/hooks/use-search";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
 import { SuggestionDialog } from "@/components/suggestion-dialog";
+import { CopilotLauncher } from "@/components/copilot/copilot-launcher";
 import { GridaLogo } from "@/components/grida-logo";
 import { LogOut, RotateCcw, List, Pencil, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -105,7 +106,11 @@ export function AppLayout({
       {/* Header */}
       <header className="flex shrink-0 items-center gap-3 border-b px-4 py-3 md:px-6">
         <div className="flex items-center gap-2">
-          <GridaLogo size={28} showWordmark={false} className="text-primary shrink-0" />
+          <GridaLogo
+            size={28}
+            showWordmark={false}
+            className="text-primary shrink-0"
+          />
           {isReadOnly && (
             <Badge variant="secondary" className="text-xs">
               {t("shipments.badge.completed")}
@@ -125,9 +130,7 @@ export function AppLayout({
             onClear={search.clearSearch}
             noResults={search.noResults}
           />
-          <SuggestionDialog
-            userRole={isOperator ? "operator" : "worker"}
-          />
+          <SuggestionDialog userRole={isOperator ? "operator" : "worker"} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline">
@@ -174,6 +177,7 @@ export function AppLayout({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <CopilotLauncher />
         </div>
       </header>
 
@@ -246,7 +250,9 @@ export function AppLayout({
       <AlertDialog open={confirmReset} onOpenChange={setConfirmReset}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>{t("dialog.completeShipment.title")}</AlertDialogTitle>
+            <AlertDialogTitle>
+              {t("dialog.completeShipment.title")}
+            </AlertDialogTitle>
             <AlertDialogDescription>
               {t("dialog.completeShipment.description")}
             </AlertDialogDescription>
