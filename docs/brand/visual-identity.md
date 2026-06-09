@@ -263,6 +263,19 @@ Use instead of `variant="ghost" className="text-destructive"` — the old patter
 
 Header uses icon-only because the wordmark competes with page content at small sizes. The brand is recognizable from the Scoped G alone.
 
+### Floating Launcher (Mira)
+
+The Mira assistant launcher is a **square primary FAB** — fixed bottom-right
+(`bottom-6 right-6`), `size-10`, default (primary green) button variant with the
+standard 2px border, radius 0, no shadow. Icon: `Sparkles`. Inside the drawer,
+assistant identity is marked by a `Sparkles` icon in `text-primary`.
+
+Chat bubbles follow Tier-1: 2px border, no shadow, radius 0. User bubbles =
+`bg-secondary`, right-aligned; assistant bubbles = `bg-card`, left-aligned.
+
+> A round, shadowed FAB (the Material default) is explicitly off-brand. Grida is
+> squares.
+
 ### User Avatar Button
 
 Navigation trigger uses an **outline button** with:

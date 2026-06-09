@@ -183,6 +183,19 @@
   "suggestion.minLength": "Minimum 10 characters",
   "suggestion.ariaLabel": "Suggest an idea",
 
+  "copilot.title": "Mira",
+  "copilot.subtitle": "The grid, answered.",
+  "copilot.launcher.aria": "Open Mira",
+  "copilot.placeholder": "Ask about this shipment…",
+  "copilot.send": "Send",
+  "copilot.thinking": "Mira is thinking…",
+  "copilot.empty.title": "Try asking:",
+  "copilot.empty.q1": "How many open orders are left?",
+  "copilot.empty.q2": "Are there urgent orders not loaded yet?",
+  "copilot.empty.q3": "How full is wall 2?",
+  "copilot.error.generic": "Something went wrong. Try again.",
+  "copilot.error.unavailable": "Mira is not available right now.",
+
   "error.title": "Something went wrong",
   "error.description": "The app hit an unexpected error. We've been notified and are looking into it.",
   "error.retry": "Reload"

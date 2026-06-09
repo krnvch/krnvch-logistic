@@ -1,4 +1,8 @@
-# Implementation Plan — Grida Copilot
+# Implementation Plan — Mira (Grida Copilot)
+
+> **Naming**: the assistant's user-facing name is **Mira** (decision 2026-06-04,
+> see `docs/mira-naming-handoff.md`). The technical slug stays `copilot`
+> everywhere (folders, Edge Function, `copilot.*` i18n keys).
 
 **Linear**: GRD-104 · **PRD**: `docs/prd-copilot.md` (v1.1, architect-reviewed)
 **Scope of this plan**: **Phase 1 (Foundation)** only — the full vertical slice.
@@ -45,8 +49,10 @@ straightforward.
 | `supabase/functions/copilot/index.ts` | `Deno.serve`. CORS mirroring `create-suggestion`. Verify JWT → build a Supabase client from the caller's `Authorization` header (RLS applies). Read `role` from user metadata, `filterByRole`. Map tools through `jsonSchema()` into the AI SDK `tools` map. `streamText({ model: google("gemini-2.5-flash"), system, messages, tools, maxSteps: 5, maxOutputTokens })`. Return `result.toDataStreamResponse()`. Graceful 200 "unavailable" payload if `GOOGLE_GENERATIVE_AI_API_KEY` is missing. |
 
 - Deps via Deno `npm:` specifiers: `npm:ai`, `npm:@ai-sdk/google`.
-- System prompt: who it is, that it must use tools (not guess), reply in the
-  passed `locale`, ask the user to open a shipment if no `shipment_id` context.
+- System prompt: introduce the assistant as **Mira** ("You are Mira, Grida's
+  assistant…"), feminine forms in Russian; it must use tools (not guess), reply
+  in the passed `locale`, ask the user to open a shipment if no `shipment_id`
+  context.
 - **Deploy WITHOUT `--no-verify-jwt`** (this endpoint is per-user).
 - Set the secret: `supabase secrets set GOOGLE_GENERATIVE_AI_API_KEY=...`.
 - Acceptance: `curl` with a valid user JWT + a "how many open orders" message

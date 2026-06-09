@@ -1,4 +1,4 @@
-# PRD — Grida Copilot (in-app AI agent)
+# PRD — Mira, Grida's in-app AI assistant (GRD-104)
 
 **Version**: 1.1
 **Date**: 2026-06-03
@@ -27,7 +27,8 @@ flow. Grida shows the grid; it can't yet *talk* about it.
 
 ### Solution
 
-**Grida Copilot** is an in-app chat assistant. A floating button opens a side
+**Mira** (display name; technical slug stays `copilot` — see
+`docs/mira-naming-handoff.md`) is Grida's in-app chat assistant. A floating button opens a side
 drawer where the user types a question in plain language (RU or EN) and gets an
 answer grounded in real data — because the assistant calls **tools** that query
 the database, rather than guessing. The assistant runs on Google Gemini via the
@@ -121,7 +122,7 @@ Feature abbreviation: **CP** (Copilot).
 
 **Given** the user clicks the floating button
 **When** the drawer opens
-**Then** a right-side `Sheet` shows: a header ("Grida Copilot" + subtitle), a
+**Then** a right-side `Sheet` shows: a header ("Mira" + subtitle), a
 scrollable message list, and a fixed input area at the bottom.
 
 - Drawer width: `sm:max-w-md` (~28rem), full-height.
@@ -302,7 +303,7 @@ array to MCP tool definitions. No business logic is duplicated.
 
 ```
                           ┌───────────────────────────────────┐
-                          │  ✦  Grida Copilot              [×] │  ← SheetHeader
+                          │  ✦  Mira                       [×] │  ← SheetHeader
                           │  The grid, answered.                │
                           ├───────────────────────────────────┤
                           │                                     │
@@ -424,16 +425,19 @@ preflight, echo allowed origin.
 ### i18n keys to add (both `en.json` and `ru.json`)
 
 ```
-copilot.title              "Grida Copilot"
+copilot.title              "Mira"
 copilot.subtitle           "The grid, answered." / "Сетка отвечает."
-copilot.launcher.aria      "Open Grida Copilot" / "Открыть Grida Copilot"
+copilot.launcher.aria      "Open Mira" / "Открыть Миру"
 copilot.placeholder        "Ask about this shipment…" / "Спросите про этот рейс…"
 copilot.send               "Send" / "Отправить"
-copilot.thinking           "Thinking…" / "Думаю…"
+copilot.thinking           "Mira is thinking…" / "Мира думает…"
 copilot.empty.title        "Try asking:" / "Попробуйте спросить:"
 copilot.empty.q1 / q2 / q3 example questions
 copilot.error.generic      "Something went wrong. Try again." / "Что-то пошло не так. Повторите."
-copilot.error.unavailable  "Copilot is not available right now." / "Copilot сейчас недоступен."
+copilot.error.unavailable  "Mira is not available right now." / "Мира сейчас недоступна."
+
+RU copy rule: Mira is FEMININE in Russian («Мира нашла», «Мира думает»),
+never masculine forms. See docs/mira-naming-handoff.md.
 ```
 
 ---

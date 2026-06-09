@@ -634,9 +634,11 @@ components/ui/ ← (no app dependencies, standalone primitives)
 - **Trade-off**: Two Vercel projects to manage. Acceptable — path-based routing in a monorepo adds complexity for zero benefit at this scale.
 - **Reversal cost**: Low. Merging back is a DNS + Vercel config change.
 
----
+### AD-07: Mira (in-app AI assistant) — agent runs server-side, tools framework-agnostic
 
-## 12. Technical Debt Register
+- **Context**: Mira (GRD-104, technical slug `copilot`) answers questions about shipments grounded in real data via LLM tool-calling. A future MCP server (GRD-105) must reuse the same tools.
+- **Decision**: Four sub-decisions, recorded as **AD-Copilot-01..04 in `docs/prd-copilot.md` §9**: (01) status/count logic lives in a single SQL RPC `get_shipment_overview` (SECURITY INVOKER, RLS applies); (02) the agent loop runs in a Supabase Edge Function — model key never reaches the browser; (03) the tool registry (`supabase/functions/_shared/copilot-tools/`) is framework-agnostic (JSON Schema, no AI-SDK imports) so MCP can consume it; (04) abuse bounded by step count + max output tokens, per-user rate limiting deferred to Hardening.
+- **Reversal cost**: Medium. Provider (Gemini) is swappable via Vercel AI SDK; moving logic client-side would expose the key and is not an option.
 
 Items we knowingly skip in MVP, with planned resolution.
 

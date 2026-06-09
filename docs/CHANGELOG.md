@@ -5,6 +5,28 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.8.0] — 2026-06-09
+
+### Mira — Grida's in-app AI assistant (GRD-104, Phase 1)
+
+Added **Mira**, an in-app AI assistant ("The grid, answered."). A floating button opens a chat drawer where users ask about the current shipment in English or Russian and get answers grounded in real data — the model calls a database tool instead of guessing. Read-only in Phase 1: one tool, no persistence, no write actions.
+
+#### Added
+- `get_shipment_overview(uuid)` Postgres RPC — single source of truth for shipment counts (total/done/open/urgent + per-wall breakdown); `SECURITY INVOKER`, so RLS applies; `EXECUTE` revoked from `anon`
+- Framework-agnostic tool registry (`supabase/functions/_shared/copilot-tools/`) with role filtering — designed for reuse by the future MCP server (GRD-105)
+- `copilot` Edge Function — agent runtime on Vercel AI SDK v5 + Gemini 2.5 Flash; deployed **with** JWT verification; the model key never reaches the browser; tool queries run under the caller's RLS; loop bounded to 5 steps / 1024 output tokens
+- Chat UI (`src/components/copilot/`): square launcher button (bottom-right, Sparkles), right-side Sheet drawer, streaming message list with "Mira is thinking…" indicator, empty state with 3 tappable example questions, Enter-to-send composer; lazy-loaded so it stays out of the initial bundle
+- `copilot.*` i18n keys (EN/RU); Russian copy uses feminine forms («Мира думает…»)
+- Client deps: `ai@^5`, `@ai-sdk/react@^2` (pinned to the same major as the Edge Function runtime)
+- Parity test `copilot-overview-parity.test.ts` guarding SQL ↔ `getOrderStatus` status-rule drift (27 tests total)
+- Migration backfill: `orders.priority` column formalized in a migration (`ADD COLUMN IF NOT EXISTS`)
+
+#### Notes
+- Edge Function secret `GOOGLE_GENERATIVE_AI_API_KEY` (documented in `.env.example`); the function returns a graceful 503 when unset
+- Naming: user-facing name **Mira**; technical slug stays `copilot` (see `docs/mira-naming-handoff.md`)
+
+---
+
 ## [Infrastructure] — 2026-06-03
 
 ### Cloudflare integration (GRD-94)
