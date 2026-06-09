@@ -110,8 +110,13 @@ export function WallPopover({
         wall_number: wall.wall_number,
         box_count: count,
       });
-      toast.success(t("toast.placementCreated", { count, wall: wall.wall_number }));
-      track("placement_created", { wall_number: wall.wall_number, box_count: count });
+      toast.success(
+        t("toast.placementCreated", { count, wall: wall.wall_number })
+      );
+      track("placement_created", {
+        wall_number: wall.wall_number,
+        box_count: count,
+      });
       setSelectedOrderId("");
       setBoxCount("");
     } catch {
@@ -170,7 +175,10 @@ export function WallPopover({
           <DialogTitle>
             {t("wall.title", { number: wall.wall_number })}
             <span className="text-muted-foreground ml-2 text-sm font-normal">
-              {t("wall.boxCount", { placed: wall.total_boxes, total: boxesPerWall })}
+              {t("wall.boxCount", {
+                placed: wall.total_boxes,
+                total: boxesPerWall,
+              })}
             </span>
           </DialogTitle>
         </DialogHeader>

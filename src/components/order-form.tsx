@@ -111,7 +111,11 @@ export function OrderForm({
           priority,
         });
         toast.success(t("toast.orderUpdated"));
-        track("order_updated", { order_id: editOrder.id, priority, box_count: boxes });
+        track("order_updated", {
+          order_id: editOrder.id,
+          priority,
+          box_count: boxes,
+        });
       } else {
         await onSubmit({
           shipment_id: shipmentId,
@@ -145,7 +149,9 @@ export function OrderForm({
         <form onSubmit={handleSubmit} className="grid gap-4">
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-2">
-              <Label htmlFor="order-number">{t("orders.form.orderNumber")} *</Label>
+              <Label htmlFor="order-number">
+                {t("orders.form.orderNumber")} *
+              </Label>
               <Input
                 id="order-number"
                 placeholder="123"
@@ -230,8 +236,12 @@ export function OrderForm({
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="normal">{t("orders.priority.normal")}</SelectItem>
-                <SelectItem value="urgent">{t("orders.priority.urgent")}</SelectItem>
+                <SelectItem value="normal">
+                  {t("orders.priority.normal")}
+                </SelectItem>
+                <SelectItem value="urgent">
+                  {t("orders.priority.urgent")}
+                </SelectItem>
               </SelectContent>
             </Select>
           </div>

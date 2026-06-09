@@ -145,10 +145,14 @@ export function OrderSidebar({
           <AlertDialogHeader>
             <AlertDialogTitle>{t("dialog.deleteOrder.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t("dialog.deleteOrder.description", { number: deleteOrder?.order.order_number })}
+              {t("dialog.deleteOrder.description", {
+                number: deleteOrder?.order.order_number,
+              })}
               {deleteOrder && deleteOrder.placed_boxes > 0 && (
                 <>
-                  {t("dialog.deleteOrder.placementsWarning", { count: deleteOrder.placed_boxes })}
+                  {t("dialog.deleteOrder.placementsWarning", {
+                    count: deleteOrder.placed_boxes,
+                  })}
                 </>
               )}
             </AlertDialogDescription>
@@ -171,7 +175,10 @@ export function OrderSidebar({
           <AlertDialogHeader>
             <AlertDialogTitle>{t("dialog.markDone.title")}</AlertDialogTitle>
             <AlertDialogDescription>
-              {t("dialog.markDone.description", { number: doneOrder?.order.order_number, client: doneOrder?.order.client_name })}
+              {t("dialog.markDone.description", {
+                number: doneOrder?.order.order_number,
+                client: doneOrder?.order.client_name,
+              })}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

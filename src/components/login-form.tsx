@@ -38,7 +38,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
   return (
     <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <Card className="relative w-full max-w-sm">
-        <div className="absolute top-4 right-4 flex gap-1.5 text-xs text-muted-foreground">
+        <div className="text-muted-foreground absolute top-4 right-4 flex gap-1.5 text-xs">
           <button
             type="button"
             className={`hover:text-foreground ${i18n.language === "en" ? "text-foreground font-medium" : ""}`}
@@ -93,7 +93,7 @@ export function LoginForm({ onLogin }: LoginFormProps) {
                   type="button"
                   variant="ghost"
                   size="icon"
-                  className="absolute right-0 top-0 h-9 w-9"
+                  className="absolute top-0 right-0 h-9 w-9"
                   onClick={() => setShowPassword((v) => !v)}
                   tabIndex={-1}
                   aria-label="Toggle password visibility"

@@ -21,7 +21,10 @@ export function LanguageSubmenu() {
       <DropdownMenuSubContent>
         <DropdownMenuRadioGroup
           value={i18n.language}
-          onValueChange={(lng) => { i18n.changeLanguage(lng); track("language_changed", { locale: lng }); }}
+          onValueChange={(lng) => {
+            i18n.changeLanguage(lng);
+            track("language_changed", { locale: lng });
+          }}
         >
           <DropdownMenuRadioItem value="en">
             {t("language.en")}

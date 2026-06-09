@@ -64,7 +64,11 @@ export function ShipmentFormDialog({
         created_by: userEmail ?? null,
       });
       toast.success(t("toast.shipmentCreated"));
-      track("shipment_created", { name: name.trim(), trailer_walls: wallCount, boxes_per_wall: boxCount });
+      track("shipment_created", {
+        name: name.trim(),
+        trailer_walls: wallCount,
+        boxes_per_wall: boxCount,
+      });
       setName("");
       setWalls("30");
       setBoxesPerWall("24");
@@ -95,7 +99,9 @@ export function ShipmentFormDialog({
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-2">
-              <Label htmlFor="shipment-walls">{t("shipments.form.walls")}</Label>
+              <Label htmlFor="shipment-walls">
+                {t("shipments.form.walls")}
+              </Label>
               <Input
                 id="shipment-walls"
                 type="number"
@@ -109,7 +115,9 @@ export function ShipmentFormDialog({
               />
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="shipment-boxes">{t("shipments.form.boxesPerWall")}</Label>
+              <Label htmlFor="shipment-boxes">
+                {t("shipments.form.boxesPerWall")}
+              </Label>
               <Input
                 id="shipment-boxes"
                 type="number"
@@ -124,7 +132,9 @@ export function ShipmentFormDialog({
             </div>
           </div>
           <Button type="submit" className="w-full" disabled={isCreating}>
-            {isCreating ? t("shipments.form.creating") : t("shipments.form.submit")}
+            {isCreating
+              ? t("shipments.form.creating")
+              : t("shipments.form.submit")}
           </Button>
         </form>
       </DialogContent>

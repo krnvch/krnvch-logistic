@@ -70,7 +70,11 @@ export function SuggestionDialog({ userRole }: SuggestionDialogProps) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon" aria-label={t("suggestion.ariaLabel")}>
+        <Button
+          variant="outline"
+          size="icon"
+          aria-label={t("suggestion.ariaLabel")}
+        >
           <Lightbulb className="h-4 w-4" />
         </Button>
       </DialogTrigger>
@@ -82,13 +86,15 @@ export function SuggestionDialog({ userRole }: SuggestionDialogProps) {
         <div className="space-y-2">
           <Textarea
             value={text}
-            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setText(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+              setText(e.target.value)
+            }
             placeholder={t("suggestion.placeholder")}
             maxLength={MAX_LENGTH}
             rows={5}
             disabled={submitting}
           />
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex items-center justify-between text-xs">
             <span>
               {text.trim().length < MIN_LENGTH && text.length > 0
                 ? t("suggestion.minLength")

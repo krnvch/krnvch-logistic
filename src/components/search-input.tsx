@@ -23,7 +23,7 @@ export function SearchInput({
       <Input
         type="search"
         placeholder={t("search.placeholder")}
-        className="h-9 w-40 pr-8 pl-9 [&::-webkit-search-cancel-button]:hidden lg:w-56"
+        className="h-9 w-40 pr-8 pl-9 lg:w-56 [&::-webkit-search-cancel-button]:hidden"
         value={value}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           onChange(e.target.value)

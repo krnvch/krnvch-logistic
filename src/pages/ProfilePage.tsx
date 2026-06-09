@@ -19,12 +19,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -124,7 +119,9 @@ export default function ProfilePage({ session }: ProfilePageProps) {
         >
           <X className="h-4 w-4" />
         </Button>
-        <h1 className="font-heading text-lg font-semibold">{t("profile.title")}</h1>
+        <h1 className="font-heading text-lg font-semibold">
+          {t("profile.title")}
+        </h1>
       </header>
 
       {/* Content */}
@@ -170,8 +167,12 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="operator">{t("profile.role.operator")}</SelectItem>
-                  <SelectItem value="worker">{t("profile.role.worker")}</SelectItem>
+                  <SelectItem value="operator">
+                    {t("profile.role.operator")}
+                  </SelectItem>
+                  <SelectItem value="worker">
+                    {t("profile.role.worker")}
+                  </SelectItem>
                 </SelectContent>
               </Select>
               <p className="text-muted-foreground text-sm">
@@ -198,13 +199,15 @@ export default function ProfilePage({ session }: ProfilePageProps) {
           </CardHeader>
           <CardContent>
             <div className="flex gap-2">
-              {(
-                [
-                  { value: "light" as const, label: t("theme.light"), icon: Sun },
-                  { value: "dark" as const, label: t("theme.dark"), icon: Moon },
-                  { value: "system" as const, label: t("theme.system"), icon: Monitor },
-                ]
-              ).map(({ value, label, icon: Icon }) => (
+              {[
+                { value: "light" as const, label: t("theme.light"), icon: Sun },
+                { value: "dark" as const, label: t("theme.dark"), icon: Moon },
+                {
+                  value: "system" as const,
+                  label: t("theme.system"),
+                  icon: Monitor,
+                },
+              ].map(({ value, label, icon: Icon }) => (
                 <Button
                   key={value}
                   variant={theme === value ? "default" : "outline"}
@@ -264,7 +267,9 @@ export default function ProfilePage({ session }: ProfilePageProps) {
           {passwordOpen && (
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="currentPassword">{t("profile.currentPassword")}</Label>
+                <Label htmlFor="currentPassword">
+                  {t("profile.currentPassword")}
+                </Label>
                 <div className="relative">
                   <Input
                     id="currentPassword"
@@ -277,7 +282,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-0 top-0 h-9 w-9"
+                    className="absolute top-0 right-0 h-9 w-9"
                     onClick={() => setShowCurrentPassword((v) => !v)}
                     tabIndex={-1}
                     aria-label="Toggle password visibility"
@@ -305,7 +310,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-0 top-0 h-9 w-9"
+                    className="absolute top-0 right-0 h-9 w-9"
                     onClick={() => setShowNewPassword((v) => !v)}
                     tabIndex={-1}
                     aria-label="Toggle password visibility"
@@ -336,21 +341,21 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                           <div
                             key={i}
                             className={`h-1.5 flex-1 ${
-                              score >= i
-                                ? colors[level]
-                                : "bg-muted"
+                              score >= i ? colors[level] : "bg-muted"
                             }`}
                           />
                         ))}
                       </div>
                       {newPassword.length > 0 && (
-                        <p className={`text-xs ${
-                          level === "weak"
-                            ? "text-destructive"
-                            : level === "medium"
-                              ? "text-warning"
-                              : "text-success"
-                        }`}>
+                        <p
+                          className={`text-xs ${
+                            level === "weak"
+                              ? "text-destructive"
+                              : level === "medium"
+                                ? "text-warning"
+                                : "text-success"
+                          }`}
+                        >
                           {labels[level]}
                         </p>
                       )}
@@ -358,28 +363,26 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                   );
                 })()}
                 <ul className="space-y-1 pt-1">
-                    {getPasswordRules(newPassword).map((rule) => (
-                      <li
-                        key={rule.key}
-                        className="flex items-center gap-1.5 text-xs"
+                  {getPasswordRules(newPassword).map((rule) => (
+                    <li
+                      key={rule.key}
+                      className="flex items-center gap-1.5 text-xs"
+                    >
+                      {rule.passed ? (
+                        <Check className="text-success h-3 w-3" />
+                      ) : (
+                        <Circle className="text-muted-foreground/40 h-3 w-3" />
+                      )}
+                      <span
+                        className={
+                          rule.passed ? "text-success" : "text-muted-foreground"
+                        }
                       >
-                        {rule.passed ? (
-                          <Check className="text-success h-3 w-3" />
-                        ) : (
-                          <Circle className="text-muted-foreground/40 h-3 w-3" />
-                        )}
-                        <span
-                          className={
-                            rule.passed
-                              ? "text-success"
-                              : "text-muted-foreground"
-                          }
-                        >
-                          {t(`password.rule.${rule.key}`)}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                        {t(`password.rule.${rule.key}`)}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               <div className="space-y-2 pt-2">
@@ -398,7 +401,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="absolute right-0 top-0 h-9 w-9"
+                    className="absolute top-0 right-0 h-9 w-9"
                     onClick={() => setShowConfirmPassword((v) => !v)}
                     tabIndex={-1}
                     aria-label="Toggle password visibility"
@@ -413,9 +416,7 @@ export default function ProfilePage({ session }: ProfilePageProps) {
               </div>
 
               {passwordError && (
-                <p className="text-destructive text-sm">
-                  {passwordError}
-                </p>
+                <p className="text-destructive text-sm">{passwordError}</p>
               )}
 
               <div className="flex justify-end">

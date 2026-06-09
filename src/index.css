@@ -4,7 +4,7 @@
 
 :root {
   /* Brand primary — emerald (same in both modes) */
-  --primary: oklch(0.70 0.19 160);
+  --primary: oklch(0.7 0.19 160);
   --primary-foreground: oklch(0.13 0.02 160);
 
   /* Neutrals — green-whisper gray (hue 160) */
@@ -22,7 +22,7 @@
   --accent-foreground: oklch(0.18 0.02 160);
   --border: oklch(0.87 0.01 160);
   --input: oklch(0.87 0.01 160);
-  --ring: oklch(0.55 0.20 160);
+  --ring: oklch(0.55 0.2 160);
 
   /* Functional colors */
   --destructive: oklch(0.55 0.22 27);
@@ -35,9 +35,9 @@
   --info-foreground: oklch(0.98 0 0);
 
   /* Tab tokens */
-  --tab-active: oklch(0.55 0.20 160);
+  --tab-active: oklch(0.55 0.2 160);
   --tab-inactive: oklch(0.38 0.04 160);
-  --tab-active-indicator: oklch(0.70 0.19 160);
+  --tab-active-indicator: oklch(0.7 0.19 160);
 
   /* Input focus — foreground color, NOT green */
   --input-focus: oklch(0.13 0.01 160);
@@ -48,17 +48,17 @@
   /* Sidebar */
   --sidebar-background: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.13 0.01 160);
-  --sidebar-primary: oklch(0.70 0.19 160);
+  --sidebar-primary: oklch(0.7 0.19 160);
   --sidebar-primary-foreground: oklch(0.13 0.02 160);
   --sidebar-accent: oklch(0.92 0.03 160);
   --sidebar-accent-foreground: oklch(0.18 0.02 160);
   --sidebar-border: oklch(0.87 0.01 160);
-  --sidebar-ring: oklch(0.55 0.20 160);
+  --sidebar-ring: oklch(0.55 0.2 160);
 }
 
 .dark {
   /* Brand primary — identical in dark mode */
-  --primary: oklch(0.70 0.19 160);
+  --primary: oklch(0.7 0.19 160);
   --primary-foreground: oklch(0.13 0.02 160);
 
   /* Dark neutrals — green-whisper gray */
@@ -76,22 +76,22 @@
   --accent-foreground: oklch(0.96 0 0);
   --border: oklch(0.27 0.02 160);
   --input: oklch(0.27 0.02 160);
-  --ring: oklch(0.70 0.19 160);
+  --ring: oklch(0.7 0.19 160);
 
   /* Functional colors — dark variants */
-  --destructive: oklch(0.40 0.15 27);
-  --destructive-foreground: oklch(0.60 0.19 25);
-  --success: oklch(0.58 0.10 192);
+  --destructive: oklch(0.4 0.15 27);
+  --destructive-foreground: oklch(0.6 0.19 25);
+  --success: oklch(0.58 0.1 192);
   --success-foreground: oklch(0.98 0 0);
-  --warning: oklch(0.70 0.14 80);
+  --warning: oklch(0.7 0.14 80);
   --warning-foreground: oklch(0.15 0 0);
   --info: oklch(0.55 0.14 250);
   --info-foreground: oklch(0.98 0 0);
 
   /* Tab tokens — dark */
-  --tab-active: oklch(0.70 0.19 160);
+  --tab-active: oklch(0.7 0.19 160);
   --tab-inactive: oklch(0.55 0.03 160);
-  --tab-active-indicator: oklch(0.70 0.19 160);
+  --tab-active-indicator: oklch(0.7 0.19 160);
 
   /* Input focus — foreground, NOT green */
   --input-focus: oklch(0.96 0.005 160);
@@ -99,12 +99,12 @@
   /* Sidebar — dark */
   --sidebar-background: oklch(0.17 0.01 160);
   --sidebar-foreground: oklch(0.96 0.005 160);
-  --sidebar-primary: oklch(0.70 0.19 160);
+  --sidebar-primary: oklch(0.7 0.19 160);
   --sidebar-primary-foreground: oklch(0.13 0.02 160);
   --sidebar-accent: oklch(0.22 0.03 160);
   --sidebar-accent-foreground: oklch(0.96 0 0);
   --sidebar-border: oklch(0.27 0.02 160);
-  --sidebar-ring: oklch(0.70 0.19 160);
+  --sidebar-ring: oklch(0.7 0.19 160);
 }
 
 @theme inline {
@@ -156,12 +156,10 @@
   /* Fonts */
   --font-sans:
     "Zalando Sans Variable", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-heading:
     "Zalando Sans Expanded Variable", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
-    "Noto Color Emoji";
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 @layer base {

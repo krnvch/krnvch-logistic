@@ -25,10 +25,7 @@ export function reset() {
   posthog.reset();
 }
 
-export function track(
-  event: string,
-  properties?: Record<string, unknown>
-) {
+export function track(event: string, properties?: Record<string, unknown>) {
   if (!POSTHOG_KEY) return;
   posthog.capture(event, properties);
 }
