@@ -55,6 +55,9 @@ function getCorsHeaders(req: Request) {
     "Access-Control-Allow-Methods": "POST, OPTIONS",
     "Access-Control-Allow-Headers":
       "authorization, x-client-info, apikey, content-type",
+    // The client reads the (possibly just-created) thread id off the
+    // streaming response (GRD-124).
+    "Access-Control-Expose-Headers": "x-thread-id",
   };
 }
 
@@ -69,6 +72,25 @@ interface CopilotPayload {
   messages: UIMessage[];
   shipmentId?: string;
   locale?: string;
+  threadId?: string;
+}
+
+const UUID_RE =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+function textOf(message: UIMessage | undefined): string {
+  if (!message) return "";
+  return message.parts
+    .map((p) => (p.type === "text" ? p.text : ""))
+    .join(" ")
+    .trim();
+}
+
+// Thread title = first user message, whitespace-collapsed, ~40 chars
+// (PRD v2 Open Question v2-3: model-generated titles deferred).
+function threadTitle(text: string): string {
+  const collapsed = text.replace(/\s+/g, " ").trim();
+  return collapsed.length > 40 ? collapsed.slice(0, 40).trimEnd() + "…" : collapsed;
 }
 
 function buildSystemPrompt(locale: CopilotLocale, shipmentId?: string) {
@@ -149,6 +171,47 @@ Deno.serve(async (req) => {
     user.user_metadata?.role === "worker" ? "worker" : "operator";
   const locale: CopilotLocale = payload.locale === "ru" ? "ru" : "en";
 
+  // --- Thread resolution (GRD-124) ---
+  // Existing thread: verify ownership (RLS scopes the select — a foreign
+  // id simply returns no row). No thread: create one lazily, titled from
+  // the user's first message. Persistence failures never block the chat.
+  const lastUserMessage = [...payload.messages]
+    .reverse()
+    .find((m) => m.role === "user");
+  let threadId: string | null =
+    typeof payload.threadId === "string" && UUID_RE.test(payload.threadId)
+      ? payload.threadId
+      : null;
+
+  if (threadId) {
+    const { data: thread } = await supabase
+      .from("chat_threads")
+      .select("id")
+      .eq("id", threadId)
+      .maybeSingle();
+    if (!thread) {
+      return jsonResponse(req, 404, { error: "thread_not_found" });
+    }
+  } else {
+    const { data: created, error: createError } = await supabase
+      .from("chat_threads")
+      .insert({
+        user_id: user.id,
+        title: threadTitle(textOf(lastUserMessage)),
+        shipment_id:
+          payload.shipmentId && UUID_RE.test(payload.shipmentId)
+            ? payload.shipmentId
+            : null,
+      })
+      .select("id")
+      .single();
+    if (createError) {
+      console.error("copilot thread create error:", createError);
+    } else {
+      threadId = created.id;
+    }
+  }
+
   const ctx: ToolContext = { supabase, role, userId: user.id, locale };
 
   // Registry → AI SDK shape. The model only ever sees role-allowed tools.
@@ -178,6 +241,39 @@ Deno.serve(async (req) => {
   });
 
   return result.toUIMessageStreamResponse({
-    headers: getCorsHeaders(req),
+    originalMessages: payload.messages,
+    headers: {
+      ...getCorsHeaders(req),
+      ...(threadId ? { "x-thread-id": threadId } : {}),
+    },
+    // Persist the exchanged turn AFTER the stream completes. Parts are
+    // stored verbatim (AD-Copilot-05) so history replay re-renders
+    // chains/approvals with no mapping code. Sequential inserts keep
+    // created_at ordering unambiguous.
+    onFinish: async ({ responseMessage }) => {
+      if (!threadId) return;
+      try {
+        if (lastUserMessage) {
+          await supabase.from("chat_messages").insert({
+            thread_id: threadId,
+            role: "user",
+            parts: lastUserMessage.parts,
+          });
+        }
+        if (responseMessage && responseMessage.parts.length > 0) {
+          await supabase.from("chat_messages").insert({
+            thread_id: threadId,
+            role: "assistant",
+            parts: responseMessage.parts,
+          });
+        }
+        await supabase
+          .from("chat_threads")
+          .update({ updated_at: new Date().toISOString() })
+          .eq("id", threadId);
+      } catch (e) {
+        console.error("copilot persistence error:", e);
+      }
+    },
   });
 });

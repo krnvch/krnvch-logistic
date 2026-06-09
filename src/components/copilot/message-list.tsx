@@ -54,6 +54,7 @@ function Greeting({ onPick }: { onPick: (text: string) => void }) {
             ? t("copilot.greeting", { name: firstName })
             : t("copilot.greetingPlain")}
         </h3>
+        <p className="text-muted-foreground text-sm">{t("copilot.subtitle")}</p>
       </div>
       <div className="flex flex-col items-start gap-2">
         <p className="text-muted-foreground text-xs tracking-wide uppercase">

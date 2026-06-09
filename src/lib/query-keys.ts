@@ -4,4 +4,5 @@ export const queryKeys = {
   orders: (shipmentId: string) => ["orders", shipmentId] as const,
   placements: (shipmentId: string) => ["placements", shipmentId] as const,
   shipmentsProgress: (ids: string[]) => ["shipments-progress", ...ids] as const,
+  chatThreads: ["chat-threads"] as const,
 };
