@@ -379,3 +379,45 @@ Split `grida.space` into two domains following the standard SaaS pattern (Figma,
 - Supabase Site URL updated to `https://app.grida.space`
 
 ---
+
+## Phase 9: Naming the AI Assistant — Mira
+
+**Date**: 2026-06-04
+**Status**: Done
+**Linear**: GRD-104
+**Full log**: `naming-decision-log.md` (Assistant Naming section)
+
+The in-app AI assistant (working title "Copilot") needed a real name — "Copilot"
+is generic, mentally owned by Microsoft, and clumsy in Russian («Копайлот»).
+
+### Process: 3 rounds, ~60 web collision checks
+
+| Round | Approach | Outcome |
+|-------|----------|---------|
+| 1 | Open exploration (6 territories, 45 candidates) | Top pick Lumo killed post-hoc by Proton's Lumo AI assistant |
+| 2 | Warm human first-names (the Mira spirit, 30 candidates) | 100% collision rate — category saturated; found PTV Mira, a logistics AI agent |
+| 3 | Invented-but-warm, **search-first** (50+ coinages) | 5 verified-clean names; all failed at-a-glance readability for the owner |
+
+### Key insight — the naming triangle
+
+In 2026's AI-assistant naming space a name can be at most two of:
+**warm · collision-free · instantly readable**. Even invented coinages were
+~70% taken. Competitors (PTV Mira, Wenda, Oryn) are actively naming
+conversational agents in the logistics domain.
+
+### Decision: **Mira** (owner), accepting the crowded-name trade-off
+
+| Aspect | Detail |
+|--------|--------|
+| Etymology | *mirar* = "to see" → "The grid sees everything"; also a variable star |
+| Russian | «Мира» — real warm RU name; **feminine** copy locked («Мира нашла…») |
+| Trade-off | Crowded AI name incl. PTV Mira (logistics) — survivable for an in-app feature nobody web-searches; not trademarkable, accepted |
+| Scope | Display name only; technical slug stays `copilot` |
+
+Echo of the original naming: Alfredo recommended the distinctive/ownable route
+(as he once recommended "Kubik"); the owner again chose on sound, warmth, and
+feel — and his conviction held across three rounds and 100+ alternatives.
+
+Handoff for implementation: `docs/mira-naming-handoff.md`.
+
+---
