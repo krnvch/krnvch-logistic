@@ -72,7 +72,7 @@ not its visual skin.
 | Rounded cards, pills, soft shadows | radius 0, Tier-1 2px borders, no shadows | Grida brand always wins on skin |
 | Orange accent | Grida emerald (`--primary`) | brand tokens |
 | Animated liquid-gradient chat background | **NOT adopted** — flat background | conflicts with brand DNA ("flat + bold border"); at most a faint green-whisper tint |
-| Wally robot mascot | `Sparkles` icon (Mira mark TBD — separate brand task) | don't block on mascot |
+| Wally robot mascot | `Rabbit` icon (owner-picked Mira mark, 2026-06-09) | don't block on mascot |
 | Token-override auth (HttpOnly cookie exchange) | **NOT adopted** | Grida already has Supabase JWT per user |
 | Everything else (header, history, chain, approvals, pills, input) | adopted, restyled | structure yes, skin no |
 
@@ -153,7 +153,7 @@ Feature abbreviation: **CP** (Copilot).
 
 ### FR-CP-01: Header launcher button *(v2 — replaces the floating FAB)*
 
-- An outline icon button (`Sparkles`) sits at the **far right of the global
+- An outline icon button (`Rabbit`) sits at the **far right of the global
   header**, after the avatar button, on the shipments list and shipment detail
   pages.
 - When the panel is open the icon is highlighted (`text-primary`) and
@@ -555,7 +555,7 @@ CREATE TABLE agent_actions (
 | `Textarea` | multi-line input |
 | `Sonner` toast | error surfacing |
 
-Icons (lucide): `Sparkles` (launcher/assistant), `SendHorizontal` (send),
+Icons (lucide): `Rabbit` (launcher/assistant — Mira mark), `SendHorizontal` (send),
 `Loader2` (thinking).
 
 ---
@@ -666,7 +666,7 @@ never masculine forms. See docs/mira-naming-handoff.md.
 | Persistent chat history | **Stage B** (FR-CP-14) |
 | Audit log (`agent_actions`) | **Stage C** (§4a) |
 | Animated chat background (Wally liquid gradient) | NOT adopted — brand conflict (§1a) |
-| Mira mascot/avatar mark | separate brand task (Alfredo); `Sparkles` until then |
+| Mira mascot/avatar mark | RESOLVED: `Rabbit` icon picked by owner (2026-06-09) |
 | Per-user rate limiting | Hardening — **tracked debt**; `stepCountIs`/`maxOutputTokens` cap holds until then |
 | LLM observability (Langfuse) | GRD-121 — natural fit right after Stage C |
 | MCP server / external clients | GRD-105 (separate epic) |

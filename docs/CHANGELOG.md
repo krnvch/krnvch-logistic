@@ -5,6 +5,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.9.0] — 2026-06-09
+
+### Mira — persistent chat threads & history (GRD-124, Stage B)
+
+Mira's conversations now survive reloads. The panel header gained a Wally-style thread switcher: breadcrumb with the current chat title, searchable history grouped by recency (Today / Last 7 days / Older), new-chat button, and per-thread delete with confirmation.
+
+#### Added
+- `chat_threads` + `chat_messages` tables with **owner-only RLS** on both (verified: a second user sees zero rows and cannot insert into a foreign thread); indexes on `(user_id, updated_at)` and `(thread_id, created_at)`
+- Message `parts` stored **verbatim as jsonb** (AD-Copilot-05) — history replay re-renders activity chains with zero mapping code
+- Edge Function: lazily creates a thread on the first message (title = truncated first message), persists both sides of the exchange in `onFinish` **under the caller's JWT** (no service role), returns the thread id via the `x-thread-id` response header
+- Client: thread list via TanStack Query (`chat-threads` key), thread switching re-seeds `useChat` from stored parts, deleting the active thread resets to a new chat
+- 12 new `copilot.thread.*` / `dialog.deleteThread.*` i18n keys (EN/RU)
+- 6 unit tests: recency grouping + parts round-trip (33 total)
+
+#### Notes
+- Switching threads is disabled while a response is streaming
+- Thread titles are truncated first messages for now; model-generated titles deferred (PRD v2 Open Question v2-3)
+
+---
+
 ## [4.8.0] — 2026-06-09
 
 ### Mira — Grida's in-app AI assistant (GRD-104, Phase 1 + Stage A)

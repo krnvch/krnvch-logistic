@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import type { UIMessage } from "ai";
-import { Loader2, Sparkles } from "lucide-react";
+import { Loader2, Rabbit } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useCopilot } from "./copilot-context";
 import { ChainItem, type ChainState } from "./chain-item";
@@ -48,12 +48,13 @@ function Greeting({ onPick }: { onPick: (text: string) => void }) {
   return (
     <div className="flex flex-1 flex-col justify-center gap-5 p-4">
       <div className="flex flex-col gap-3">
-        <Sparkles className="text-primary size-7" />
+        <Rabbit className="text-primary size-7" />
         <h3 className="font-heading text-lg font-semibold">
           {firstName
             ? t("copilot.greeting", { name: firstName })
             : t("copilot.greetingPlain")}
         </h3>
+        <p className="text-muted-foreground text-sm">{t("copilot.subtitle")}</p>
       </div>
       <div className="flex flex-col items-start gap-2">
         <p className="text-muted-foreground text-xs tracking-wide uppercase">
