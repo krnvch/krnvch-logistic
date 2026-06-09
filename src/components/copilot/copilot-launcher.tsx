@@ -1,5 +1,5 @@
 import { useTranslation } from "react-i18next";
-import { Sparkles } from "lucide-react";
+import { Rabbit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useCopilot } from "./copilot-context";
@@ -17,7 +17,7 @@ export function CopilotLauncher() {
       onClick={() => setOpen(!open)}
       className={cn(open && "text-primary")}
     >
-      <Sparkles className="h-4 w-4" />
+      <Rabbit className="h-4 w-4" />
     </Button>
   );
 }

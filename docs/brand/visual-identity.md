@@ -265,7 +265,11 @@ Header uses icon-only because the wordmark competes with page content at small s
 
 ### Mira Chat Patterns
 
-**Launcher**: outline icon button (`Sparkles`) at the far right of the global
+**Mira mark**: the `Rabbit` icon (lucide) — owner's pick (2026-06-09),
+replacing the initial `Sparkles`. Used in the launcher, the panel header, and
+the greeting, always `text-primary` when representing Mira herself.
+
+**Launcher**: outline icon button (`Rabbit`) at the far right of the global
 header, after the avatar. When the panel is open the icon turns `text-primary`
 (toggle state). *History: a floating FAB was tried and rejected by the owner —
 header placement won (2026-06-09). A round, shadowed FAB is off-brand either

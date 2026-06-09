@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { Plus, Sparkles, X } from "lucide-react";
+import { Plus, Rabbit, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -126,7 +126,7 @@ export default function Copilot() {
     >
       <div className="flex h-full w-screen flex-col sm:w-[30rem]">
         <div className="flex items-center gap-1.5 border-b-2 p-3">
-          <Sparkles className="text-primary size-4 shrink-0" />
+          <Rabbit className="text-primary size-4 shrink-0" />
           <span className="font-heading shrink-0 text-sm font-semibold">
             {t("copilot.title")}
           </span>
