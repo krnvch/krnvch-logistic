@@ -54,6 +54,7 @@ import { useLastShipment } from "@/hooks/use-last-shipment";
 import { ShipmentFormDialog } from "@/components/shipment-form-dialog";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
 import { SuggestionDialog } from "@/components/suggestion-dialog";
+import { CopilotLauncher } from "@/components/copilot/copilot-launcher";
 import type { Shipment, ShipmentFilter, ShipmentsSort } from "@/types";
 import { track } from "@/lib/analytics";
 
@@ -226,6 +227,7 @@ export default function ShipmentsPage({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <CopilotLauncher />
         </div>
       </header>
 

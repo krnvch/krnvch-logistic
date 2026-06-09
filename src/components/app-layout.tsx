@@ -29,6 +29,7 @@ import { WallPopover } from "@/components/wall-popover";
 import { useSearch } from "@/hooks/use-search";
 import { RenameShipmentDialog } from "@/components/rename-shipment-dialog";
 import { SuggestionDialog } from "@/components/suggestion-dialog";
+import { CopilotLauncher } from "@/components/copilot/copilot-launcher";
 import { GridaLogo } from "@/components/grida-logo";
 import { LogOut, RotateCcw, List, Pencil, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -176,6 +177,7 @@ export function AppLayout({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          <CopilotLauncher />
         </div>
       </header>
 

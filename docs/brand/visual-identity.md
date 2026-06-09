@@ -263,18 +263,32 @@ Use instead of `variant="ghost" className="text-destructive"` — the old patter
 
 Header uses icon-only because the wordmark competes with page content at small sizes. The brand is recognizable from the Scoped G alone.
 
-### Floating Launcher (Mira)
+### Mira Chat Patterns
 
-The Mira assistant launcher is a **square primary FAB** — fixed bottom-right
-(`bottom-6 right-6`), `size-10`, default (primary green) button variant with the
-standard 2px border, radius 0, no shadow. Icon: `Sparkles`. Inside the drawer,
-assistant identity is marked by a `Sparkles` icon in `text-primary`.
+**Launcher**: outline icon button (`Sparkles`) at the far right of the global
+header, after the avatar. When the panel is open the icon turns `text-primary`
+(toggle state). *History: a floating FAB was tried and rejected by the owner —
+header placement won (2026-06-09). A round, shadowed FAB is off-brand either
+way; Grida is squares.*
 
-Chat bubbles follow Tier-1: 2px border, no shadow, radius 0. User bubbles =
-`bg-secondary`, right-aligned; assistant bubbles = `bg-card`, left-aligned.
+**Push panel, not overlay**: the chat is a flex sibling of the page — opening
+it shrinks the content, the page stays interactive. No dimming, no focus trap.
+Width 480px desktop, full-width mobile. Border-left Tier 1 (2px).
 
-> A round, shadowed FAB (the Material default) is explicitly off-brand. Grida is
-> squares.
+**Messages** (adapted from the owner's Wally design system — structure only,
+skin is Grida): user messages = `bg-secondary` bubble, Tier-1 2px border,
+right-aligned, max 85% width. Assistant messages = **no bubble** — markdown
+directly on the panel background; inline code as `bg-muted` chips with 1px
+border. Activity chain lines (tool calls) in `muted-foreground` with a leading
+icon; working state pulses. Approval cards (Stage C) follow Tier-1 cards.
+
+**Suggestion pills**: square, 1px border (intentionally lighter than Tier-1 —
+they are hints, not commands), `muted-foreground` text, `hover:bg-muted`.
+
+**Disclaimer**: `muted-foreground/70`, xs, left-aligned under the composer.
+
+**NOT adopted from Wally**: animated liquid-gradient background, rounded
+corners, soft shadows — they contradict the flat/sharp brand DNA.
 
 ### User Avatar Button
 

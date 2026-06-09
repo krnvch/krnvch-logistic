@@ -1,19 +1,14 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
-import { Sparkles } from "lucide-react";
+import { Sparkles, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 import { supabase } from "@/lib/supabase";
+import { useCopilot } from "./copilot-context";
 import { MessageList } from "./message-list";
 import { Composer } from "./composer";
 
@@ -21,10 +16,13 @@ const COPILOT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/copilot`;
 
 const SHIPMENT_PATH = /^\/shipments\/([^/]+)$/;
 
+// Push panel: a flex sibling of the routed page (see App.tsx), so opening
+// it shrinks the page instead of overlaying it. Always mounted — the
+// conversation survives close/open and route changes.
 export default function Copilot() {
   const { t, i18n } = useTranslation();
   const location = useLocation();
-  const [open, setOpen] = useState(false);
+  const { open, setOpen } = useCopilot();
 
   const shipmentId = location.pathname.match(SHIPMENT_PATH)?.[1];
   const locale = i18n.language === "ru" ? "ru" : "en";
@@ -67,31 +65,38 @@ export default function Copilot() {
   );
 
   return (
-    <>
-      <Button
-        size="icon-lg"
-        className="fixed right-6 bottom-6 z-40"
-        aria-label={t("copilot.launcher.aria")}
-        onClick={() => setOpen(true)}
-      >
-        <Sparkles className="size-5" />
-      </Button>
-
-      <Sheet open={open} onOpenChange={setOpen}>
-        <SheetContent className="flex w-full flex-col gap-0 p-0 sm:max-w-md">
-          <SheetHeader className="border-b-2">
-            <SheetTitle className="flex items-center gap-2">
+    <aside
+      aria-hidden={!open}
+      className={cn(
+        "bg-background shrink-0 overflow-hidden border-l-2 transition-[width] duration-300 ease-in-out",
+        open ? "w-full sm:w-[30rem]" : "w-0 border-l-0"
+      )}
+    >
+      <div className="flex h-full w-screen flex-col sm:w-[30rem]">
+        <div className="flex items-start justify-between border-b-2 p-4">
+          <div className="flex flex-col gap-1">
+            <h2 className="font-heading flex items-center gap-2 font-semibold">
               <Sparkles className="text-primary size-4" />
               {t("copilot.title")}
-            </SheetTitle>
-            <SheetDescription>{t("copilot.subtitle")}</SheetDescription>
-          </SheetHeader>
+            </h2>
+            <p className="text-muted-foreground text-sm">
+              {t("copilot.subtitle")}
+            </p>
+          </div>
+          <Button
+            variant="ghost"
+            size="icon-sm"
+            aria-label={t("copilot.close")}
+            onClick={() => setOpen(false)}
+          >
+            <X className="size-4" />
+          </Button>
+        </div>
 
-          <MessageList messages={messages} busy={busy} onExampleClick={send} />
+        <MessageList messages={messages} busy={busy} onExampleClick={send} />
 
-          <Composer disabled={busy} onSend={send} />
-        </SheetContent>
-      </Sheet>
-    </>
+        <Composer disabled={busy} onSend={send} />
+      </div>
+    </aside>
   );
 }

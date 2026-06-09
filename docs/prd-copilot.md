@@ -1,9 +1,21 @@
 # PRD — Mira, Grida's in-app AI assistant (GRD-104)
 
-**Version**: 1.1
-**Date**: 2026-06-03
-**Status**: Reviewed by Architect — ready for implementation planning
+**Version**: 2.0
+**Date**: 2026-06-09
+**Status**: Phase 1 (Foundation) SHIPPED on `feature/copilot-foundation`; v2 scope approved by owner
 **Linear**: GRD-104 · **Related**: GRD-105 (MCP server), GRD-121 (Langfuse observability)
+
+> **v2.0 changelog** (owner design review, 2026-06-09): the chat experience is
+> reimagined based on the owner's own AI-assistant design system (the "Wally"
+> Figma file — see §1a). Two UX changes already shipped during Phase 1 review:
+> the launcher moved from a floating FAB to the **global header** (FR-CP-01),
+> and the overlay drawer became a **push panel** (FR-CP-02). v2 adds four
+> delivery stages: **A** — chat face-lift (markdown, greeting, pills, activity
+> chain, disclaimer); **B** — persistent threads & history; **C** — write tools
+> with approval cards; **D** — polish (thinking block, feedback, metrics).
+> Everything stays on the Vercel AI SDK (owner-confirmed) — every v2 pattern
+> maps to a native SDK capability (message parts, HITL tool approval,
+> reasoning parts).
 
 > **v1.1 changelog** (architect review): tool now wraps a Postgres RPC instead of
 > duplicating `getOrderStatus` in Deno (AD-Copilot-01); `shipment_id` read from
@@ -28,18 +40,49 @@ flow. Grida shows the grid; it can't yet *talk* about it.
 ### Solution
 
 **Mira** (display name; technical slug stays `copilot` — see
-`docs/mira-naming-handoff.md`) is Grida's in-app chat assistant. A floating button opens a side
-drawer where the user types a question in plain language (RU or EN) and gets an
-answer grounded in real data — because the assistant calls **tools** that query
-the database, rather than guessing. The assistant runs on Google Gemini via the
-Vercel AI SDK, executed inside a Supabase Edge Function so the model key never
-reaches the browser and every database read respects the user's permissions.
+`docs/mira-naming-handoff.md`) is Grida's in-app chat assistant. A header button
+opens a right-side push panel where the user types a question in plain language
+(RU or EN) and gets an answer grounded in real data — because the assistant
+calls **tools** that query the database, rather than guessing. The assistant
+runs on Google Gemini via the Vercel AI SDK, executed inside a Supabase Edge
+Function so the model key never reaches the browser and every database read
+respects the user's permissions.
 
-This PRD covers **Phase 1 (Foundation) only**: a single read-only tool, no
-persistence, no write actions, no confirmations. It establishes the full
-vertical slice — UI → Edge Function → LLM → tool → answer — that later phases
-extend. The tool layer is designed framework-agnostic from day one so the MCP
-server (GRD-105) can reuse it without a rewrite.
+**Phase 1 (Foundation) is shipped**: one read-only tool, in-memory chat, full
+vertical slice UI → Edge Function → LLM → tool → answer. The tool layer is
+framework-agnostic so the MCP server (GRD-105) can reuse it without a rewrite.
+
+**v2 of this PRD** layers the owner's chat design system on top (§1a) and
+specifies the next delivery stages A–D (§3a).
+
+---
+
+## 1a. Design source & adaptation rules (v2)
+
+The v2 experience adapts the owner's own AI-assistant design system — the
+**"Wally — AI Assistant"** Figma file
+(`figma.com/design/bsqgrzkpIB2yPVlNpgU8jN`, page "Chat 2"). Wally was designed
+for a different product; we adopt its **structure and interaction patterns**,
+not its visual skin.
+
+**Adaptation rules (owner-approved 2026-06-09):**
+
+| Wally | Mira | Rule |
+|-------|------|------|
+| Rounded cards, pills, soft shadows | radius 0, Tier-1 2px borders, no shadows | Grida brand always wins on skin |
+| Orange accent | Grida emerald (`--primary`) | brand tokens |
+| Animated liquid-gradient chat background | **NOT adopted** — flat background | conflicts with brand DNA ("flat + bold border"); at most a faint green-whisper tint |
+| Wally robot mascot | `Sparkles` icon (Mira mark TBD — separate brand task) | don't block on mascot |
+| Token-override auth (HttpOnly cookie exchange) | **NOT adopted** | Grida already has Supabase JWT per user |
+| Everything else (header, history, chain, approvals, pills, input) | adopted, restyled | structure yes, skin no |
+
+**Why this is cheap**: every Wally pattern maps 1:1 to a Vercel AI SDK
+capability we already stream — assistant markdown = `text` parts; activity
+chain = `tool-*` parts (currently filtered out by the renderer); thinking
+block = `reasoning` parts; approval cards = the SDK's human-in-the-loop tool
+pattern (`tool-*` part in state `input-available` rendered as a card,
+answered via `addToolResult`). Only chat history requires new backend
+(tables), which was already planned for the Hardening phase.
 
 ### Success Criteria
 
@@ -108,28 +151,33 @@ User not on a shipment page → assistant asks which shipment, OR answers only
 
 Feature abbreviation: **CP** (Copilot).
 
-### FR-CP-01: Floating launcher button
+### FR-CP-01: Header launcher button *(v2 — replaces the floating FAB)*
 
-- A circular floating button is fixed at bottom-right (`fixed bottom-4 right-4`),
-  visible on every authenticated page, above page content (`z-50`).
-- Icon: `Sparkles` (lucide). Brand-compliant: 2px border, radius 0 per brand book
-  — **note for designer review**: a circular FAB conflicts with the radius-0 rule;
-  see Open Questions #1.
+- An outline icon button (`Sparkles`) sits at the **far right of the global
+  header**, after the avatar button, on the shipments list and shipment detail
+  pages.
+- When the panel is open the icon is highlighted (`text-primary`) and
+  `aria-pressed` is set; clicking again closes the panel (toggle).
 - Hidden on the login page (only mounts when `session` exists).
 - Available to **both roles** (operator and worker).
+- *History*: v1 specified a floating FAB; the owner moved it to the header
+  during Phase 1 review (2026-06-09).
 
-### FR-CP-02: Chat drawer
+### FR-CP-02: Push panel *(v2 — replaces the overlay drawer)*
 
-**Given** the user clicks the floating button
-**When** the drawer opens
-**Then** a right-side `Sheet` shows: a header ("Mira" + subtitle), a
-scrollable message list, and a fixed input area at the bottom.
+**Given** the user clicks the header launcher
+**When** the panel opens
+**Then** a right-side **push panel** (a flex sibling of the routed page, NOT a
+modal overlay) animates in, shrinking the page content to the left. The page
+stays fully interactive — no dimming, no focus trap.
 
-- Drawer width: `sm:max-w-md` (~28rem), full-height.
-- First-open state shows a short empty-state hint with 2–3 example questions the
-  user can tap to prefill the input.
-- Closing the drawer (X / overlay click / Esc) **does not** clear the in-memory
-  conversation for the current session (see FR-CP-06).
+- Panel width: 384px (`w-96`) on ≥sm, full-width on mobile. Stage A may widen
+  to ~480px to match the Wally reference (Open Question v2-1).
+- Panel shell: panel header (FR-CP-14 adds thread controls), scrollable message
+  list, fixed input area at the bottom.
+- The panel component stays mounted while the app is authenticated, so closing
+  it (X / header toggle) **does not** clear the in-memory conversation, and the
+  conversation survives route changes (see FR-CP-06).
 
 ### FR-CP-03: Send a message
 
@@ -218,6 +266,116 @@ allowedRoles: ["operator", "worker"]
 
 ---
 
+## 3a. v2 Functional Requirements — stages A–D
+
+Stages ship in order. Each stage is independently releasable.
+
+### Stage A — chat face-lift (frontend only, no schema changes)
+
+#### FR-CP-09: Message presentation v2
+
+- **Assistant messages lose the bubble**: rendered as plain text on the panel
+  background (Wally pattern) with markdown support — headings, paragraphs,
+  bullet lists, inline code (chip-styled: `bg-muted`, monospace, 1px border).
+- **User messages keep a bubble**: `bg-secondary`, Tier-1 2px border, radius 0,
+  right-aligned, max-width ~85%.
+- Markdown renderer: `react-markdown` (or equivalent), styled with brand
+  typography (Zalando Sans body; headings use the heading font).
+- No raw-HTML rendering (sanitised by default — model output is untrusted).
+
+#### FR-CP-10: Greeting & suggestion pills
+
+- Empty conversation shows: Mira mark, a personalized greeting
+  ("Hi {firstName}! How can I assist you?" / «Привет, {firstName}! Чем
+  помочь?» — falls back to a non-personalized form when no first name), and a
+  "Suggestions" label with up to 3 tappable **pills** (square, 1px border,
+  monospace-ish small text) that send the question immediately.
+- Suggestions are context-aware: shipment-detail pills reference the current
+  shipment; the list page offers cross-shipment questions only when Phase-2
+  read tools exist (until then, list-page pills prompt to open a shipment).
+
+#### FR-CP-11: Message actions
+
+- Under each completed assistant message: icon-row **Copy** (copies the
+  message's plain text; confirmation via tooltip/toast). Thumbs up/down ship in
+  Stage D (FR-CP-17); the row is built to accommodate them.
+
+#### FR-CP-12: Disclaimer
+
+- A fixed caption under the input: "Mira can make mistakes; always verify." /
+  «Мира может ошибаться — проверяйте важное.» (`muted-foreground`, xs).
+
+#### FR-CP-13: Activity chain (tool-call visibility)
+
+- Tool-call parts in the assistant stream render as **chain items** above the
+  answer text: icon + short past-tense label per tool (e.g. "Looked at the
+  shipment overview" / «Посмотрела сводку рейса»), with state transitions:
+  `input-streaming/available` → working (animated label), `output-available` →
+  done (static), `output-error` → error styling.
+- Phase 1 has one tool → flat chain, no nesting. The component API must allow
+  the Wally nested/metric variants later without rework (children + right-slot).
+- Tool names map to labels via an i18n key per tool (`copilot.chain.<toolName>`).
+
+### Stage B — threads & history (new schema)
+
+#### FR-CP-14: Persistent threads
+
+- Conversations persist across reloads. New tables `chat_threads` and
+  `chat_messages` (see §4a) with owner-only RLS.
+- Panel header becomes: Mira mark + breadcrumb "**/ {thread title} ⌄**" opening
+  a thread switcher (search field; threads grouped Today / Last week / Older;
+  current thread checked; delete on hover with confirm) + right cluster:
+  **new chat** (+), **close** (×).
+- A thread is created lazily on the first user message. Title = first user
+  message truncated (~40 chars) for v1 of Stage B; model-generated titles are a
+  later nicety (Open Question v2-3).
+- Messages are saved server-side by the Edge Function (`onFinish` → insert
+  user + assistant messages with full `parts` JSON); the client never writes
+  these tables directly.
+- Selecting a thread loads its messages (UIMessage[] reconstructed from stored
+  parts — chain items and approval cards re-render from history "for free").
+- Delete thread = hard delete (cascades to messages). No archive in Stage B.
+
+### Stage C — write tools & approvals
+
+#### FR-CP-15: Write tools with approval cards
+
+- First write tool: `mark_order_done` (+ `undo_done`) — idempotent, low-risk,
+  operator + worker (matches existing role rights).
+- Write tools ship **without server-side `execute`**: the tool call streams to
+  the client and renders as an **approval card** (Wally pattern): caption
+  "Requires your approval", human-readable action summary (and a code-style
+  detail block when applicable), buttons **Approve** (split-button: "Always
+  allow in this session" ⌄ "Allow once") and **Reject**.
+- The decision returns via `addToolResult`; the loop continues server-side.
+  Approved → the Edge Function executes the action under the caller's RLS and
+  records it in `agent_actions` (see §4a). Rejected → the model is told and
+  answers accordingly. Card collapses to "✓ Approved" / "✕ Rejected".
+- **Per-session auto-allow**: "Always allow in this session" adds the tool to a
+  per-thread allow-list (client state). Auto-allowed calls show a collapsed
+  pre-approved card. A "Permission settings" icon in the input row opens the
+  allow-list (switches to revoke, Wally pattern). The list resets with a new
+  thread; nothing is persisted in Stage C.
+- Worker role: `mark_order_done`/`undo_done` only; destructive/creative tools
+  (later) are operator-only via the existing `allowedRoles` filter.
+
+### Stage D — polish
+
+#### FR-CP-16: Thinking block
+
+- When the model emits reasoning, render a collapsible "Thought for Ns" block
+  above the answer (collapsed by default; chevron expands a quoted timeline).
+  Gated on Gemini reasoning parts being available via the SDK; degrade to
+  nothing when absent.
+
+#### FR-CP-17: Feedback
+
+- Thumbs up/down activate in the FR-CP-11 action row. Votes are analytics
+  events (PostHog `copilot_feedback` with thread/message ids + vote) — no DB
+  table unless Langfuse (GRD-121) wants them paired with traces.
+
+---
+
 ## 4. Data Model
 
 ### Database
@@ -238,9 +396,7 @@ allowedRoles: ["operator", "worker"]
 - Reused verbatim by GRD-105's MCP server — no second implementation.
 - Migration lives in `supabase/migrations/` and is reversible (`DROP FUNCTION`).
 
-> Deferred (later phases, listed here for architecture awareness, NOT built now):
-> `chat_threads`, `chat_messages` (persistent history), `agent_actions` (write
-> audit log).
+> v2 update: the deferred tables are now specified in §4a (Stage B and C).
 
 ### Existing tables the tool reads (for reference)
 
@@ -281,6 +437,65 @@ export interface ToolContext {
 The registry is a plain array of `CopilotTool`. The Edge Function adapts it to
 the Vercel AI SDK `tools` shape; GRD-105's MCP server will adapt the *same*
 array to MCP tool definitions. No business logic is duplicated.
+
+---
+
+## 4a. v2 Data Model (Stages B–C)
+
+### Stage B tables
+
+```sql
+-- chat_threads: one row per conversation
+CREATE TABLE chat_threads (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id     uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  title       text NOT NULL DEFAULT '',
+  shipment_id uuid REFERENCES shipments(id) ON DELETE SET NULL, -- context hint
+  created_at  timestamptz NOT NULL DEFAULT now(),
+  updated_at  timestamptz NOT NULL DEFAULT now()
+);
+
+-- chat_messages: UIMessage parts stored verbatim
+CREATE TABLE chat_messages (
+  id         uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  thread_id  uuid NOT NULL REFERENCES chat_threads(id) ON DELETE CASCADE,
+  role       text NOT NULL CHECK (role IN ('user','assistant')),
+  parts      jsonb NOT NULL,          -- AI SDK UIMessage.parts, as-is
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+```
+
+- **RLS**: owner-only on both tables (`user_id = auth.uid()` on threads;
+  messages via `EXISTS` against the parent thread). The Edge Function inserts
+  with the caller's JWT, so RLS applies to writes too — no service role.
+- **Why `parts jsonb` instead of flat text** (AD-Copilot-05): the AI SDK
+  UIMessage `parts` array is the lossless representation — text, tool calls
+  with inputs/outputs, reasoning, approval states. Storing it verbatim means
+  history replay re-renders chain items and approval cards with zero mapping
+  code, and new part types need no migration.
+- Indexes: `chat_threads (user_id, updated_at DESC)`,
+  `chat_messages (thread_id, created_at)`.
+
+### Stage C table
+
+```sql
+-- agent_actions: audit log of every write performed by Mira
+CREATE TABLE agent_actions (
+  id          uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id     uuid NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  thread_id   uuid REFERENCES chat_threads(id) ON DELETE SET NULL,
+  tool_name   text NOT NULL,
+  args        jsonb NOT NULL,
+  result      text NOT NULL CHECK (result IN ('approved','rejected','error')),
+  error       text,
+  created_at  timestamptz NOT NULL DEFAULT now()
+);
+```
+
+- Insert-only from the Edge Function; readable by the acting user (RLS).
+  Every approval decision is recorded, including rejections.
+- Per-session tool allow-lists are **client state only** (reset per thread);
+  no table.
 
 ---
 
@@ -442,19 +657,22 @@ never masculine forms. See docs/mira-naming-handoff.md.
 
 ---
 
-## 7. Out of Scope (Phase 1)
+## 7. Out of Scope (v2)
 
 | Feature | Reason / where it lands |
 |---------|-------------------------|
-| Write actions (mark done, create/edit/delete orders) | Phase 3–4 (Write safe / destructive) |
-| Confirmation UX before actions | Phase 3 (needed only once writes exist) |
-| Persistent chat history (`chat_threads`/`chat_messages`) | Later phase; Phase 1 is in-memory |
-| Audit log (`agent_actions`) | Later phase, ships with writes |
-| Per-user rate limiting | Hardening phase — **tracked debt**. Phase 1 ships a `maxSteps`/`maxOutputTokens` cap as a minimal per-request guard; a real throttle comes later. |
-| LLM observability (Langfuse) | GRD-121, Hardening phase |
+| Write actions (mark done) + approval UX | **Stage C** (FR-CP-15) |
+| Create/edit/delete orders via Mira | after Stage C, separate review (destructive tier) |
+| Persistent chat history | **Stage B** (FR-CP-14) |
+| Audit log (`agent_actions`) | **Stage C** (§4a) |
+| Animated chat background (Wally liquid gradient) | NOT adopted — brand conflict (§1a) |
+| Mira mascot/avatar mark | separate brand task (Alfredo); `Sparkles` until then |
+| Per-user rate limiting | Hardening — **tracked debt**; `stepCountIs`/`maxOutputTokens` cap holds until then |
+| LLM observability (Langfuse) | GRD-121 — natural fit right after Stage C |
 | MCP server / external clients | GRD-105 (separate epic) |
-| Multiple tools / cross-shipment analytics | Phase 2 (Read tools) |
+| Multiple read tools / cross-shipment analytics | Phase 2 (Read tools) — can land between stages |
 | Provider switching UI / multi-provider | Not planned; Gemini is the chosen default |
+| Model-generated thread titles | Open Question v2-3; Stage B uses truncated first message |
 
 ---
 
@@ -466,8 +684,17 @@ never masculine forms. See docs/mira-naming-handoff.md.
 | 2 | Exact Gemini model id? | Start with `gemini-2.5-flash`; cheapest capable Flash with tool-calling. Confirm current id at implementation time. |
 | 3 | What if the user isn't on a shipment page (no `shipment_id` in context)? | **RESOLVED (owner):** launcher stays available, but the assistant asks the user to open a shipment first. Cross-shipment tools come in Phase 2. |
 | 4 | One combined `get_shipment_overview` tool vs several tiny tools? | One overview tool for Phase 1 — fewer round-trips, simpler, still answers the demo questions. Split later if needed. |
-| 5 | Add the AI SDK to the **app** `package.json`, or only as Deno `npm:` imports? | Client needs `@ai-sdk/react` (app dep). Server uses Deno `npm:` specifiers (no app dep). Two separate dependency surfaces. |
+| 5 | Add the AI SDK to the **app** `package.json`, or only as Deno `npm:` imports? | Client needs `@ai-sdk/react` (app dep). Server uses Deno `npm:` specifiers (no app dep). Two separate dependency surfaces. **RESOLVED:** both pinned to the same major (v5). |
 | 6 | Secret name. | **RESOLVED:** `GOOGLE_GENERATIVE_AI_API_KEY` (SDK default); document in `.env.example`. |
+
+### v2 Open Questions
+
+| # | Question | Proposed Answer |
+|---|----------|-----------------|
+| v2-1 | Panel width: keep 384px (`w-96`) or widen to ~480px like the Wally reference? | Try 480px in Stage A; owner judges in the browser. |
+| v2-2 | Stage A in the current Phase-1 PR or separate? | Same branch/PR — Phase 1 hasn't deployed yet, one review beats two. |
+| v2-3 | Thread titles: truncated first message vs model-generated? | Truncate for Stage B (zero cost/latency); revisit with a cheap title prompt later. |
+| v2-4 | Greeting personalization source? | `first_name` from `user_metadata` (already used for initials); fallback to plain greeting. |
 
 ---
 
@@ -479,10 +706,15 @@ never masculine forms. See docs/mira-naming-handoff.md.
 | AD-Copilot-02 | Agent runtime in a Supabase Edge Function with JWT verification; reads run under the caller's JWT, never service-role. `<Copilot/>` mounts at App level and parses `shipment_id` from `useLocation()` | Model key off the client; authorization stays in RLS; App-level mount can't use `useParams`. |
 | AD-Copilot-03 | Tool registry describes params as JSON Schema (`jsonSchema()`), not zod | Cross-framework portability — the same tool array feeds both the Vercel AI SDK (Copilot) and MCP (GRD-105). |
 | AD-Copilot-04 | Phase 1 abuse guard = `maxSteps`/`maxOutputTokens` cap; full rate limiting is tracked debt | Cheap per-request bound now; real throttle deferred to Hardening without blocking the demo. |
+| AD-Copilot-05 | `chat_messages` stores AI SDK `UIMessage.parts` as verbatim `jsonb` | Lossless replay: chain items, approval cards, reasoning re-render from history with no mapping layer; new part types need no migration. |
+| AD-Copilot-06 | Write tools use the AI SDK human-in-the-loop pattern (no server `execute`; client renders approval card; decision returns via `addToolResult`) | Native SDK mechanism — no custom protocol; approval state lives in the message parts, so it persists with the thread (AD-Copilot-05). |
+| AD-Copilot-07 | Wally design adopted for structure/interaction only; visual skin always follows the Grida brand book; animated background NOT adopted | Brand governance — patterns transfer, skins don't (§1a). |
 
 ---
 
 ## Next step
 
-Architect review **done** (v1.1 folds in all 4 required changes + flags). Next:
-the phased implementation plan — see `docs/impl-copilot.md`.
+v2 approved by owner (2026-06-09). Delivery: Stage A on the current
+`feature/copilot-foundation` branch (with prod deploy of Phase 1 + Stage A
+together), then B → C → D as separate branches/PRs. Stage breakdown lives in
+`docs/impl-copilot.md`.

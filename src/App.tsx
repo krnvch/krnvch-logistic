@@ -8,6 +8,7 @@ import ShipmentsPage from "@/pages/ShipmentsPage";
 import ShipmentDetailPage from "@/pages/ShipmentDetailPage";
 import ProfilePage from "@/pages/ProfilePage";
 import NotFoundPage from "@/pages/NotFoundPage";
+import { CopilotProvider } from "@/components/copilot/copilot-provider";
 
 const Copilot = lazy(() => import("@/components/copilot/copilot"));
 
@@ -39,40 +40,44 @@ export default function App() {
     "?";
 
   return (
-    <>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <ShipmentsPage
-              logout={logout}
-              isOperator={isOperator}
-              userEmail={userEmail}
-              userInitials={userInitials}
+    <CopilotProvider firstName={(meta?.first_name as string) || undefined}>
+      <div className="flex h-dvh overflow-hidden">
+        <div className="min-w-0 flex-1 overflow-auto">
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <ShipmentsPage
+                  logout={logout}
+                  isOperator={isOperator}
+                  userEmail={userEmail}
+                  userInitials={userInitials}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/shipments/:id"
-          element={
-            <ShipmentDetailPage
-              logout={logout}
-              isOperator={isOperator}
-              userInitials={userInitials}
+            <Route
+              path="/shipments/:id"
+              element={
+                <ShipmentDetailPage
+                  logout={logout}
+                  isOperator={isOperator}
+                  userInitials={userInitials}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <ProfilePage key={session.user.updated_at} session={session} />
-          }
-        />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-      <Suspense fallback={null}>
-        <Copilot />
-      </Suspense>
-    </>
+            <Route
+              path="/profile"
+              element={
+                <ProfilePage key={session.user.updated_at} session={session} />
+              }
+            />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
+        <Suspense fallback={null}>
+          <Copilot />
+        </Suspense>
+      </div>
+    </CopilotProvider>
   );
 }

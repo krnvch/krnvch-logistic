@@ -421,3 +421,33 @@ feel — and his conviction held across three rounds and 100+ alternatives.
 Handoff for implementation: `docs/mira-naming-handoff.md`.
 
 ---
+
+## Phase 10: Mira Chat Patterns — Adapting the Owner's Wally Design System
+
+**Date**: 2026-06-09 · **Trigger**: GRD-104 Phase 1 UI review
+
+The owner reviewed the first Mira implementation and replaced two of its core
+patterns with ones from his own AI-assistant design system ("Wally — AI
+Assistant", a Figma file he designed for a different product):
+
+1. **Floating FAB → header launcher.** The square FAB (bottom-right) felt
+   wrong in practice; the launcher moved to the far right of the global
+   header as an outline icon button with a `text-primary` open state.
+2. **Overlay drawer → push panel.** The chat must not cover the grid — it
+   pushes the page aside (flex sibling, width animation) and the page stays
+   interactive. "The grid sees everything" — and stays visible.
+
+**The adaptation rule** (now AD-Copilot-07): take Wally's *structure* —
+no-bubble assistant messages, activity chain, approval cards, suggestion
+pills, thread history header — and re-skin everything to Grida tokens:
+radius 0, Tier borders, no shadows, emerald. Wally's animated liquid-gradient
+background was explicitly rejected: decoration contradicts the flat/sharp
+brand DNA. One deliberate exception: suggestion pills use a 1px border
+(lighter than Tier-1) because they are hints, not commands.
+
+**Lesson**: a design system from another product transfers as interaction
+patterns, not as pixels. The brand book decides the pixels.
+
+Patterns recorded in `visual-identity.md` ("Mira Chat Patterns").
+
+---

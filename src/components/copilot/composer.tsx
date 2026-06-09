@@ -22,31 +22,36 @@ export function Composer({ disabled, onSend }: ComposerProps) {
   }
 
   return (
-    <div className="flex items-end gap-2 border-t-2 p-4">
-      <Textarea
-        value={text}
-        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-          setText(e.target.value)
-        }
-        onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-          if (e.key === "Enter" && !e.shiftKey) {
-            e.preventDefault();
-            submit();
+    <div className="border-t-2 p-4 pb-2">
+      <div className="flex items-end gap-2">
+        <Textarea
+          value={text}
+          onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+            setText(e.target.value)
           }
-        }}
-        placeholder={t("copilot.placeholder")}
-        rows={2}
-        className="max-h-32 min-h-9 resize-none"
-        disabled={disabled}
-      />
-      <Button
-        size="icon"
-        aria-label={t("copilot.send")}
-        onClick={submit}
-        disabled={!canSend}
-      >
-        <SendHorizontal className="size-4" />
-      </Button>
+          onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              submit();
+            }
+          }}
+          placeholder={t("copilot.placeholder")}
+          rows={2}
+          className="max-h-32 min-h-9 resize-none"
+          disabled={disabled}
+        />
+        <Button
+          size="icon"
+          aria-label={t("copilot.send")}
+          onClick={submit}
+          disabled={!canSend}
+        >
+          <SendHorizontal className="size-4" />
+        </Button>
+      </div>
+      <p className="text-muted-foreground/70 mt-2 text-xs">
+        {t("copilot.disclaimer")}
+      </p>
     </div>
   );
 }

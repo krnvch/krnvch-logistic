@@ -106,15 +106,65 @@ straightforward.
 
 ---
 
-## Later phases (NOT planned in detail yet)
+## v2 Stages (PRD v2 §3a — owner-approved 2026-06-09)
 
-| Phase | Adds | New infra |
-|-------|------|-----------|
-| 2 — Read tools | more read tools (cross-shipment, single order lookup, search) | none (more RPCs/queries) |
-| 3 — Write safe | `mark_order_done` / undo (idempotent, low-risk) + confirmation UX | `agent_actions` audit table |
-| 4 — Write create/destructive | create/edit/delete orders, placements | confirmation gating, RLS write tests |
-| 5 — Hardening | persistent history, per-user rate limiting, Langfuse (GRD-121) | `chat_threads`, `chat_messages` |
+The Wally design adaptation reshuffles the original later-phases table into
+four delivery stages. Each stage = one PR (Stage A rides the Phase-1 branch).
+
+### Stage A — chat face-lift (frontend only)
+
+| File | What |
+|------|------|
+| `src/components/copilot/message-list.tsx` | Assistant messages: drop the bubble, render markdown (`react-markdown` + brand styles); user bubble stays. Greeting block (personalized, FR-CP-10) + suggestion pills replace the current empty state. |
+| `src/components/copilot/chain-item.tsx` | NEW — renders `tool-*` parts: icon + past-tense label, working/done/error states. Flat for now; API leaves room for nesting + right metric slot (Wally). |
+| `src/components/copilot/message-actions.tsx` | NEW — Copy under finished assistant messages (thumbs slots reserved for Stage D). |
+| `src/components/copilot/composer.tsx` | Disclaimer caption under the input (FR-CP-12). |
+| `src/components/copilot/copilot.tsx` | Optionally widen panel to ~480px (Open Q v2-1, owner judges live). |
+| `src/locales/{en,ru}.json` | `copilot.greeting*`, `copilot.disclaimer`, `copilot.chain.get_shipment_overview`, `copilot.actions.*` keys. |
+| deps | `pnpm add react-markdown` (client-only). |
+
+- Brand check: pills/chips square, Tier borders, no shadows; update
+  `visual-identity.md` patterns after (launcher section already exists).
+- Acceptance: tool call visible as a chain line; markdown lists/inline code
+  render; copy works; greeting personalized; RU feminine forms everywhere.
+
+### Stage B — threads & history (new schema)
+
+| Piece | What |
+|------|------|
+| Migration | `chat_threads` + `chat_messages` (PRD §4a), owner-only RLS, indexes. |
+| Edge Function | Accept `threadId`; lazily create thread on first message; `onFinish` → persist user+assistant messages (`parts` jsonb verbatim, AD-Copilot-05); update `updated_at`. |
+| Panel header | Breadcrumb "/ {title} ⌄" thread switcher (search, Today/Last week/Older groups, delete w/ confirm) + new-chat button (Wally header pattern). |
+| Client | Load thread list + messages via supabase-js (RLS); `useChat` re-seeded from stored parts on thread switch. |
+| Tests | RLS denial test (user B can't read user A's thread), parts round-trip test. |
+
+### Stage C — write tools & approvals
+
+| Piece | What |
+|------|------|
+| Tools | `mark_order_done` / `undo_done` in the registry — **no server `execute`** (HITL, AD-Copilot-06); roles per existing rights. |
+| Migration | `agent_actions` audit table (PRD §4a). |
+| UI | `approval-card.tsx`: caption + summary + split-button (Always allow in this session ⌄ Allow once) + Reject; Approved/Rejected collapsed states; per-thread auto-allow list + "Permission settings" popover in the composer row (Wally pattern). |
+| Edge Function | On approved tool result: execute under caller RLS, log to `agent_actions`, continue the loop. |
+| Tests | approval round-trip, audit row written, role filtering (worker can't see operator-only tools). |
+
+### Stage D — polish
+
+- Thinking block from reasoning parts (collapsed "Thought for Ns"), gated on
+  Gemini emitting them; degrade silently.
+- Thumbs up/down in the actions row → PostHog `copilot_feedback`.
+- Chain metric slots (e.g. row counts) where tools return them.
+- Natural Langfuse (GRD-121) entry point.
+
+### Explicitly not adopted from Wally
+
+Animated liquid background, rounded skin, mascot icon, token-override auth —
+see PRD §1a adaptation table.
+
+---
 
 GRD-105 (MCP server) can begin once the tool registry (Step 2) is stable — it
 adapts the **same** `CopilotTool[]` array to MCP, with API-key auth instead of
-browser-session JWT.
+browser-session JWT. Stage C's HITL tools need MCP-side thought later (MCP has
+its own elicitation/approval semantics) — keep `execute`-less tools clearly
+marked in the registry.
