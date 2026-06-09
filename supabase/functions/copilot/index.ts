@@ -42,7 +42,8 @@ const MAX_OUTPUT_TOKENS = 1024;
 
 const ALLOWED_ORIGINS = [
   "https://app.grida.space",
-  "http://localhost:5173",
+  "http://localhost:5173", // pnpm dev
+  "http://localhost:4173", // pnpm preview (prod-build testing, project rule)
 ];
 
 function getCorsHeaders(req: Request) {
