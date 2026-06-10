@@ -9,8 +9,9 @@
 
 import type { CopilotRole, CopilotTool } from "./types.ts";
 import { getShipmentOverview } from "./get-shipment-overview.ts";
+import { markOrderDone, undoDone } from "./mark-order-done.ts";
 
-export const tools: CopilotTool[] = [getShipmentOverview];
+export const tools: CopilotTool[] = [getShipmentOverview, markOrderDone, undoDone];
 
 /** Tools the given role is allowed to see and call. */
 export function filterByRole(role: CopilotRole): CopilotTool[] {

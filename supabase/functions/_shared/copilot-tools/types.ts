@@ -36,5 +36,13 @@ export interface CopilotTool<Args = unknown, Result = unknown> {
   parameters: Record<string, unknown>;
   /** The Edge Function filters the registry by caller role before the model sees it. */
   allowedRoles: CopilotRole[];
+  /**
+   * Write tools require human approval (AD-Copilot-06): the Edge Function
+   * exposes them to the model WITHOUT execute, the call streams to the
+   * client as an approval card, and `execute` runs server-side only after
+   * the user approves. The future MCP server (GRD-105) must map these to
+   * MCP elicitation — never auto-run them.
+   */
+  requiresApproval?: boolean;
   execute(args: Args, ctx: ToolContext): Promise<Result>;
 }

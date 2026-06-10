@@ -451,3 +451,31 @@ patterns, not as pixels. The brand book decides the pixels.
 Patterns recorded in `visual-identity.md` ("Mira Chat Patterns").
 
 ---
+
+## Phase 9 — Mira acts: the approval card (2026-06-10, Stage C)
+
+Mira's first write actions (mark order done / undo) raised a new visual
+question: what does "the agent wants to change your data" look like in a
+brand whose primary color is a friendly emerald?
+
+**Decision: amber, not green.** The approval card uses a Tier-1 border in
+`warning` (hue 80) with a `ShieldAlert` caption. Green is brand, blue is
+status-active, amber is "stop and look" — consistent with the urgent-order
+accent. A green approval card would read as "already done"; the card must
+read as "not yet".
+
+**Decision: split-button, Wally pattern, Grida skin.** Primary action is
+"Allow once"; "Always allow in this session" hides behind the chevron.
+The safer choice is the prominent one — auto-allowing is deliberate, one
+level deeper. Reject is a ghost button: declining is always available but
+never shouted.
+
+**Decision: decided cards collapse.** After the choice the card shrinks to
+one quiet line (✓/✕ + summary + state), same typography as chain items.
+History stays scannable; past decisions don't compete with new content.
+
+**Lesson**: agency needs its own color. The moment a product starts *doing*
+instead of *telling*, the palette needs an unambiguous "this requires your
+judgment" signal that nothing else uses.
+
+---

@@ -40,12 +40,14 @@ export function groupThreads(
 
 // Stored rows → AI SDK UIMessage[]. Parts were persisted verbatim
 // (AD-Copilot-05), so this is a relabel, not a transformation — chain
-// items re-render from history with no extra code.
+// items re-render from history with no extra code. Messages keep their
+// ORIGINAL UIMessage id (message_id): approval continuations upsert the
+// same message server-side, so the id must survive the round-trip.
 export function rowsToUIMessages(
-  rows: Pick<ChatMessageRow, "id" | "role" | "parts">[]
+  rows: Pick<ChatMessageRow, "message_id" | "role" | "parts">[]
 ): UIMessage[] {
   return rows.map((row) => ({
-    id: row.id,
+    id: row.message_id,
     role: row.role === "user" ? "user" : "assistant",
     parts: (row.parts ?? []) as UIMessage["parts"],
   }));
