@@ -91,10 +91,19 @@ export default function Copilot() {
         refreshThreads();
       },
       onError: (error) => {
+        // Gemini free-tier rate limit surfaces as a stream error chunk —
+        // tell the user to wait instead of a generic "something broke".
+        const isQuota =
+          error.message.includes("quota") ||
+          error.message.includes("RESOURCE_EXHAUSTED") ||
+          error.message.includes("rate-limit") ||
+          error.message.includes("rate limit");
         toast.error(
           error.message.includes("copilot_unavailable")
             ? t("copilot.error.unavailable")
-            : t("copilot.error.generic")
+            : isQuota
+              ? t("copilot.error.quota")
+              : t("copilot.error.generic")
         );
       },
     });

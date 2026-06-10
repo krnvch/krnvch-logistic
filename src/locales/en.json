@@ -183,6 +183,7 @@
   "copilot.chain.generic.done": "Done",
   "copilot.chain.error": "A tool call failed",
   "copilot.error.generic": "Something went wrong. Try again.",
+  "copilot.error.quota": "Mira hit the AI rate limit. Wait a minute and try again.",
   "copilot.error.unavailable": "Mira is not available right now.",
   "copilot.thread.new": "New chat",
   "copilot.thread.searchPlaceholder": "Search chats…",
