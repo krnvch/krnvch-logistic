@@ -9,10 +9,13 @@ import { Markdown } from "./markdown";
 import { MessageActions } from "./message-actions";
 import { ApprovalCard, type ApprovalDecideHandler } from "./approval-card";
 import { asApprovalPart } from "./approval-utils";
+import { ThinkingBlock } from "./thinking-block";
+import { mergeAdjacentReasoning } from "./reasoning-utils";
 
 interface MessageListProps {
   messages: UIMessage[];
   busy: boolean;
+  threadId: string | null;
   onExampleClick: (text: string) => void;
   onDecide: ApprovalDecideHandler;
 }
@@ -41,6 +44,24 @@ function toolPartInfo(
         ? "done"
         : "working";
   return { name, state };
+}
+
+// Chain metric slot (FR-CP-13/Stage D): a compact right-aligned figure
+// for tools whose result has an obvious headline number.
+function toolMetric(
+  part: UIPart,
+  t: (key: string, options?: Record<string, unknown>) => string
+): string | undefined {
+  if (part.type !== "tool-get_shipment_overview") return undefined;
+  const raw = part as unknown as {
+    state?: string;
+    output?: { total_orders?: number };
+  };
+  if (raw.state !== "output-available") return undefined;
+  const count = raw.output?.total_orders;
+  return typeof count === "number"
+    ? t("copilot.chain.ordersMetric", { count })
+    : undefined;
 }
 
 // Greeting + suggestion pills (FR-CP-10) — shown while the thread is empty.
@@ -81,6 +102,7 @@ function Greeting({ onPick }: { onPick: (text: string) => void }) {
 export function MessageList({
   messages,
   busy,
+  threadId,
   onExampleClick,
   onDecide,
 }: MessageListProps) {
@@ -88,9 +110,19 @@ export function MessageList({
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const lastMessage = messages[messages.length - 1];
+  // The global spinner only covers the gap before ANYTHING renders —
+  // once reasoning/tool/text parts stream, they carry their own state.
+  const hasVisibleParts =
+    lastMessage?.role === "assistant" &&
+    lastMessage.parts.some(
+      (p) =>
+        (p.type === "text" && p.text) ||
+        (p.type === "reasoning" &&
+          (p as unknown as { text?: string }).text?.trim()) ||
+        p.type.startsWith("tool-")
+    );
   const showThinking =
-    busy &&
-    (!lastMessage || lastMessage.role === "user" || !messageText(lastMessage));
+    busy && (!lastMessage || lastMessage.role === "user" || !hasVisibleParts);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ block: "end" });
@@ -121,11 +153,21 @@ export function MessageList({
           const text = messageText(message);
           return (
             <div key={message.id} className="flex flex-col gap-0.5">
-              {message.parts.map((part, i) => {
+              {mergeAdjacentReasoning(message.parts).map((part, i) => {
                 if (part.type === "text") {
                   return part.text ? (
                     <Markdown key={i} text={part.text} />
                   ) : null;
+                }
+                // Mira's reasoning → collapsible thinking block (FR-CP-16).
+                if (part.type === "reasoning" && "streaming" in part) {
+                  return (
+                    <ThinkingBlock
+                      key={i}
+                      text={part.text}
+                      streaming={part.streaming}
+                    />
+                  );
                 }
                 // Write tools render as approval cards (FR-CP-15)…
                 const approval = asApprovalPart(part);
@@ -137,10 +179,21 @@ export function MessageList({
                 // …read tools as chain items (FR-CP-13).
                 const tool = toolPartInfo(part);
                 return tool ? (
-                  <ChainItem key={i} toolName={tool.name} state={tool.state} />
+                  <ChainItem
+                    key={i}
+                    toolName={tool.name}
+                    state={tool.state}
+                    metric={toolMetric(part, t)}
+                  />
                 ) : null;
               })}
-              {!isStreaming && text && <MessageActions text={text} />}
+              {!isStreaming && text && (
+                <MessageActions
+                  text={text}
+                  messageId={message.id}
+                  threadId={threadId}
+                />
+              )}
             </div>
           );
         })}

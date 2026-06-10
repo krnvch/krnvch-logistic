@@ -407,13 +407,24 @@ Deno.serve(async (req) => {
         tools: aiTools,
         stopWhen: stepCountIs(MAX_STEPS),
         maxOutputTokens: MAX_OUTPUT_TOKENS,
+        // Stage D (FR-CP-16): stream Gemini's reasoning so the client can
+        // render a collapsible thinking block. The budget bounds extra
+        // token spend; models that emit no thoughts degrade silently.
+        providerOptions: {
+          google: {
+            thinkingConfig: { includeThoughts: true, thinkingBudget: 512 },
+          },
+        },
         onError: ({ error }) => {
           console.error("copilot streamText error:", error);
         },
       });
 
       writer.merge(
-        result.toUIMessageStream({ originalMessages: processedMessages })
+        result.toUIMessageStream({
+          originalMessages: processedMessages,
+          sendReasoning: true,
+        })
       );
     },
     // Persist the exchanged turn AFTER the stream completes. Parts are

@@ -5,6 +5,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.11.0] — 2026-06-10
+
+### Mira — thinking block, feedback, chain metrics (GRD-126, Stage D)
+
+The polish stage: Mira's reasoning becomes visible (and collapsible), answers can be rated, and the activity chain shows headline numbers.
+
+#### Added
+- **Thinking block** (FR-CP-16): Gemini's reasoning streams to the client (`thinkingConfig.includeThoughts`, budget-bounded) and renders as a collapsed "Thoughts" line above the answer — pulsing while live, chevron expands a quoted muted timeline; models/messages without reasoning render nothing. Thoughts persist with the message parts, so history replay keeps them
+- **Feedback** (FR-CP-17): thumbs up/down in the message action row → PostHog `copilot_feedback` event with vote + message/thread ids; selected vote fills the icon; analytics-only (no DB table)
+- **Chain metrics**: the activity chain's metric slot now shows "{{count}} orders" for shipment overview calls (localized plurals EN/RU)
+- 8 new i18n keys, 5 new unit tests for reasoning-part merging (48 total)
+
+#### Notes
+- "Thought for Ns" timing deliberately deferred — honest durations need server-side stream timestamps, which arrive with Langfuse (GRD-121)
+- Mira stays on `gemini-2.5-flash-lite` (COPILOT_MODEL secret) per owner decision
+
+---
+
 ## [4.10.0] — 2026-06-10
 
 ### Mira — write tools with approval cards (GRD-125, Stage C)

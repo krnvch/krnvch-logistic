@@ -304,6 +304,19 @@ card **collapses to a one-line state** — `Check`/`X` icon + summary +
 composer row opens the per-session allow-list as a dropdown (checkbox items;
 unchecking revokes). Empty state in `muted-foreground` xs.
 
+**Thinking block** (Stage D, 2026-06-10): Mira's reasoning renders as a
+collapsed `muted-foreground` line — `Brain` icon + "Thoughts" + chevron —
+matching chain-item typography; the label pulses while reasoning streams.
+Expanding reveals the raw thoughts as a quoted block: 2px left border
+(Tier 2 spirit), `muted-foreground` markdown. Collapsed by default —
+thoughts are context, never content; messages without reasoning render
+nothing at all.
+
+**Feedback thumbs** (Stage D): ghost icon-xs `ThumbsUp`/`ThumbsDown` join
+Copy in the action row, `muted-foreground` → `text-foreground` + filled
+icon when selected. Votes are quiet — no toast, no color shift beyond the
+fill (feedback is for us, not a celebration).
+
 **Suggestion pills**: square, 1px border (intentionally lighter than Tier-1 —
 they are hints, not commands), `muted-foreground` text, `hover:bg-muted`.
 
