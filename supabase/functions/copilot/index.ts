@@ -170,7 +170,11 @@ async function processApprovals(
   return processed;
 }
 
-const MODEL_ID = "gemini-2.5-flash";
+// Overridable without a redeploy (supabase secrets set COPILOT_MODEL=…):
+// the free tier caps requests PER DAY PER MODEL, so switching to e.g.
+// gemini-2.5-flash-lite buys a separate daily quota when testing burns
+// through the default model's allowance.
+const MODEL_ID = Deno.env.get("COPILOT_MODEL") ?? "gemini-2.5-flash";
 const MAX_STEPS = 5;
 const MAX_OUTPUT_TOKENS = 1024;
 
