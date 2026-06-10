@@ -5,6 +5,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.9.1] — 2026-06-10
+
+### Production infrastructure fixes (GRD-122, GRD-123)
+
+#### Fixed
+- **SPA deep links no longer 404** (GRD-122): direct hits on routes like `/orders` returned Vercel's 404 because no rewrite was configured for the single-page app. Added `vercel.json` with a catch-all rewrite to `index.html`; static assets are unaffected (Vercel serves existing files before applying rewrites).
+
+#### Added
+- **Sentry source map upload** (GRD-123): production stack traces are now readable instead of minified one-liners. `@sentry/vite-plugin` uploads hidden source maps during Vercel builds when `SENTRY_ORG` / `SENTRY_PROJECT` / `SENTRY_AUTH_TOKEN` are set (build-time vars, never exposed to the browser). Without the token (local, CI) no `.map` files are emitted; uploaded maps are deleted from `dist/` before deploy, and a failed upload only warns — it never breaks the build.
+
+---
+
 ## [4.9.0] — 2026-06-09
 
 ### Mira — persistent chat threads & history (GRD-124, Stage B)
