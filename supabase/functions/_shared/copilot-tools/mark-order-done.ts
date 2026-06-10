@@ -34,44 +34,57 @@ const PARAMETERS = {
     order_number: {
       type: "string",
       description:
-        "The order number exactly as the user named it (e.g. '1024')",
+        "The order number as the user named it. Pass it verbatim — " +
+        "matching ignores case, spaces, dashes and '#' (voice input " +
+        "like 'H A M 020' finds HAM-020).",
     },
   },
   required: ["shipment_id", "order_number"],
   additionalProperties: false,
 } as const;
 
+// Users type "ham-028", "#HAM-028" — and voice input dictates "H A M 020".
+// Equality on the raw string misses all of them, so both sides are
+// reduced to bare alphanumerics, uppercase: "H A M 020" → "HAM020".
+function normalizeOrderNumber(value: string): string {
+  return value.replace(/[^a-z0-9]/gi, "").toUpperCase();
+}
+
 async function setDone(
   args: Args,
   ctx: ToolContext,
   isDone: boolean
 ): Promise<MarkOrderDoneResult> {
-  // Users say "ham-028" or "#HAM-028"; stored numbers are "HAM-028".
-  // Normalize the prefix and match case-insensitively (ilike with the
-  // wildcard chars escaped = case-insensitive equality).
-  const orderNumber = args.order_number
-    .trim()
-    .replace(/^#/, "")
-    .replace(/[%_]/g, "\\$&");
-
-  // Resolve the order within the shipment; also fetch the shipment
-  // status — completed shipments are read-only (mirrors the UI rule).
-  const { data: order, error: findError } = await ctx.supabase
+  // Fetch the shipment's order list (small: tens of rows) and match the
+  // normalized number in code — looser than any SQL equality, and the
+  // shipment status check rides along (completed = read-only, UI rule).
+  const { data: orders, error: findError } = await ctx.supabase
     .from("orders")
     .select("id, order_number, client_name, is_done, shipments ( status )")
-    .eq("shipment_id", args.shipment_id)
-    .ilike("order_number", orderNumber)
-    .maybeSingle();
+    .eq("shipment_id", args.shipment_id);
 
   if (findError) {
     throw new Error(`order lookup failed: ${findError.message}`);
   }
-  if (!order) {
+
+  const wanted = normalizeOrderNumber(args.order_number);
+  const matches = (orders ?? []).filter(
+    (o) => normalizeOrderNumber(o.order_number) === wanted
+  );
+  if (matches.length === 0) {
     throw new Error(
       `order ${args.order_number} not found in this shipment` +
         ` — ask the user to double-check the number`
     );
   }
+  if (matches.length > 1) {
+    throw new Error(
+      `order number ${args.order_number} is ambiguous here` +
+        ` (${matches.map((o) => o.order_number).join(", ")})` +
+        ` — ask the user which one they mean`
+    );
+  }
+  const order = matches[0];
   const shipmentStatus = (
     order.shipments as unknown as { status: string } | null
   )?.status;

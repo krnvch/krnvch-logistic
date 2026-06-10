@@ -5,6 +5,23 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.12.0] — 2026-06-10
+
+### Mira — voice mode (GRD-127)
+
+Talk to Mira and let her talk back — entirely in the browser via the Web Speech API: free, no server round-trips, zero Gemini quota.
+
+#### Added
+- **Push-to-talk** (STT): hold the mic button in the composer, speak, release — the live transcript lands in the textarea for review before sending (existing text is kept as a prefix). Recognition language follows the app locale (en-US / ru-RU). Feature-detected: browsers without `SpeechRecognition` (Firefox) never see the button
+- **Spoken replies** (TTS): a speaker toggle in the panel header (persisted in `localStorage["grida-mira-voice"]`) reads Mira's finished answers aloud via `speechSynthesis` — final text only, markdown stripped for natural speech; reasoning blocks and approval cards are never voiced. Approval continuations speak only the new tail of the message. Speech stops when you send a new message, switch threads, toggle off, or close the panel
+- `stripMarkdownForSpeech` / `unspokenTail` utils + 8 unit tests (56 total), 4 i18n keys (EN/RU)
+
+#### Notes
+- Privacy: Chrome's recognition routes audio through Google servers; Safari runs on-device. TTS is fully local (OS voices, works offline)
+- No backend changes — the Edge Function is untouched
+
+---
+
 ## [4.11.0] — 2026-06-10
 
 ### Mira — thinking block, feedback, chain metrics (GRD-126, Stage D)

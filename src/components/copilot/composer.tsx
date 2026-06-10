@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { SendHorizontal, SlidersHorizontal } from "lucide-react";
+import { Mic, SendHorizontal, SlidersHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import {
@@ -10,6 +10,8 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
+import { useSpeechRecognition } from "@/hooks/use-speech-recognition";
 
 interface ComposerProps {
   disabled: boolean;
@@ -68,8 +70,26 @@ export function Composer({
   allowedTools,
   onRevokeTool,
 }: ComposerProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [text, setText] = useState("");
+
+  // Push-to-talk (GRD-127): hold the mic, speak, release — the live
+  // transcript lands in the textarea for review before sending. The
+  // text present when the mic was pressed is kept as a prefix.
+  const baseTextRef = useRef("");
+  const { supported, listening, start, stop } = useSpeechRecognition(
+    i18n.language,
+    (transcript) => {
+      const base = baseTextRef.current;
+      setText(base ? `${base} ${transcript}` : transcript);
+    }
+  );
+
+  function micDown() {
+    if (disabled || listening) return;
+    baseTextRef.current = text.trim();
+    start();
+  }
 
   const canSend = !disabled && text.trim().length > 0;
 
@@ -97,11 +117,29 @@ export function Composer({
               submit();
             }
           }}
-          placeholder={t("copilot.placeholder")}
+          placeholder={
+            listening ? t("copilot.voice.listening") : t("copilot.placeholder")
+          }
           rows={2}
           className="max-h-32 min-h-9 resize-none"
           disabled={disabled}
         />
+        {supported && (
+          <Button
+            variant={listening ? "default" : "outline"}
+            size="icon"
+            aria-label={t("copilot.voice.holdToTalk")}
+            aria-pressed={listening}
+            className={cn("touch-none", listening && "animate-pulse")}
+            disabled={disabled}
+            onPointerDown={micDown}
+            onPointerUp={stop}
+            onPointerLeave={stop}
+            onContextMenu={(e: React.MouseEvent) => e.preventDefault()}
+          >
+            <Mic className="size-4" />
+          </Button>
+        )}
         <Button
           size="icon"
           aria-label={t("copilot.send")}

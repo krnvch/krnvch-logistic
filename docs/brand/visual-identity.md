@@ -317,6 +317,14 @@ Copy in the action row, `muted-foreground` → `text-foreground` + filled
 icon when selected. Votes are quiet — no toast, no color shift beyond the
 fill (feedback is for us, not a celebration).
 
+**Voice mode** (GRD-127, 2026-06-10): the mic is an **outline icon button**
+beside Send; while held (push-to-talk) it switches to the primary fill and
+pulses — recording state is the brand emerald, NOT red (no alarm in a
+deliberate action; amber/red stay reserved for warnings/destructive). The
+composer placeholder swaps to "Listening…" while live. The TTS toggle in
+the panel header is a ghost `Volume2`/`VolumeX` icon, `text-primary` when
+on — same toggle grammar as the launcher's open state.
+
 **Suggestion pills**: square, 1px border (intentionally lighter than Tier-1 —
 they are hints, not commands), `muted-foreground` text, `hover:bg-muted`.
 
