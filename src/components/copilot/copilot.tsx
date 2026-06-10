@@ -1,8 +1,11 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import {
+  DefaultChatTransport,
+  lastAssistantMessageIsCompleteWithToolCalls,
+} from "ai";
 import { Plus, Rabbit, X } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -14,6 +17,7 @@ import { MessageList } from "./message-list";
 import { Composer } from "./composer";
 import { ThreadSwitcher } from "./thread-switcher";
 import { rowsToUIMessages } from "./thread-utils";
+import { autoApprovable, type ApprovalToolName } from "./approval-utils";
 
 const COPILOT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/copilot`;
 
@@ -35,8 +39,26 @@ export default function Copilot() {
   const shipmentId = location.pathname.match(SHIPMENT_PATH)?.[1];
   const locale = i18n.language === "ru" ? "ru" : "en";
 
+  // Per-thread auto-allow list (FR-CP-15). Client state only — resets
+  // with a new chat / thread switch; nothing persisted in Stage C.
+  const [allowedTools, setAllowedTools] = useState<ReadonlySet<string>>(
+    () => new Set()
+  );
+
+  // Approval continuations are sent by the transport itself (no send()
+  // call), so auth + context move into prepareSendMessagesRequest. The
+  // ref keeps it reading CURRENT values without rebuilding the transport.
+  const requestContext = useRef({ shipmentId, locale, threadId });
+  useEffect(() => {
+    requestContext.current = { shipmentId, locale, threadId };
+  }, [shipmentId, locale, threadId]);
+
   const transport = useMemo(
     () =>
+      // requestContext.current is read inside prepareSendMessagesRequest,
+      // which runs at request time (event-ish), never during render; the
+      // linter can't see past the useMemo factory boundary.
+      // eslint-disable-next-line react-hooks/refs
       new DefaultChatTransport({
         api: COPILOT_URL,
         fetch: (async (input: RequestInfo | URL, init?: RequestInit) => {
@@ -45,50 +67,105 @@ export default function Copilot() {
           if (id) setThreadId(id);
           return res;
         }) as typeof fetch,
+        prepareSendMessagesRequest: async ({ messages, body }) => {
+          const { data } = await supabase.auth.getSession();
+          const token = data.session?.access_token;
+          return {
+            headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+            body: { messages, ...requestContext.current, ...body },
+          };
+        },
       }),
     []
   );
 
-  const { messages, sendMessage, status, setMessages } = useChat({
-    transport,
-    onFinish: () => {
-      // The exchange bumped the thread (or created one) — refresh the menu.
-      refreshThreads();
-    },
-    onError: (error) => {
-      toast.error(
-        error.message.includes("copilot_unavailable")
-          ? t("copilot.error.unavailable")
-          : t("copilot.error.generic")
-      );
-    },
-  });
+  const { messages, sendMessage, status, setMessages, addToolResult } =
+    useChat({
+      transport,
+      // HITL (GRD-125): once every tool call in the last step has an
+      // output — i.e. the user decided on the approval card — the chat
+      // resends itself so the Edge Function can execute and continue.
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
+      onFinish: () => {
+        // The exchange bumped the thread (or created one) — refresh the menu.
+        refreshThreads();
+      },
+      onError: (error) => {
+        // Gemini free-tier rate limit surfaces as a stream error chunk —
+        // tell the user to wait instead of a generic "something broke".
+        const isQuota =
+          error.message.includes("quota") ||
+          error.message.includes("RESOURCE_EXHAUSTED") ||
+          error.message.includes("rate-limit") ||
+          error.message.includes("rate limit");
+        toast.error(
+          error.message.includes("copilot_unavailable")
+            ? t("copilot.error.unavailable")
+            : isQuota
+              ? t("copilot.error.quota")
+              : t("copilot.error.generic")
+        );
+      },
+    });
 
   const busy = status === "submitted" || status === "streaming";
 
   const send = useCallback(
     async (text: string) => {
       const { data } = await supabase.auth.getSession();
-      const token = data.session?.access_token;
-      if (!token) {
+      if (!data.session) {
         toast.error(t("copilot.error.generic"));
         return;
       }
-      void sendMessage(
-        { text },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          body: { shipmentId, locale, threadId },
-        }
-      );
+      void sendMessage({ text });
     },
-    [sendMessage, shipmentId, locale, threadId, t]
+    [sendMessage, t]
   );
+
+  const decide = useCallback(
+    (
+      toolCallId: string,
+      toolName: ApprovalToolName,
+      decision: "approved" | "rejected",
+      always = false
+    ) => {
+      if (always) {
+        setAllowedTools((prev) => new Set(prev).add(toolName));
+      }
+      void addToolResult({
+        tool: toolName,
+        toolCallId,
+        output: { decision },
+      });
+    },
+    [addToolResult]
+  );
+
+  const revokeTool = useCallback((toolName: string) => {
+    setAllowedTools((prev) => {
+      const next = new Set(prev);
+      next.delete(toolName);
+      return next;
+    });
+  }, []);
+
+  // Auto-approve allow-listed tools in the newest assistant message;
+  // the card renders collapsed as "pre-approved".
+  useEffect(() => {
+    for (const part of autoApprovable(messages, allowedTools)) {
+      void addToolResult({
+        tool: part.toolName,
+        toolCallId: part.toolCallId,
+        output: { decision: "approved", auto: true },
+      });
+    }
+  }, [messages, allowedTools, addToolResult]);
 
   const newChat = useCallback(() => {
     if (busy) return;
     setMessages([]);
     setThreadId(null);
+    setAllowedTools(new Set());
   }, [busy, setMessages]);
 
   const switchThread = useCallback(
@@ -98,6 +175,7 @@ export default function Copilot() {
         const rows = await fetchThreadMessages(id);
         setMessages(rowsToUIMessages(rows));
         setThreadId(id);
+        setAllowedTools(new Set());
       } catch {
         toast.error(t("copilot.error.generic"));
       }
@@ -111,6 +189,7 @@ export default function Copilot() {
       if (id === threadId) {
         setMessages([]);
         setThreadId(null);
+        setAllowedTools(new Set());
       }
     },
     [deleteThread, threadId, setMessages]
@@ -159,9 +238,19 @@ export default function Copilot() {
           </Button>
         </div>
 
-        <MessageList messages={messages} busy={busy} onExampleClick={send} />
+        <MessageList
+          messages={messages}
+          busy={busy}
+          onExampleClick={send}
+          onDecide={decide}
+        />
 
-        <Composer disabled={busy} onSend={send} />
+        <Composer
+          disabled={busy}
+          onSend={send}
+          allowedTools={allowedTools}
+          onRevokeTool={revokeTool}
+        />
       </div>
     </aside>
   );

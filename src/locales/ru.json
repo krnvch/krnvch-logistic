@@ -4,27 +4,22 @@
   "login.submit": "Войти",
   "login.loading": "Вход...",
   "login.error": "Неверный email или пароль",
-
   "nav.allShipments": "Все рейсы",
   "nav.profile": "Профиль",
   "nav.signOut": "Выйти",
-
   "common.cancel": "Отмена",
   "common.save": "Сохранить",
   "common.saving": "Сохранение...",
   "common.add": "Добавить",
   "common.delete": "Удалить",
   "common.ok": "OK",
-
   "theme.title": "Тема",
   "theme.light": "Светлая",
   "theme.dark": "Тёмная",
   "theme.system": "Системная",
-
   "language.title": "Язык",
   "language.en": "English",
   "language.ru": "Русский",
-
   "shipments.filter.all": "Все",
   "shipments.filter.active": "Активные",
   "shipments.filter.completed": "Завершённые",
@@ -40,7 +35,6 @@
   "shipments.status.active": "Активный",
   "shipments.status.completed": "Завершён",
   "shipments.badge.completed": "Завершён",
-
   "shipments.form.title": "Новый рейс",
   "shipments.form.name": "Название",
   "shipments.form.namePlaceholder": "Например: Рейс на Москву",
@@ -51,30 +45,23 @@
   "shipments.form.error.name": "Введите название рейса",
   "shipments.form.error.walls": "Количество стен: от 1 до 100",
   "shipments.form.error.boxes": "Коробок на стену: от 1 до 100",
-
   "shipments.rename.title": "Переименовать рейс",
-
   "action.rename": "Переименовать",
   "action.reopen": "Возобновить",
   "action.completeShipment": "Завершить рейс",
   "action.reopenShipment": "Возобновить рейс",
   "action.markDone": "Готово",
   "action.undo": "Вернуть",
-
   "dialog.completeShipment.title": "Завершить рейс?",
   "dialog.completeShipment.description": "Текущий рейс будет завершён. Все данные сохранятся, но вы перейдёте к созданию нового рейса.",
   "dialog.completeShipment.confirm": "Завершить",
-
   "dialog.deleteShipment.title": "Удалить рейс?",
   "dialog.deleteShipment.description": "Рейс \"{{name}}\" и все его данные будут удалены безвозвратно.",
-
   "dialog.deleteOrder.title": "Удалить заказ?",
   "dialog.deleteOrder.description": "Заказ #{{number}} будет удалён.",
   "dialog.deleteOrder.placementsWarning": " Это также удалит {{count}} размещённых коробок с карты.",
-
   "dialog.markDone.title": "Отметить как готово?",
   "dialog.markDone.description": "Заказ #{{number}} ({{client}}) будет отмечен как выданный.",
-
   "orders.title": "Заказы",
   "orders.empty": "Нет заказов. Добавьте первый заказ.",
   "orders.status.pending": "Ожидает",
@@ -84,7 +71,6 @@
   "orders.priority.urgent": "Срочный",
   "orders.boxes": "коробок",
   "orders.remaining": "ост.",
-
   "orders.form.createTitle": "Новый заказ",
   "orders.form.editTitle": "Редактировать заказ",
   "orders.form.orderNumber": "Номер заказа",
@@ -99,10 +85,8 @@
   "orders.form.error.boxCount": "Укажите количество коробок (больше 0)",
   "orders.form.error.minBoxCount": "Минимум {{min}} коробок (уже размещено)",
   "orders.form.error.duplicate": "Заказ с таким номером уже существует",
-
   "search.placeholder": "Поиск заказа...",
   "search.noResults": "Ничего не найдено",
-
   "wall.title": "Стена {{number}}",
   "wall.boxCount": "{{placed}} / {{total}} коробок",
   "wall.addOrder": "Добавить заказ",
@@ -113,7 +97,6 @@
   "wall.error.boxCount": "Укажите количество коробок",
   "wall.error.maxBoxes": "Максимум {{max}} коробок",
   "wall.remainingLabel": "{{remaining}} ост.",
-
   "profile.title": "Профиль",
   "profile.personalInfo": "Личные данные",
   "profile.firstName": "Имя",
@@ -130,7 +113,6 @@
   "profile.confirmPassword": "Подтверждение пароля",
   "profile.changePasswordSubmit": "Сменить пароль",
   "profile.changingPassword": "Смена пароля...",
-
   "password.strength.weak": "Слабый",
   "password.strength.medium": "Средний",
   "password.strength.strong": "Надёжный",
@@ -140,7 +122,6 @@
   "password.rule.digit": "Цифра (0-9)",
   "password.rule.special": "Спецсимвол (!@#$%^&*…)",
   "password.error.mismatch": "Пароли не совпадают",
-
   "toast.profileUpdated": "Профиль обновлён",
   "toast.profileSaveError": "Не удалось сохранить",
   "toast.passwordChanged": "Пароль изменён",
@@ -170,10 +151,8 @@
   "toast.placementUpdateError": "Не удалось обновить размещение",
   "toast.placementDeleteError": "Не удалось удалить размещение",
   "toast.wrongCurrentPassword": "Неверный текущий пароль",
-
   "trailer.cab": "Кабина (дальняя стенка)",
   "trailer.doors": "Двери",
-
   "suggestion.title": "Есть идея? Мы слушаем!",
   "suggestion.reassurance": "Большая или маленькая — расскажите. Без имён, только роль для контекста.",
   "suggestion.placeholder": "Что бы упростило вам работу?",
@@ -182,7 +161,6 @@
   "suggestion.error": "Не удалось отправить предложение. Попробуйте ещё раз.",
   "suggestion.minLength": "Минимум 10 символов",
   "suggestion.ariaLabel": "Предложить идею",
-
   "copilot.title": "Мира",
   "copilot.subtitle": "Сетка отвечает.",
   "copilot.launcher.aria": "Открыть Миру",
@@ -205,6 +183,7 @@
   "copilot.chain.generic.done": "Готово",
   "copilot.chain.error": "Инструмент не сработал",
   "copilot.error.generic": "Что-то пошло не так. Повторите.",
+  "copilot.error.quota": "Мира упёрлась в лимит запросов к модели. Подождите минуту и попробуйте снова.",
   "copilot.error.unavailable": "Мира сейчас недоступна.",
   "copilot.thread.new": "Новый чат",
   "copilot.thread.searchPlaceholder": "Поиск по чатам…",
@@ -215,9 +194,23 @@
   "copilot.thread.deleteAria": "Удалить чат",
   "copilot.thread.deleteError": "Не удалось удалить чат",
   "copilot.thread.empty": "Чатов пока нет",
+  "copilot.approval.required": "Требуется ваше подтверждение",
+  "copilot.approval.summary.mark_order_done": "Отметить заказ №{{number}} выполненным",
+  "copilot.approval.summary.undo_done": "Вернуть заказ №{{number}} в работу",
+  "copilot.approval.allowOnce": "Разрешить один раз",
+  "copilot.approval.allowAlways": "Всегда разрешать в этой сессии",
+  "copilot.approval.reject": "Отклонить",
+  "copilot.approval.approved": "Подтверждено",
+  "copilot.approval.preApproved": "Разрешено автоматически",
+  "copilot.approval.rejected": "Отклонено",
+  "copilot.approval.failed": "Не получилось выполнить",
+  "copilot.permissions.label": "Настройки разрешений",
+  "copilot.permissions.title": "Авторазрешённые действия",
+  "copilot.permissions.empty": "В этом чате нет авторазрешённых действий",
+  "copilot.permissions.tool.mark_order_done": "Отмечать заказы выполненными",
+  "copilot.permissions.tool.undo_done": "Возвращать заказы в работу",
   "dialog.deleteThread.title": "Удалить чат?",
   "dialog.deleteThread.description": "Чат «{{title}}» и все его сообщения будут удалены безвозвратно.",
-
   "error.title": "Что-то пошло не так",
   "error.description": "Приложение столкнулось с непредвиденной ошибкой. Мы уже знаем о ней и разбираемся.",
   "error.retry": "Перезагрузить"

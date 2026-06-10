@@ -45,6 +45,7 @@ export type Database = {
         Row: {
           created_at: string;
           id: string;
+          message_id: string;
           parts: Json;
           role: string;
           thread_id: string;
@@ -52,6 +53,7 @@ export type Database = {
         Insert: {
           created_at?: string;
           id?: string;
+          message_id: string;
           parts: Json;
           role: string;
           thread_id: string;
@@ -59,9 +61,43 @@ export type Database = {
         Update: {
           created_at?: string;
           id?: string;
+          message_id?: string;
           parts?: Json;
           role?: string;
           thread_id?: string;
+        };
+        Relationships: [];
+      };
+      agent_actions: {
+        Row: {
+          args: Json;
+          created_at: string;
+          error: string | null;
+          id: string;
+          result: string;
+          thread_id: string | null;
+          tool_name: string;
+          user_id: string;
+        };
+        Insert: {
+          args: Json;
+          created_at?: string;
+          error?: string | null;
+          id?: string;
+          result: string;
+          thread_id?: string | null;
+          tool_name: string;
+          user_id: string;
+        };
+        Update: {
+          args?: Json;
+          created_at?: string;
+          error?: string | null;
+          id?: string;
+          result?: string;
+          thread_id?: string | null;
+          tool_name?: string;
+          user_id?: string;
         };
         Relationships: [];
       };

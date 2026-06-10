@@ -21,11 +21,14 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import {
   convertToModelMessages,
+  createUIMessageStream,
+  createUIMessageStreamResponse,
   jsonSchema,
   stepCountIs,
   streamText,
   tool,
   type UIMessage,
+  type UIMessageStreamWriter,
 } from "npm:ai@5";
 import { createGoogleGenerativeAI } from "npm:@ai-sdk/google@2";
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -33,10 +36,145 @@ import {
   filterByRole,
   type CopilotLocale,
   type CopilotRole,
+  type CopilotTool,
   type ToolContext,
 } from "../_shared/copilot-tools/index.ts";
 
-const MODEL_ID = "gemini-2.5-flash";
+// ------------------------------------------------------------
+// HITL approval protocol (GRD-125, AD-Copilot-06).
+// Kept in sync with src/components/copilot/approval-utils.ts —
+// the client writes {decision} via addToolResult, this function
+// executes and replaces the output with {…, executed: true}.
+// ------------------------------------------------------------
+interface ApprovalOutput {
+  decision: "approved" | "rejected";
+  /** true once this function has acted on the decision. */
+  executed?: boolean;
+  /** Approval came from the per-thread allow-list, not a click. */
+  auto?: boolean;
+  result?: unknown;
+  error?: string;
+  message?: string;
+}
+
+type ToolUIPart = {
+  type: string;
+  toolCallId: string;
+  state: string;
+  input?: unknown;
+  output?: unknown;
+};
+
+function approvalPartsOf(
+  message: UIMessage,
+  approvalTools: Map<string, CopilotTool>
+): Array<{ part: ToolUIPart; tool: CopilotTool }> {
+  return message.parts
+    .filter((p): p is ToolUIPart & { type: `tool-${string}` } =>
+      p.type.startsWith("tool-")
+    )
+    .map((part) => ({
+      part: part as ToolUIPart,
+      tool: approvalTools.get(part.type.slice("tool-".length))!,
+    }))
+    .filter((x) => x.tool !== undefined);
+}
+
+/**
+ * Acts on the user's approval decisions carried in the message history:
+ * executes approved tool calls (under the caller's RLS), marks rejected
+ * ones, audits every decision in agent_actions, and streams the final
+ * outputs back so the client's cards collapse. Pending approvals in
+ * OLDER messages (user typed past the card) are marked as skipped so
+ * convertToModelMessages never sees a dangling tool call.
+ */
+async function processApprovals(
+  messages: UIMessage[],
+  approvalTools: Map<string, CopilotTool>,
+  ctx: ToolContext,
+  threadId: string | null,
+  writer: UIMessageStreamWriter
+): Promise<UIMessage[]> {
+  const processed = structuredClone(messages) as UIMessage[];
+  const last = processed[processed.length - 1];
+
+  for (const message of processed) {
+    if (message.role !== "assistant") continue;
+    for (const { part, tool: copilotTool } of approvalPartsOf(
+      message,
+      approvalTools
+    )) {
+      const output = part.output as ApprovalOutput | undefined;
+
+      // Decision present and not yet acted on → execute / reject now.
+      if (part.state === "output-available" && output?.decision && !output.executed) {
+        let final: ApprovalOutput;
+        let auditResult: "approved" | "rejected" | "error" = output.decision;
+        let auditError: string | null = null;
+
+        if (output.decision === "approved") {
+          try {
+            const result = await copilotTool.execute(part.input, ctx);
+            final = { ...output, executed: true, result };
+          } catch (e) {
+            auditResult = "error";
+            auditError = e instanceof Error ? e.message : String(e);
+            final = { ...output, executed: true, error: auditError };
+          }
+        } else {
+          final = {
+            ...output,
+            executed: true,
+            message: "The user rejected this action.",
+          };
+        }
+
+        part.output = final;
+        writer.write({
+          type: "tool-output-available",
+          toolCallId: part.toolCallId,
+          output: final,
+        });
+
+        // Audit every decision (PRD §4a). Failures must not kill the chat.
+        const { error: auditInsertError } = await ctx.supabase
+          .from("agent_actions")
+          .insert({
+            user_id: ctx.userId,
+            thread_id: threadId,
+            tool_name: copilotTool.name,
+            args: part.input ?? {},
+            result: auditResult,
+            error: auditError,
+          });
+        if (auditInsertError) {
+          console.error("agent_actions insert error:", auditInsertError);
+        }
+        continue;
+      }
+
+      // Undecided card in an older message: the user moved on without
+      // answering. Tell the model it was skipped (the stored client copy
+      // keeps the card pending — the user can still decide on replay).
+      if (part.state === "input-available" && message !== last) {
+        part.state = "output-available";
+        part.output = {
+          decision: "rejected",
+          executed: false,
+          message: "The user did not act on this proposal — skipped.",
+        } satisfies ApprovalOutput;
+      }
+    }
+  }
+
+  return processed;
+}
+
+// Overridable without a redeploy (supabase secrets set COPILOT_MODEL=…):
+// the free tier caps requests PER DAY PER MODEL, so switching to e.g.
+// gemini-2.5-flash-lite buys a separate daily quota when testing burns
+// through the default model's allowance.
+const MODEL_ID = Deno.env.get("COPILOT_MODEL") ?? "gemini-2.5-flash";
 const MAX_STEPS = 5;
 const MAX_OUTPUT_TOKENS = 1024;
 
@@ -114,6 +252,18 @@ function buildSystemPrompt(locale: CopilotLocale, shipmentId?: string) {
     "  honestly and suggest what the user can do in the UI instead.",
     "- Keep answers short and concrete, but always reply with a complete",
     "  sentence (e.g. 'There are 6 urgent open orders'), never a bare number.",
+    "- Write actions (mark_order_done, undo_done) require the user's",
+    "  approval: your tool call renders as an approval card in the chat.",
+    "  Call the tool with the order number the user named — never invent",
+    "  one. Do not ask for confirmation in text first; the card IS the",
+    "  confirmation. One tool call per order.",
+    "- A tool result with decision='rejected' means the user declined —",
+    "  acknowledge briefly and do NOT retry the same action.",
+    "- A tool result with an 'error' field means the action failed —",
+    "  relay the reason honestly.",
+    "- Act ONLY on the user's most recent message. Earlier messages may",
+    "  be repeats of requests that failed with errors — do NOT act on",
+    "  them, and NEVER propose the same action twice for the same order.",
     `- Reply in ${language}.`,
     ...(locale === "ru"
       ? [
@@ -215,58 +365,89 @@ Deno.serve(async (req) => {
   const ctx: ToolContext = { supabase, role, userId: user.id, locale };
 
   // Registry → AI SDK shape. The model only ever sees role-allowed tools.
+  // HITL tools (AD-Copilot-06) are exposed WITHOUT execute: the call
+  // streams to the client as an approval card; processApprovals() runs
+  // the real logic after the user decides.
+  const roleTools = filterByRole(role);
+  const approvalTools = new Map(
+    roleTools.filter((t) => t.requiresApproval).map((t) => [t.name, t])
+  );
   const aiTools = Object.fromEntries(
-    filterByRole(role).map((t) => [
+    roleTools.map((t) => [
       t.name,
       tool({
         description: t.description,
         inputSchema: jsonSchema(t.parameters),
-        execute: (args: unknown) => t.execute(args, ctx),
+        ...(t.requiresApproval
+          ? {}
+          : { execute: (args: unknown) => t.execute(args, ctx) }),
       }),
     ])
   );
 
   const google = createGoogleGenerativeAI({ apiKey: geminiKey });
 
-  const result = streamText({
-    model: google(MODEL_ID),
-    system: buildSystemPrompt(locale, payload.shipmentId),
-    messages: convertToModelMessages(payload.messages),
-    tools: aiTools,
-    stopWhen: stepCountIs(MAX_STEPS),
-    maxOutputTokens: MAX_OUTPUT_TOKENS,
-    onError: ({ error }) => {
-      console.error("copilot streamText error:", error);
-    },
-  });
-
-  return result.toUIMessageStreamResponse({
+  const stream = createUIMessageStream({
     originalMessages: payload.messages,
-    headers: {
-      ...getCorsHeaders(req),
-      ...(threadId ? { "x-thread-id": threadId } : {}),
+    execute: async ({ writer }) => {
+      // Act on any approval decisions the client sent back, then hand
+      // the (now dangling-call-free) history to the model.
+      const processedMessages = await processApprovals(
+        payload.messages,
+        approvalTools,
+        ctx,
+        threadId,
+        writer
+      );
+
+      const result = streamText({
+        model: google(MODEL_ID),
+        system: buildSystemPrompt(locale, payload.shipmentId),
+        messages: convertToModelMessages(processedMessages),
+        tools: aiTools,
+        stopWhen: stepCountIs(MAX_STEPS),
+        maxOutputTokens: MAX_OUTPUT_TOKENS,
+        onError: ({ error }) => {
+          console.error("copilot streamText error:", error);
+        },
+      });
+
+      writer.merge(
+        result.toUIMessageStream({ originalMessages: processedMessages })
+      );
     },
     // Persist the exchanged turn AFTER the stream completes. Parts are
-    // stored verbatim (AD-Copilot-05) so history replay re-renders
-    // chains/approvals with no mapping code. Sequential inserts keep
-    // created_at ordering unambiguous.
+    // stored verbatim (AD-Copilot-05). Upsert on (thread_id, message_id):
+    // an approval continuation finishes the SAME assistant message in a
+    // second request, which must update the stored row, not duplicate it.
     onFinish: async ({ responseMessage }) => {
       if (!threadId) return;
+      // A turn that produced NO assistant content (model/quota error)
+      // is not persisted at all — otherwise failed attempts pile up in
+      // history as unanswered requests and a later model acts on the
+      // whole backlog at once.
+      if (!responseMessage || responseMessage.parts.length === 0) return;
       try {
         if (lastUserMessage) {
-          await supabase.from("chat_messages").insert({
-            thread_id: threadId,
-            role: "user",
-            parts: lastUserMessage.parts,
-          });
+          await supabase.from("chat_messages").upsert(
+            {
+              thread_id: threadId,
+              role: "user",
+              parts: lastUserMessage.parts,
+              message_id: lastUserMessage.id,
+            },
+            { onConflict: "thread_id,message_id" }
+          );
         }
-        if (responseMessage && responseMessage.parts.length > 0) {
-          await supabase.from("chat_messages").insert({
+        await supabase.from("chat_messages").upsert(
+          {
             thread_id: threadId,
             role: "assistant",
             parts: responseMessage.parts,
-          });
-        }
+            message_id: responseMessage.id,
+          },
+          { onConflict: "thread_id,message_id" }
+        );
         await supabase
           .from("chat_threads")
           .update({ updated_at: new Date().toISOString() })
@@ -274,6 +455,14 @@ Deno.serve(async (req) => {
       } catch (e) {
         console.error("copilot persistence error:", e);
       }
+    },
+  });
+
+  return createUIMessageStreamResponse({
+    stream,
+    headers: {
+      ...getCorsHeaders(req),
+      ...(threadId ? { "x-thread-id": threadId } : {}),
     },
   });
 });

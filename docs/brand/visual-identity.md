@@ -286,6 +286,24 @@ directly on the panel background; inline code as `bg-muted` chips with 1px
 border. Activity chain lines (tool calls) in `muted-foreground` with a leading
 icon; working state pulses. Approval cards (Stage C) follow Tier-1 cards.
 
+**Approval card** (Stage C, 2026-06-10): when Mira proposes a write action,
+the tool call renders as a card with a **Tier-1 2px border in `warning`**
+(amber, hue 80) — warning is the "stop and look" color, green stays reserved
+for brand, not state. Contents: caption row (`ShieldAlert` icon + label,
+uppercase xs, `text-warning`), a plain-language action summary, and the
+buttons: primary **split-button** ("Allow once" + chevron opening "Always
+allow in this session") and a ghost "Reject". The split-button is two
+identical primary segments separated by a **1px gap** (`gap-px`) — the card
+background shows through as the divider; no extra borders inside the fill
+(owner decision, 2026-06-10). Once decided, the
+card **collapses to a one-line state** — `Check`/`X` icon + summary +
+"Approved / Pre-approved / Rejected / Action failed" — in `muted-foreground`
+(`destructive` for failures), matching chain-item typography.
+
+**Permission settings**: a ghost `SlidersHorizontal` icon button in the
+composer row opens the per-session allow-list as a dropdown (checkbox items;
+unchecking revokes). Empty state in `muted-foreground` xs.
+
 **Suggestion pills**: square, 1px border (intentionally lighter than Tier-1 —
 they are hints, not commands), `muted-foreground` text, `hover:bg-muted`.
 

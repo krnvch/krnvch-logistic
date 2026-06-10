@@ -53,10 +53,10 @@ export function useChatThreads(enabled: boolean) {
 
 export async function fetchThreadMessages(
   threadId: string
-): Promise<Pick<ChatMessageRow, "id" | "role" | "parts">[]> {
+): Promise<Pick<ChatMessageRow, "message_id" | "role" | "parts">[]> {
   const { data, error } = await supabase
     .from("chat_messages")
-    .select("id, role, parts")
+    .select("message_id, role, parts")
     .eq("thread_id", threadId)
     .order("created_at", { ascending: true });
   if (error) throw error;

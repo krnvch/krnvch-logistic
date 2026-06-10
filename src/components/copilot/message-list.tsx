@@ -7,11 +7,14 @@ import { useCopilot } from "./copilot-context";
 import { ChainItem, type ChainState } from "./chain-item";
 import { Markdown } from "./markdown";
 import { MessageActions } from "./message-actions";
+import { ApprovalCard, type ApprovalDecideHandler } from "./approval-card";
+import { asApprovalPart } from "./approval-utils";
 
 interface MessageListProps {
   messages: UIMessage[];
   busy: boolean;
   onExampleClick: (text: string) => void;
+  onDecide: ApprovalDecideHandler;
 }
 
 type UIPart = UIMessage["parts"][number];
@@ -79,6 +82,7 @@ export function MessageList({
   messages,
   busy,
   onExampleClick,
+  onDecide,
 }: MessageListProps) {
   const { t } = useTranslation();
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -123,6 +127,14 @@ export function MessageList({
                     <Markdown key={i} text={part.text} />
                   ) : null;
                 }
+                // Write tools render as approval cards (FR-CP-15)…
+                const approval = asApprovalPart(part);
+                if (approval) {
+                  return (
+                    <ApprovalCard key={i} part={approval} onDecide={onDecide} />
+                  );
+                }
+                // …read tools as chain items (FR-CP-13).
                 const tool = toolPartInfo(part);
                 return tool ? (
                   <ChainItem key={i} toolName={tool.name} state={tool.state} />

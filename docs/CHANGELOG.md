@@ -5,6 +5,31 @@ Format follows [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [4.10.0] — 2026-06-10
+
+### Mira — write tools with approval cards (GRD-125, Stage C)
+
+Mira can now **act**, not just answer: "mark order BER-001 as done" produces an approval card in the chat — the action runs only after an explicit human decision (HITL, AD-Copilot-06). Nothing executes server-side without it.
+
+#### Added
+- Write tools `mark_order_done` / `undo_done` in the shared registry (`requiresApproval: true`): exposed to the model **without server-side execute** — the call streams to the client as an approval card; on approval the Edge Function executes it under the **caller's RLS** (same rights as the UI buttons, worker included) and the loop continues. Idempotent; orders on completed shipments are refused (mirrors the read-only UI rule)
+- **Approval card** (Wally pattern, Grida skin): amber Tier-1 border + ShieldAlert caption, action summary, split-button **Allow once / Always allow in this session** + ghost Reject; collapses to a one-line ✓/✕ state once decided
+- **Per-thread auto-allow**: "Always allow in this session" adds the tool to a client-side allow-list — further calls show a collapsed "Pre-approved" card; a permission-settings dropdown in the composer row lists and revokes grants; the list resets with a new chat/thread (nothing persisted)
+- `agent_actions` audit table (append-only, owner-readable RLS): every decision is recorded — approved, rejected, and failed executions
+- Idempotent message persistence: `chat_messages.message_id` (UIMessage id) + upsert — an approval continuation finishes the *same* assistant message in a second request and must update, not duplicate, the stored row
+- 15 new `copilot.approval.*` / `copilot.permissions.*` i18n keys (EN/RU)
+- 11 new unit tests for the approval protocol utils (43 total)
+
+#### Changed
+- Chat auth moved into the transport (`prepareSendMessagesRequest`): approval continuations are sent by the AI SDK itself (`sendAutomaticallyWhen`), so every request — not just typed ones — carries the caller's JWT and shipment/locale/thread context
+- System prompt: write-action rules (the card IS the confirmation; never invent order numbers; acknowledge rejections without retrying)
+
+#### Notes
+- Undecided cards in older messages are reported to the model as "skipped"; the stored card stays pending and can still be decided after a history replay
+- E2E verified locally against the seeded shipment: propose → approve → RLS execute → audit row; reject → no DB change + graceful acknowledgment
+
+---
+
 ## [4.9.1] — 2026-06-10
 
 ### Production infrastructure fixes (GRD-122, GRD-123)

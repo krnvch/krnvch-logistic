@@ -4,27 +4,22 @@
   "login.submit": "Sign In",
   "login.loading": "Signing in...",
   "login.error": "Invalid email or password",
-
   "nav.allShipments": "All Shipments",
   "nav.profile": "Profile",
   "nav.signOut": "Sign Out",
-
   "common.cancel": "Cancel",
   "common.save": "Save",
   "common.saving": "Saving...",
   "common.add": "Add",
   "common.delete": "Delete",
   "common.ok": "OK",
-
   "theme.title": "Theme",
   "theme.light": "Light",
   "theme.dark": "Dark",
   "theme.system": "System",
-
   "language.title": "Language",
   "language.en": "English",
   "language.ru": "Русский",
-
   "shipments.filter.all": "All",
   "shipments.filter.active": "Active",
   "shipments.filter.completed": "Completed",
@@ -40,7 +35,6 @@
   "shipments.status.active": "Active",
   "shipments.status.completed": "Completed",
   "shipments.badge.completed": "Completed",
-
   "shipments.form.title": "New Shipment",
   "shipments.form.name": "Name",
   "shipments.form.namePlaceholder": "e.g., Shipment to Berlin",
@@ -51,30 +45,23 @@
   "shipments.form.error.name": "Enter shipment name",
   "shipments.form.error.walls": "Walls: 1 to 100",
   "shipments.form.error.boxes": "Boxes per wall: 1 to 100",
-
   "shipments.rename.title": "Rename Shipment",
-
   "action.rename": "Rename",
   "action.reopen": "Reopen",
   "action.completeShipment": "Complete Shipment",
   "action.reopenShipment": "Reopen Shipment",
   "action.markDone": "Done",
   "action.undo": "Undo",
-
   "dialog.completeShipment.title": "Complete shipment?",
   "dialog.completeShipment.description": "The current shipment will be completed. All data will be saved, but you'll move to creating a new shipment.",
   "dialog.completeShipment.confirm": "Complete",
-
   "dialog.deleteShipment.title": "Delete shipment?",
   "dialog.deleteShipment.description": "Shipment \"{{name}}\" and all its data will be permanently deleted.",
-
   "dialog.deleteOrder.title": "Delete order?",
   "dialog.deleteOrder.description": "Order #{{number}} will be deleted.",
   "dialog.deleteOrder.placementsWarning": " This will also remove {{count}} placed boxes from the map.",
-
   "dialog.markDone.title": "Mark as done?",
   "dialog.markDone.description": "Order #{{number}} ({{client}}) will be marked as done.",
-
   "orders.title": "Orders",
   "orders.empty": "No orders. Add the first order.",
   "orders.status.pending": "Pending",
@@ -84,7 +71,6 @@
   "orders.priority.urgent": "Urgent",
   "orders.boxes": "boxes",
   "orders.remaining": "rem.",
-
   "orders.form.createTitle": "New Order",
   "orders.form.editTitle": "Edit Order",
   "orders.form.orderNumber": "Order number",
@@ -99,10 +85,8 @@
   "orders.form.error.boxCount": "Enter box count (greater than 0)",
   "orders.form.error.minBoxCount": "Minimum {{min}} boxes (already placed)",
   "orders.form.error.duplicate": "An order with this number already exists",
-
   "search.placeholder": "Search orders...",
   "search.noResults": "No results found",
-
   "wall.title": "Wall {{number}}",
   "wall.boxCount": "{{placed}} / {{total}} boxes",
   "wall.addOrder": "Add order",
@@ -113,7 +97,6 @@
   "wall.error.boxCount": "Enter box count",
   "wall.error.maxBoxes": "Maximum {{max}} boxes",
   "wall.remainingLabel": "{{remaining}} rem.",
-
   "profile.title": "Profile",
   "profile.personalInfo": "Personal Information",
   "profile.firstName": "First name",
@@ -130,7 +113,6 @@
   "profile.confirmPassword": "Confirm password",
   "profile.changePasswordSubmit": "Change Password",
   "profile.changingPassword": "Changing password...",
-
   "password.strength.weak": "Weak",
   "password.strength.medium": "Medium",
   "password.strength.strong": "Strong",
@@ -140,7 +122,6 @@
   "password.rule.digit": "Digit (0-9)",
   "password.rule.special": "Special character (!@#$%^&*…)",
   "password.error.mismatch": "Passwords don't match",
-
   "toast.profileUpdated": "Profile updated",
   "toast.profileSaveError": "Failed to save profile",
   "toast.passwordChanged": "Password changed",
@@ -170,10 +151,8 @@
   "toast.placementUpdateError": "Failed to update placement",
   "toast.placementDeleteError": "Failed to delete placement",
   "toast.wrongCurrentPassword": "Incorrect current password",
-
   "trailer.cab": "Cab (far wall)",
   "trailer.doors": "Doors",
-
   "suggestion.title": "Got an idea? We're all ears!",
   "suggestion.reassurance": "Big or small, we'd love to hear it. No names attached — just your role for context.",
   "suggestion.placeholder": "What would make your day easier?",
@@ -182,7 +161,6 @@
   "suggestion.error": "Failed to send suggestion. Please try again.",
   "suggestion.minLength": "Minimum 10 characters",
   "suggestion.ariaLabel": "Suggest an idea",
-
   "copilot.title": "Mira",
   "copilot.subtitle": "The grid, answered.",
   "copilot.launcher.aria": "Open Mira",
@@ -205,6 +183,7 @@
   "copilot.chain.generic.done": "Done",
   "copilot.chain.error": "A tool call failed",
   "copilot.error.generic": "Something went wrong. Try again.",
+  "copilot.error.quota": "Mira hit the AI rate limit. Wait a minute and try again.",
   "copilot.error.unavailable": "Mira is not available right now.",
   "copilot.thread.new": "New chat",
   "copilot.thread.searchPlaceholder": "Search chats…",
@@ -215,9 +194,23 @@
   "copilot.thread.deleteAria": "Delete chat",
   "copilot.thread.deleteError": "Failed to delete chat",
   "copilot.thread.empty": "No chats yet",
+  "copilot.approval.required": "Requires your approval",
+  "copilot.approval.summary.mark_order_done": "Mark order #{{number}} as done",
+  "copilot.approval.summary.undo_done": "Return order #{{number}} to open",
+  "copilot.approval.allowOnce": "Allow once",
+  "copilot.approval.allowAlways": "Always allow in this session",
+  "copilot.approval.reject": "Reject",
+  "copilot.approval.approved": "Approved",
+  "copilot.approval.preApproved": "Pre-approved",
+  "copilot.approval.rejected": "Rejected",
+  "copilot.approval.failed": "Action failed",
+  "copilot.permissions.label": "Permission settings",
+  "copilot.permissions.title": "Auto-allowed actions",
+  "copilot.permissions.empty": "Nothing is auto-allowed in this chat",
+  "copilot.permissions.tool.mark_order_done": "Mark orders as done",
+  "copilot.permissions.tool.undo_done": "Return orders to open",
   "dialog.deleteThread.title": "Delete chat?",
   "dialog.deleteThread.description": "\"{{title}}\" and all its messages will be permanently deleted.",
-
   "error.title": "Something went wrong",
   "error.description": "The app hit an unexpected error. We've been notified and are looking into it.",
   "error.retry": "Reload"

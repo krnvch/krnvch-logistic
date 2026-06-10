@@ -72,8 +72,12 @@ describe("rowsToUIMessages", () => {
       { type: "text", text: "There are **4** open orders." },
     ];
     const messages = rowsToUIMessages([
-      { id: "m1", role: "user", parts: [{ type: "text", text: "how many?" }] },
-      { id: "m2", role: "assistant", parts },
+      {
+        message_id: "m1",
+        role: "user",
+        parts: [{ type: "text", text: "how many?" }],
+      },
+      { message_id: "m2", role: "assistant", parts },
     ]);
 
     expect(messages).toHaveLength(2);
@@ -86,7 +90,7 @@ describe("rowsToUIMessages", () => {
 
   it("tolerates null parts", () => {
     const messages = rowsToUIMessages([
-      { id: "m1", role: "assistant", parts: null },
+      { message_id: "m1", role: "assistant", parts: null },
     ]);
     expect(messages[0].parts).toEqual([]);
   });
