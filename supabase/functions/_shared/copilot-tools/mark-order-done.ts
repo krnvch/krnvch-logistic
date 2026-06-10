@@ -12,6 +12,7 @@
 // ============================================================
 
 import type { CopilotTool, ToolContext } from "./types.ts";
+import { normalizeOrderNumber } from "./order-utils.ts";
 
 interface Args {
   shipment_id: string;
@@ -42,13 +43,6 @@ const PARAMETERS = {
   required: ["shipment_id", "order_number"],
   additionalProperties: false,
 } as const;
-
-// Users type "ham-028", "#HAM-028" — and voice input dictates "H A M 020".
-// Equality on the raw string misses all of them, so both sides are
-// reduced to bare alphanumerics, uppercase: "H A M 020" → "HAM020".
-function normalizeOrderNumber(value: string): string {
-  return value.replace(/[^a-z0-9]/gi, "").toUpperCase();
-}
 
 async function setDone(
   args: Args,

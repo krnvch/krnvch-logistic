@@ -264,6 +264,16 @@ function buildSystemPrompt(locale: CopilotLocale, shipmentId?: string) {
     "- Act ONLY on the user's most recent message. Earlier messages may",
     "  be repeats of requests that failed with errors — do NOT act on",
     "  them, and NEVER propose the same action twice for the same order.",
+    "- Creating an order requires: order number, client name, box count.",
+    "  If ANY of these are missing, do not call create_order — ask for ALL",
+    "  missing ones in ONE short message (a list, not one at a time), and",
+    "  mention once that description, item count, pickup time and priority",
+    "  are optional. NEVER invent or guess a field value.",
+    "- Once the required fields are known, call create_order immediately —",
+    "  no extra confirmation text; the approval card IS the confirmation.",
+    "- For edit_order, pass ONLY the fields the user asked to change.",
+    "- delete_order is destructive and irreversible: call it only when the",
+    "  user explicitly asks to delete or remove an order.",
     `- Reply in ${language}.`,
     ...(locale === "ru"
       ? [

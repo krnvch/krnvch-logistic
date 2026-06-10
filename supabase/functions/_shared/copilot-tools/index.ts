@@ -10,8 +10,20 @@
 import type { CopilotRole, CopilotTool } from "./types.ts";
 import { getShipmentOverview } from "./get-shipment-overview.ts";
 import { markOrderDone, undoDone } from "./mark-order-done.ts";
+import { createOrder } from "./create-order.ts";
+import { editOrder } from "./edit-order.ts";
+import { deleteOrder } from "./delete-order.ts";
 
-export const tools: CopilotTool[] = [getShipmentOverview, markOrderDone, undoDone];
+// The canonical action catalog lives in docs/prd-copilot-order-crud.md
+// (FR-OC-01) — a tool that is not listed there does not ship.
+export const tools: CopilotTool[] = [
+  getShipmentOverview,
+  markOrderDone,
+  undoDone,
+  createOrder,
+  editOrder,
+  deleteOrder,
+];
 
 /** Tools the given role is allowed to see and call. */
 export function filterByRole(role: CopilotRole): CopilotTool[] {

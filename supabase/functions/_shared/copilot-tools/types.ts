@@ -44,5 +44,12 @@ export interface CopilotTool<Args = unknown, Result = unknown> {
    * MCP elicitation — never auto-run them.
    */
   requiresApproval?: boolean;
+  /**
+   * "destructive" (GRD-131, FR-OC-01): the card offers Delete/Cancel only —
+   * no "always allow in this session", excluded from every auto-approve
+   * path on the client AND must map to per-call elicitation in MCP.
+   * Absent = "standard" for requiresApproval tools.
+   */
+  approvalTier?: "standard" | "destructive";
   execute(args: Args, ctx: ToolContext): Promise<Result>;
 }
