@@ -241,6 +241,7 @@ export default function Copilot() {
         <MessageList
           messages={messages}
           busy={busy}
+          threadId={threadId}
           onExampleClick={send}
           onDecide={decide}
         />
