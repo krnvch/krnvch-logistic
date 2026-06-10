@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  pickVoice,
   stripMarkdownForSpeech,
   unspokenTail,
 } from "@/components/copilot/voice-utils";
@@ -29,6 +30,42 @@ describe("stripMarkdownForSpeech", () => {
 
   it("collapses whitespace", () => {
     expect(stripMarkdownForSpeech("a\n\n\nb   c")).toBe("a b c");
+  });
+});
+
+describe("pickVoice", () => {
+  const ruDefault = { name: "Milena", lang: "ru-RU", localService: true };
+  const ruEnhanced = {
+    name: "Milena (Enhanced)",
+    lang: "ru-RU",
+    localService: true,
+  };
+  const ruGoogle = {
+    name: "Google русский",
+    lang: "ru-RU",
+    localService: false,
+  };
+  const enDefault = { name: "Samantha", lang: "en-US", localService: true };
+
+  it("filters by the locale's language", () => {
+    expect(pickVoice([enDefault], "ru")).toBeNull();
+    expect(pickVoice([ruDefault, enDefault], "en")).toBe(enDefault);
+  });
+
+  it("prefers enhanced/premium voices over the default", () => {
+    expect(pickVoice([ruDefault, ruEnhanced], "ru")).toBe(ruEnhanced);
+  });
+
+  it("prefers Google network voices over a plain local default", () => {
+    expect(pickVoice([ruDefault, ruGoogle], "ru")).toBe(ruGoogle);
+  });
+
+  it("ranks enhanced above Google network voices", () => {
+    expect(pickVoice([ruGoogle, ruEnhanced], "ru")).toBe(ruEnhanced);
+  });
+
+  it("falls back to the first matching voice", () => {
+    expect(pickVoice([ruDefault], "ru")).toBe(ruDefault);
   });
 });
 

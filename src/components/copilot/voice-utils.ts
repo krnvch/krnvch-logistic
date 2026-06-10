@@ -38,12 +38,65 @@ export function speechSupported(): boolean {
   return typeof window !== "undefined" && "speechSynthesis" in window;
 }
 
+export interface VoiceLike {
+  name: string;
+  lang: string;
+  localService?: boolean;
+}
+
+/**
+ * The OS default voice is often the most robotic one available. Rank
+ * the locale's voices by quality markers: neural/system-premium names
+ * first ("Enhanced", "Premium", "Natural", "Neural"), then Chrome's
+ * network "Google …" voices, then anything non-local (network voices
+ * are usually the newer engines). GRD-130 tracks true neural TTS.
+ */
+export function pickVoice<T extends VoiceLike>(
+  voices: T[],
+  locale: string
+): T | null {
+  const prefix = locale === "ru" ? "ru" : "en";
+  const candidates = voices.filter((v) =>
+    v.lang.toLowerCase().replace("_", "-").startsWith(prefix)
+  );
+  if (candidates.length === 0) return null;
+  const score = (v: VoiceLike) =>
+    (/(natural|premium|enhanced|neural)/i.test(v.name) ? 5 : 0) +
+    (/google/i.test(v.name) ? 3 : 0) +
+    (v.localService === false ? 1 : 0);
+  return candidates.reduce(
+    (best, v) => (score(v) > score(best) ? v : best),
+    candidates[0]
+  );
+}
+
+// getVoices() is empty until the browser fires voiceschanged — cache
+// the list and keep it fresh.
+let cachedVoices: SpeechSynthesisVoice[] = [];
+let voicesHooked = false;
+
+function loadVoices(): SpeechSynthesisVoice[] {
+  if (!speechSupported()) return [];
+  if (!voicesHooked) {
+    voicesHooked = true;
+    window.speechSynthesis.addEventListener?.("voiceschanged", () => {
+      cachedVoices = window.speechSynthesis.getVoices();
+    });
+  }
+  if (cachedVoices.length === 0) {
+    cachedVoices = window.speechSynthesis.getVoices();
+  }
+  return cachedVoices;
+}
+
 /** Speak text in the given locale, cancelling anything still playing. */
 export function speak(text: string, locale: string): void {
   if (!speechSupported() || !text) return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = locale === "ru" ? "ru-RU" : "en-US";
+  const voice = pickVoice(loadVoices(), locale);
+  if (voice) utterance.voice = voice;
   window.speechSynthesis.speak(utterance);
 }
 
