@@ -261,6 +261,9 @@ function buildSystemPrompt(locale: CopilotLocale, shipmentId?: string) {
     "  acknowledge briefly and do NOT retry the same action.",
     "- A tool result with an 'error' field means the action failed —",
     "  relay the reason honestly.",
+    "- Act ONLY on the user's most recent message. Earlier messages may",
+    "  be repeats of requests that failed with errors — do NOT act on",
+    "  them, and NEVER propose the same action twice for the same order.",
     `- Reply in ${language}.`,
     ...(locale === "ru"
       ? [
@@ -419,6 +422,11 @@ Deno.serve(async (req) => {
     // second request, which must update the stored row, not duplicate it.
     onFinish: async ({ responseMessage }) => {
       if (!threadId) return;
+      // A turn that produced NO assistant content (model/quota error)
+      // is not persisted at all — otherwise failed attempts pile up in
+      // history as unanswered requests and a later model acts on the
+      // whole backlog at once.
+      if (!responseMessage || responseMessage.parts.length === 0) return;
       try {
         if (lastUserMessage) {
           await supabase.from("chat_messages").upsert(
@@ -431,17 +439,15 @@ Deno.serve(async (req) => {
             { onConflict: "thread_id,message_id" }
           );
         }
-        if (responseMessage && responseMessage.parts.length > 0) {
-          await supabase.from("chat_messages").upsert(
-            {
-              thread_id: threadId,
-              role: "assistant",
-              parts: responseMessage.parts,
-              message_id: responseMessage.id,
-            },
-            { onConflict: "thread_id,message_id" }
-          );
-        }
+        await supabase.from("chat_messages").upsert(
+          {
+            thread_id: threadId,
+            role: "assistant",
+            parts: responseMessage.parts,
+            message_id: responseMessage.id,
+          },
+          { onConflict: "thread_id,message_id" }
+        );
         await supabase
           .from("chat_threads")
           .update({ updated_at: new Date().toISOString() })
