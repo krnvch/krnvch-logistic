@@ -46,13 +46,21 @@ async function setDone(
   ctx: ToolContext,
   isDone: boolean
 ): Promise<MarkOrderDoneResult> {
+  // Users say "ham-028" or "#HAM-028"; stored numbers are "HAM-028".
+  // Normalize the prefix and match case-insensitively (ilike with the
+  // wildcard chars escaped = case-insensitive equality).
+  const orderNumber = args.order_number
+    .trim()
+    .replace(/^#/, "")
+    .replace(/[%_]/g, "\\$&");
+
   // Resolve the order within the shipment; also fetch the shipment
   // status — completed shipments are read-only (mirrors the UI rule).
   const { data: order, error: findError } = await ctx.supabase
     .from("orders")
     .select("id, order_number, client_name, is_done, shipments ( status )")
     .eq("shipment_id", args.shipment_id)
-    .eq("order_number", args.order_number)
+    .ilike("order_number", orderNumber)
     .maybeSingle();
 
   if (findError) {
