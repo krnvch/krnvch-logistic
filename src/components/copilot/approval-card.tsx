@@ -79,7 +79,8 @@ export function ApprovalCard({ part, onDecide }: ApprovalCardProps) {
       </div>
       <p className="text-sm">{summary}</p>
       <div className="flex items-center gap-2">
-        <div className="flex">
+        {/* Split button: two identical primary segments, 1px gap as the divider. */}
+        <div className="flex gap-px">
           <Button
             size="sm"
             disabled={!ready}
@@ -93,7 +94,7 @@ export function ApprovalCard({ part, onDecide }: ApprovalCardProps) {
             <DropdownMenuTrigger asChild>
               <Button
                 size="sm"
-                className="border-primary-foreground/20 border-l px-1.5"
+                className="px-1.5"
                 disabled={!ready}
                 aria-label={t("copilot.approval.allowAlways")}
               >

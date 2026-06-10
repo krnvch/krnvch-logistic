@@ -292,8 +292,10 @@ the tool call renders as a card with a **Tier-1 2px border in `warning`**
 for brand, not state. Contents: caption row (`ShieldAlert` icon + label,
 uppercase xs, `text-warning`), a plain-language action summary, and the
 buttons: primary **split-button** ("Allow once" + chevron opening "Always
-allow in this session") and a ghost "Reject". The split-button's divider is a
-1px `primary-foreground/20` line inside the primary fill. Once decided, the
+allow in this session") and a ghost "Reject". The split-button is two
+identical primary segments separated by a **1px gap** (`gap-px`) — the card
+background shows through as the divider; no extra borders inside the fill
+(owner decision, 2026-06-10). Once decided, the
 card **collapses to a one-line state** — `Check`/`X` icon + summary +
 "Approved / Pre-approved / Rejected / Action failed" — in `muted-foreground`
 (`destructive` for failures), matching chain-item typography.
